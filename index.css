@@ -1,0 +1,322 @@
+/* Reset básico para consistencia */
+
+:root {
+    /* Variables para escalabilidad y consistencia del tema */
+    --bg-body: #f4f4f4;
+    --bg-navbar: #111;
+    --text-light: #fff;
+    --text-muted: #bbb;
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --spacing-standard: 1rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-body);
+}
+
+/* Estilos del Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent; /* Transparente para superponerse */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); /* Degradado para legibilidad */
+    padding: var(--spacing-standard) 5%;
+    color: var(--text-light);
+    position: absolute; /* Superpuesto sobre el contenido */
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: var(--text-light);
+}
+
+.nav-icons a {
+    text-decoration: none;
+    color: var(--text-light);
+    margin-left: 20px;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+/* Estilos del Carrusel */
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    overflow: hidden;
+    background-color: #000;
+}
+
+.carousel-track {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra todo sin deformarse */
+    filter: brightness(0.7); /* Oscurece la imagen para resaltar texto y navbar */
+}
+
+.slide-content {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    color: #fff;
+    z-index: 10;
+}
+
+.slide-content h2 {
+    font-size: 4rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 1rem;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.carousel-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.prev { left: 0; }
+.next { right: 0; }
+
+/* Estilos para Collage en Carrusel */
+.slide .collage {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.slide .collage img {
+    width: auto; /* Dejar que flexbox maneje el ancho */
+    flex: 1;     /* Distribución equitativa del espacio */
+}
+
+/* Estilos de la sección Social Media */
+.social-3d-container {
+    background-color: #000; /* Fondo negro profundo para resaltar el 3D */
+    height: 450px; /* Altura reducida para ser más sutil */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    perspective: 1000px; /* Punto de fuga para el 3D */
+    position: relative;
+    padding-top: 2rem;
+    cursor: grab; /* Cursor de mano abierta para indicar que se puede agarrar */
+}
+
+.social-title {
+    color: #fff;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    margin-bottom: 4rem;
+    z-index: 10;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.banner {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.slider {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
+    transform-style: preserve-3d;
+    transform: perspective(1000px) rotateY(var(--rot, 0deg));
+    transition: transform 0.1s ease-out; /* Suavizado para que el control se sienta fluido */
+    z-index: 2;
+}
+
+.item {
+    position: absolute;
+    inset: 0 0 0 0;
+    /* Cálculo matemático para distribuir los items en círculo */
+    transform: rotateY(calc( (360deg / var(--quantity)) * var(--position) )) translateZ(220px);
+    backface-visibility: hidden; /* Oculta los iconos cuando van hacia atrás (efecto medio arco) */
+    
+    /* Estilo de tarjeta Glassmorphism */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(20, 20, 20, 0.6); /* Fondo más oscuro para contraste */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.item a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.item i {
+    font-size: 3rem;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.item:hover {
+    background: rgba(0, 0, 0, 0.8);
+    /* Al hacer hover, acercamos la tarjeta al usuario */
+    transform: rotateY(calc( (360deg / var(--quantity)) * var(--position) )) translateZ(240px) scale(1.1);
+    cursor: pointer;
+}
+
+.item:hover i {
+    transform: scale(1.1);
+}
+
+/* COLORES DE MARCA AL HACER HOVER (Según el orden en HTML) */
+
+/* 1. Instagram */
+.item:nth-child(1):hover { border-color: #d62976; box-shadow: 0 0 20px #d62976; }
+.item:nth-child(1):hover i { background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* 2. Facebook */
+.item:nth-child(2):hover { border-color: #1877f2; box-shadow: 0 0 20px #1877f2; }
+.item:nth-child(2):hover i { color: #1877f2; }
+
+/* 3. WhatsApp */
+.item:nth-child(3):hover { border-color: #25d366; box-shadow: 0 0 20px #25d366; }
+.item:nth-child(3):hover i { color: #25d366; }
+
+/* 4. TikTok */
+.item:nth-child(4):hover { border-color: #00f2ea; box-shadow: 0 0 20px #ff0050; }
+.item:nth-child(4):hover i { color: #fff; text-shadow: 2px 2px 0px #ff0050, -2px -2px 0px #00f2ea; }
+
+/* 5. Twitter / X */
+.item:nth-child(5):hover { border-color: #fff; box-shadow: 0 0 20px #fff; }
+.item:nth-child(5):hover i { color: #fff; }
+
+/* 6. YouTube */
+.item:nth-child(6):hover { border-color: #ff0000; box-shadow: 0 0 20px #ff0000; }
+.item:nth-child(6):hover i { color: #ff0000; }
+
+/* Paneles laterales con Logo y Frase */
+.side-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    background-color: #000;
+    padding: 0; /* Eliminamos padding para que la imagen toque los bordes */
+}
+
+.side-panel.left { 
+    left: 0; 
+    border-right: 1px solid #222; 
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: all 1s ease-out;
+}
+
+.side-panel.right { 
+    right: 0; 
+    border-left: 1px solid #222; 
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 1s ease-out;
+}
+
+.side-panel.visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.side-panel img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* Estira la imagen para ocupar todo el ancho y alto disponible */
+    display: block;
+    filter: brightness(0.8); /* Opcional: oscurecer un poco para que resalte el carrusel central */
+    transition: filter 0.3s ease;
+}
+
+.side-panel:hover img {
+    filter: brightness(1);
+}

@@ -1,0 +1,202 @@
+/* Estilos para la sección de Productos */
+.productos-section {
+    background-color: #050505;
+    padding: 6rem 5%;
+    color: #fff;
+    position: relative;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 3rem;
+    text-transform: uppercase;
+    margin-bottom: 4rem;
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+.section-title .highlight {
+    color: #D90429;
+    font-style: italic;
+}
+
+.products-carousel-wrapper {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); /* Desvanecimiento en bordes */
+}
+
+.products-slider {
+    display: flex;
+    width: max-content; /* El ancho se ajusta al contenido */
+    gap: 2rem;
+    animation: scroll 20s linear infinite;
+}
+
+/* Pausar animación al pasar el mouse */
+.products-carousel-wrapper:hover .products-slider {
+    animation-play-state: paused;
+}
+
+/* Diseño de la Tarjeta */
+.product-card {
+    background: #0a0a0a;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease-out;
+    border: 1px solid #222;
+    min-width: 280px; /* Tamaño promedio */
+    width: 280px;
+    height: 480px;
+    flex-shrink: 0; /* Evita que se encojan */
+}
+
+/* Efecto Hover en la Tarjeta */
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(217, 4, 41, 0.1);
+    border-color: #D90429;
+}
+
+.card-image {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.product-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+/* Overlay y Botón */
+.card-actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    display: flex;
+    justify-content: center;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .card-actions {
+    transform: translateY(0);
+}
+
+.btn-shop {
+    padding: 12px 30px;
+    background: #D90429;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(217, 4, 41, 0.4);
+    transition: background 0.3s;
+}
+
+.btn-shop:hover {
+    background: #fff;
+    color: #D90429;
+}
+
+.card-details {
+    padding: 1.2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+}
+
+.card-header h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #fff;
+    font-weight: 700;
+}
+
+.price {
+    color: #D90429;
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+.card-desc {
+    color: #aaa;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.tags {
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.tags span {
+    font-size: 0.75rem;
+    background: #222;
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: 1px solid #333;
+}
+
+/* Botón Ver Más */
+.view-more-container {
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.btn-view-more {
+    display: inline-block;
+    text-decoration: none;
+    padding: 15px 50px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-view-more:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Animación de Rotación */
+@keyframes scroll {
+    to {
+        transform: translateX(-50%); /* Se mueve la mitad (asumiendo contenido duplicado) */
+    }
+}

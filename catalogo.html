@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - UrbanHustler</title>
+    
+    <!-- Estilos Globales y Componentes -->
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="productos.css"> <!-- Reutilizamos estilos de cards -->
+    
+    <!-- Estilos Específicos del Catálogo -->
+    <link rel="stylesheet" href="catalogo.css">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="filters.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="navbar-container"></div>
+
+    <main class="catalog-layout">
+        <!-- Aquí se inyectarán los componentes -->
+        <div id="search-container"></div>
+        <div id="filters-container"></div> <!-- Menú lateral / Hamburguesa -->
+        
+        <div class="catalog-grid-wrapper">
+            <div id="catalog-grid" class="products-grid"></div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="navbar.js"></script> <!-- Para cargar nav/footer -->
+    <script src="catalogo.js"></script> <!-- Lógica principal -->
+</body>
+</html>

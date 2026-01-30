@@ -1,0 +1,90 @@
+/* Sidebar de Filtros */
+.filters-sidebar {
+    position: fixed;
+    top: 0;
+    right: -350px; /* Oculto inicialmente */
+    width: 300px;
+    height: 100vh;
+    background: #111;
+    border-left: 1px solid #333;
+    z-index: 2000;
+    padding: 2rem;
+    transition: right 0.3s ease-in-out;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+}
+
+.filters-sidebar.open {
+    right: 0;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    backdrop-filter: blur(3px);
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
+}
+
+.filters-header h3 { color: #fff; text-transform: uppercase; }
+#close-filters { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+#close-filters:hover { color: #D90429; }
+
+.filter-group { margin-bottom: 2rem; }
+.filter-group h4 { color: #D90429; margin-bottom: 1rem; text-transform: uppercase; font-size: 0.9rem; }
+
+/* Checkboxes personalizados */
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 0.95rem;
+    user-select: none;
+}
+
+.checkbox-container input { position: absolute; opacity: 0; cursor: pointer; }
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+.checkbox-container:hover input ~ .checkmark { background-color: #333; }
+.checkbox-container input:checked ~ .checkmark { background-color: #D90429; border-color: #D90429; }
+.checkmark:after { content: ""; position: absolute; display: none; }
+.checkbox-container input:checked ~ .checkmark:after { display: block; }
+
+/* Slider de Precio */
+#price-range {
+    width: 100%;
+    height: 5px;
+    background: #333;
+    outline: none;
+    accent-color: #D90429;
+}

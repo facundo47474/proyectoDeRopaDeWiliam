@@ -1,0 +1,232 @@
+/* Estilos para la sección de Portadas */
+.portadas-section {
+    background-color: #050505; /* Fondo oscuro acorde al tema */
+    color: #fff;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow-x: hidden; /* Evita el scroll horizontal durante las animaciones */
+}
+
+.portadas-title {
+    text-align: center;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    padding: 4rem 0;
+    margin-bottom: 0;
+    letter-spacing: 2px;
+}
+
+.portada-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    padding: 6rem 10%;
+    border-radius: 0;
+    width: 100%;
+    /* Estado inicial para la animación (invisible y desplazado) */
+    opacity: 0;
+    transition: all 1s cubic-bezier(0.17, 0.55, 0.55, 1);
+    box-shadow: none;
+}
+
+/* Elementos impares (1, 3...) entran desde la izquierda */
+.portada-item:nth-of-type(odd) {
+    transform: translateX(-200px);
+}
+
+/* Elementos pares (2, 4...) entran desde la derecha */
+.portada-item:nth-of-type(even) {
+    transform: translateX(200px);
+}
+
+/* Clase que se añade con JS cuando el elemento es visible */
+.portada-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.portada-video {
+    flex: 1;
+    max-width: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.portada-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.portada-video.reel-container {
+    max-width: 300px; /* Ancho más estilizado tipo smartphone */
+    aspect-ratio: 9 / 16; /* Mantiene la proporción vertical correcta */
+    border-radius: 30px; /* Bordes muy redondeados */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3); /* Sombra profunda para dar relieve */
+    border: 4px solid #000; /* Marco fino negro */
+    background-color: #000;
+    position: relative; /* Necesario para posicionar el botón de audio */
+}
+
+.portada-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.portada-info h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.portada-info p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.btn-portada {
+    align-self: flex-start;
+    padding: 0.8rem 2rem;
+    background-color: transparent;
+    border: 2px solid currentColor; /* Hereda el color del texto */
+    color: currentColor;
+    font-size: 1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+/* Botón de sonido flotante */
+.sound-toggle {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    font-size: 1.2rem;
+}
+
+.sound-toggle:hover {
+    background: #D90429;
+    transform: scale(1.1);
+    border-color: #D90429;
+}
+
+/* --- TEMA BLANCO --- */
+.portada-blanca {
+    background: linear-gradient(135deg, #ffffff 0%, #f4f4f4 100%);
+    color: #111;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decoración de fondo "URBAN" */
+.portada-blanca::before {
+    content: 'URBAN';
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    font-size: 18vw; /* Gigante y responsivo */
+    font-weight: 900;
+    color: rgba(0,0,0,0.03);
+    z-index: 0;
+    pointer-events: none;
+    line-height: 0.8;
+}
+
+.portada-blanca .portada-info { position: relative; z-index: 1; }
+.portada-blanca .portada-info h3 { 
+    color: #000; 
+    font-size: 3.5rem; 
+    font-weight: 800; 
+    line-height: 1.1;
+}
+.portada-blanca .portada-info p { color: #444; }
+.portada-blanca .btn-portada:hover {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+/* Estilo para el Tagline (texto pequeño rojo) */
+.tagline {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #D90429;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* --- TEMA ROJO --- */
+.portada-roja {
+    background: linear-gradient(135deg, #D90429 0%, #b00220 100%); /* Degradado rojo intenso */
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.portada-roja::before {
+    content: 'HUSTLER';
+    position: absolute;
+    bottom: -5%; /* Posición opuesta a URBAN para variar */
+    right: -2%;
+    font-size: 17vw;
+    font-weight: 900;
+    color: rgba(0,0,0,0.15); /* Marca de agua oscura sutil */
+    z-index: 0;
+    pointer-events: none;
+    line-height: 0.8;
+}
+
+.portada-roja .portada-info { position: relative; z-index: 1; }
+.portada-roja .portada-info h3 { color: #fff; font-size: 3.5rem; font-weight: 800; line-height: 1.1; }
+.portada-roja .portada-info p { color: #f1f1f1; }
+.portada-roja .btn-portada:hover {
+    background-color: #fff;
+    color: #D90429;
+    border-color: #fff;
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+    .portada-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 4rem 5%;
+    }
+
+    .portada-video {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .portada-info {
+        align-items: center;
+    }
+
+    .btn-portada {
+        align-self: center;
+    }
+}

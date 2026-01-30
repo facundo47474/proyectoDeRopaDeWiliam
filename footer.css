@@ -1,0 +1,116 @@
+.site-footer {
+    background-color: #050505;
+    color: #fff;
+    padding: 5rem 5% 2rem;
+    border-top: 1px solid #1a1a1a;
+    font-size: 0.95rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-brand h3 {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.footer-brand p {
+    color: #888;
+    line-height: 1.6;
+    max-width: 300px;
+}
+
+.footer-links h4, .footer-social h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 700;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #D90429;
+    padding-left: 5px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icons a {
+    width: 40px;
+    height: 40px;
+    background: #111;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid #222;
+}
+
+.social-icons a:hover {
+    background: #D90429;
+    border-color: #D90429;
+    transform: translateY(-3px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #1a1a1a;
+    color: #555;
+    font-size: 0.85rem;
+}
+
+/* Responsividad */
+@media (max-width: 992px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .footer-brand p {
+        margin: 0 auto;
+    }
+    
+    .social-icons {
+        justify-content: center;
+    }
+}
