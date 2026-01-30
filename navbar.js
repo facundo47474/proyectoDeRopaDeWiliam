@@ -28,10 +28,57 @@ class UIComponentLoader {
     }
 }
 
+function setupNavigation() {
+    const navHome = document.getElementById('nav-home');
+    const navMen = document.getElementById('nav-men');
+    const navWomen = document.getElementById('nav-women');
+    const navOffers = document.getElementById('nav-offers');
+    const navCollection = document.getElementById('nav-collection');
+
+    const isHome = document.body.classList.contains('home-page');
+    const isCatalog = document.body.classList.contains('catalog-page');
+
+    if (isCatalog) {
+        // Lógica para el Catálogo (SPA behavior)
+        const applyNavFilter = (e, key, value) => {
+            e.preventDefault();
+            // Emitir evento para que ProductController actualice la grilla
+            document.dispatchEvent(new CustomEvent('app:filter-change', {
+                detail: { key, value }
+            }));
+            // Actualizar URL visualmente sin recargar
+            const url = new URL(window.location);
+            url.searchParams.set(key, value);
+            window.history.pushState({}, '', url);
+        };
+
+        if (navMen) navMen.addEventListener('click', (e) => applyNavFilter(e, 'gender', 'men'));
+        if (navWomen) navWomen.addEventListener('click', (e) => applyNavFilter(e, 'gender', 'women'));
+        if (navOffers) navOffers.addEventListener('click', (e) => applyNavFilter(e, 'maxPrice', 30000));
+        if (navCollection) navCollection.addEventListener('click', (e) => {
+             applyNavFilter(e, 'category', 'all'); // Resetear filtros
+        });
+    } else {
+        // Lógica por defecto (Home, Detalle, etc.)
+        // Configurar enlaces para redirigir al catálogo con parámetros
+        if (navMen) navMen.href = "catalogo.html?gender=men";
+        if (navWomen) navWomen.href = "catalogo.html?gender=women";
+        if (navOffers) navOffers.href = "catalogo.html?maxPrice=30000";
+        if (navCollection) navCollection.href = "catalogo.html";
+
+        // Caso específico Home: Cambiar texto de Inicio
+        if (isHome && navHome) {
+            navHome.textContent = "Ropa";
+            navHome.href = "catalogo.html";
+        }
+    }
+}
+
 // Inicialización de componentes
 document.addEventListener('DOMContentLoaded', async () => {
     // Cargar Navbar
     await UIComponentLoader.loadComponent('navbar-container', 'navbar.html');
+    setupNavigation();
     
     // Cargar Carrusel
     await UIComponentLoader.loadComponent('carousel-container', 'carousel.html');

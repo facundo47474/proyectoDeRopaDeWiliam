@@ -1,0 +1,115 @@
+.detail-layout {
+    padding-top: 120px;
+    min-height: 100vh;
+    background-color: #050505;
+    color: #fff;
+    padding-bottom: 4rem;
+}
+
+/* Contenedor Principal del Detalle */
+.product-detail-container {
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    padding: 0 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.detail-image {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #222;
+}
+
+.detail-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.detail-category {
+    color: #D90429;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.detail-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.detail-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.detail-description {
+    color: #bbb;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.detail-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-add-cart {
+    padding: 15px 40px;
+    background: #D90429;
+    color: #fff;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 4px;
+}
+
+.btn-add-cart:hover {
+    background: #fff;
+    color: #D90429;
+}
+
+/* Sección de Productos Relacionados */
+.related-products-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 5%;
+    border-top: 1px solid #222;
+}
+
+.related-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .product-detail-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .detail-title {
+        font-size: 2rem;
+    }
+}

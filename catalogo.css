@@ -1,6 +1,6 @@
 /* Layout Principal */
 .catalog-layout {
-    padding-top: 100px; /* Espacio para el navbar fijo */
+    padding-top: 0; /* El carrusel ahora ocupa el header, quitamos padding */
     min-height: 100vh;
     background-color: #050505;
     position: relative;
@@ -8,6 +8,7 @@
 
 .catalog-grid-wrapper {
     padding: 2rem 5%;
+    padding-top: 4rem; /* Espacio entre el carrusel y los productos */
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -34,4 +35,19 @@
     color: #fff;
     font-size: 1.5rem;
     padding: 4rem;
+}
+
+/* Estilos específicos para el Carrusel del Catálogo */
+.catalog-carousel {
+    height: 50vh !important; /* Sobrescribimos la altura de 100vh del index */
+    min-height: 400px;
+    position: relative;
+}
+
+.catalog-carousel .slide img {
+    filter: brightness(0.6); /* Un poco más oscuro para que resalte el texto */
+}
+
+.catalog-carousel .slide-content h2 {
+    font-size: 3rem; /* Texto un poco más pequeño que en la home */
 }

@@ -12,18 +12,20 @@
     
     <!-- Estilos Específicos del Catálogo -->
     <link rel="stylesheet" href="catalogo.css">
-    <link rel="stylesheet" href="search.css">
     <link rel="stylesheet" href="filters.css">
+    <link rel="stylesheet" href="intermedio.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="catalog-page">
 
     <div id="navbar-container"></div>
+    
+    <!-- Nuevo Carrusel del Catálogo -->
+    <div id="catalog-carousel-container"></div>
 
     <main class="catalog-layout">
         <!-- Aquí se inyectarán los componentes -->
-        <div id="search-container"></div>
         <div id="filters-container"></div> <!-- Menú lateral / Hamburguesa -->
         
         <div class="catalog-grid-wrapper">
@@ -34,6 +36,8 @@
     <div id="footer-container"></div>
 
     <script src="navbar.js"></script> <!-- Para cargar nav/footer -->
+    <script src="data.js"></script> <!-- Datos compartidos -->
+    <script src="mvc.js"></script> <!-- Arquitectura (Model, View, Controller) -->
     <script src="catalogo.js"></script> <!-- Lógica principal -->
 </body>
 </html>

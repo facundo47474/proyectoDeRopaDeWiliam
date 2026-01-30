@@ -42,17 +42,51 @@ function initSocialMedia() {
         
         // Animación de entrada de los paneles laterales
         const panels = document.querySelectorAll('.side-panel');
+        const videos = socialContainer.querySelectorAll('video');
+        const toggles = socialContainer.querySelectorAll('.social-sound-toggle');
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     panels.forEach(panel => panel.classList.add('visible'));
                 } else {
                     panels.forEach(panel => panel.classList.remove('visible'));
+                    // Silenciar videos al salir de la sección
+                    videos.forEach((v, i) => {
+                        v.muted = true;
+                        if (toggles[i]) {
+                            toggles[i].innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                        }
+                    });
                 }
             });
         }, { threshold: 0.2 });
 
         observer.observe(socialContainer);
+
+        // Lógica de Audio Exclusivo (Solo un video suena a la vez)
+        toggles.forEach((btn, index) => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Evitar que el click interfiera con el drag del contenedor
+                const currentVideo = videos[index];
+                
+                // Si está silenciado, lo activamos y silenciamos el resto
+                if (currentVideo.muted) {
+                    videos.forEach((v, i) => {
+                        v.muted = true;
+                        if (toggles[i]) {
+                            toggles[i].innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                        }
+                    });
+                    currentVideo.muted = false;
+                    btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                } else {
+                    // Si ya tiene sonido, solo lo silenciamos
+                    currentVideo.muted = true;
+                    btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                }
+            });
+        });
 
         console.log("Lógica de Redes Sociales inicializada");
     }

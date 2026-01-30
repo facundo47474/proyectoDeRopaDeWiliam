@@ -25,7 +25,6 @@ body {
 /* Estilos del Navbar */
 .navbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background-color: transparent; /* Transparente para superponerse */
     background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); /* Degradado para legibilidad */
@@ -50,6 +49,7 @@ body {
     list-style: none;
     display: flex;
     gap: 30px;
+    margin: 0 auto; /* Centra los enlaces y empuja el logo/iconos a los extremos */
 }
 
 .nav-links li a {
@@ -65,12 +65,56 @@ body {
     color: var(--text-light);
 }
 
+.nav-icons {
+    display: flex;
+    align-items: center;
+}
+
 .nav-icons a {
     text-decoration: none;
     color: var(--text-light);
     margin-left: 20px;
     font-size: 1.2rem;
     transition: transform 0.2s;
+}
+
+/* Estilos del Botón de Filtro en Navbar */
+.nav-filter-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: color 0.3s;
+}
+
+.nav-filter-btn:hover {
+    color: #D90429;
+}
+
+/* Estilos del Buscador en Navbar */
+.nav-search-container {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 5px 15px;
+    margin-right: 15px;
+}
+
+.nav-search-container input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    outline: none;
+    width: 150px;
+}
+
+/* Ocultar elementos en la Home Page */
+.home-page .nav-icons,
+.home-page .nav-filter-btn {
+    display: none !important;
 }
 
 /* Estilos del Carrusel */
@@ -308,15 +352,44 @@ body {
     opacity: 1;
 }
 
-.side-panel img {
+.side-panel img,
+.side-panel video {
     width: 100%;
     height: 100%;
-    object-fit: fill; /* Estira la imagen para ocupar todo el ancho y alto disponible */
+    object-fit: cover; /* Ajuste cover para evitar deformación en videos */
     display: block;
     filter: brightness(0.8); /* Opcional: oscurecer un poco para que resalte el carrusel central */
     transition: filter 0.3s ease;
 }
 
-.side-panel:hover img {
+.side-panel:hover img,
+.side-panel:hover video {
     filter: brightness(1);
+}
+
+/* Botón de sonido para paneles sociales */
+.social-sound-toggle {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    font-size: 1rem;
+}
+
+.social-sound-toggle:hover {
+    background: #D90429;
+    transform: scale(1.1);
+    border-color: #D90429;
 }

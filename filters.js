@@ -18,8 +18,10 @@ function initFilters() {
     // Lógica de Categorías
     categoryInputs.forEach(input => {
         input.addEventListener('change', (e) => {
-            window.currentCategory = e.target.value;
-            window.applyFilters(); // Función global en catalogo.js
+            // Desacoplamiento: Emitir evento en lugar de modificar globales
+            document.dispatchEvent(new CustomEvent('app:filter-change', {
+                detail: { key: 'category', value: e.target.value }
+            }));
         });
     });
 
@@ -27,7 +29,8 @@ function initFilters() {
     priceRange.addEventListener('input', (e) => {
         const val = e.target.value;
         priceValue.textContent = val;
-        window.maxPrice = parseInt(val);
-        window.applyFilters();
+        document.dispatchEvent(new CustomEvent('app:filter-change', {
+            detail: { key: 'maxPrice', value: parseInt(val) }
+        }));
     });
 }
