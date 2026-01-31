@@ -7,10 +7,11 @@
     <title>Detalle del Producto - UrbanHustler</title>
 
     <!-- Estilos -->
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="footer.css">
-    <link rel="stylesheet" href="productos.css"> <!-- Reutilizamos estilos de cards para sugerencias -->
-    <link rel="stylesheet" href="detailProduct.css">
+    <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="stylesheet" href="../CSS/footer.css">
+    <link rel="stylesheet" href="../CSS/productos.css"> <!-- Reutilizamos estilos de cards para sugerencias -->
+    <link rel="stylesheet" href="../CSS/detailProduct.css">
+    <link rel="stylesheet" href="../CSS/filters.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -20,19 +21,21 @@
     <div id="navbar-container"></div>
 
     <main class="detail-layout">
+        <div id="filters-container"></div>
         <div id="product-detail-container" class="product-detail-container">
             <!-- El contenido se inyecta vía JS -->
         </div>
 
         <div id="related-products-container" class="related-products-container"></div>
+        <div id="lore-container"></div>
     </main>
 
     <div id="footer-container"></div>
 
-    <script src="navbar.js"></script>
-    <script src="data.js"></script>
-    <script src="cart.js"></script>
-    <script src="detailProduct.js"></script>
+    <script src="../JavaScript/navbar.js"></script>
+    <script src="../JavaScript/data.js"></script>
+    <script src="../JavaScript/cart.js"></script> <!-- Ruta correcta -->
+    <script src="../JavaScript/detailProduct.js"></script>
 </body>
 
 </html>

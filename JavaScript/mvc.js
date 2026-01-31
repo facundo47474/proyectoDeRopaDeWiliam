@@ -98,10 +98,11 @@ class ProductView {
                 const breakSection = document.createElement('div');
                 breakSection.className = 'catalog-break-section';
                 breakSection.innerHTML = `
+                    <span></span><span></span><span></span><span></span>
                     <div class="catalog-break-content">
                         <div class="break-video">
                             <video autoplay muted loop playsinline>
-                                <source src="catalogo1.mp4" type="video/mp4">
+                                <source src="../video.mp4/catalogo1.mp4" type="video/mp4">
                             </video>
                             <button class="break-sound-toggle" aria-label="Activar sonido">
                                 <i class="fa-solid fa-volume-xmark"></i>

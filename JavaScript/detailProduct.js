@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // 1. Obtener ID del producto de la URL
     const params = new URLSearchParams(window.location.search);
     const productId = parseInt(params.get('id'));
@@ -25,14 +25,52 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Renderizar Detalle
     renderProductDetail(product);
 
-    // 4. Renderizar Sugerencias (Relacionados por categoría, excluyendo el actual)
-    const relatedProducts = MOCK_DB.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
-    renderRelatedProducts(relatedProducts);
+    // 4. Cargar y Configurar Filtros para Sugerencias
+    if (typeof UIComponentLoader !== 'undefined') {
+        await UIComponentLoader.loadComponent('filters-container', 'filters.html');
+        loadScript('../JavaScript/filters.js', () => { if (typeof initFilters === 'function') initFilters(); });
+
+        // Configurar botón de filtro del Navbar (Lógica específica para esta página)
+        const navFilterBtn = document.getElementById('nav-filter-btn');
+        if (navFilterBtn) {
+            navFilterBtn.addEventListener('click', () => {
+                const sidebar = document.getElementById('filters-sidebar');
+                const overlay = document.getElementById('overlay');
+                if (sidebar) sidebar.classList.add('open');
+                if (overlay) overlay.classList.add('active');
+            });
+        }
+    }
+
+    // 5. Inicializar lógica de productos relacionados con filtros
+    // Cargamos todos los productos excepto el actual como candidatos
+    allRelatedProducts = MOCK_DB.filter(p => p.id !== product.id);
+    
+    // Filtro inicial: misma categoría que el producto actual
+    relatedFilters.category = product.category;
+    applyRelatedFilters();
+
+    // Escuchar cambios en los filtros
+    document.addEventListener('app:filter-change', (e) => {
+        const { key, value } = e.detail;
+        relatedFilters[key] = value;
+        applyRelatedFilters();
+    });
+
+    // 6. Renderizar Lore (Historia de Marca)
+    renderLore();
 });
 
 // Variables de estado local para el detalle
 let currentSize = null;
 let currentQuantity = 1;
+
+// Variables para filtrado de relacionados
+let allRelatedProducts = [];
+let relatedFilters = {
+    category: 'all',
+    maxPrice: 1000000
+};
 
 function renderProductDetail(product) {
     const container = document.getElementById('product-detail-container');
@@ -199,12 +237,26 @@ window.addToCart = function (productId) {
     }
 };
 
+function applyRelatedFilters() {
+    const filtered = allRelatedProducts.filter(p => {
+        const catMatch = relatedFilters.category === 'all' || p.category === relatedFilters.category;
+        const priceMatch = p.price <= relatedFilters.maxPrice;
+        return catMatch && priceMatch;
+    });
+    // Mostramos hasta 4 sugerencias que cumplan los filtros
+    renderRelatedProducts(filtered.slice(0, 4));
+}
+
 function renderRelatedProducts(products) {
     const container = document.getElementById('related-products-container');
 
     if (products.length === 0) return;
 
-    let html = '<h3 class="related-title">También te podría gustar</h3>';
+    let html = `
+        <h3 class="related-title">
+            <span></span><span></span><span></span><span></span>
+            Por si te gustó lo que viste 🔥
+        </h3>`;
     html += '<div class="products-grid">'; // Reutilizamos la clase grid de catalogo.css/productos.css
 
     products.forEach(product => {
@@ -232,4 +284,38 @@ function renderRelatedProducts(products) {
 
     html += '</div>';
     container.innerHTML = html;
+}
+
+function loadScript(src, callback) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => {
+        if (callback) callback();
+    };
+    document.body.appendChild(script);
+}
+
+function renderLore() {
+    const container = document.getElementById('lore-container');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="lore-section">
+            <div class="lore-content">
+                <h2 class="lore-title">El Alma de UrbanHustler</h2>
+                <p class="lore-text">
+                    En un mundo de copias, elegiste ser original. <br>
+                    No fabricamos ropa para llenar armarios, forjamos identidad para quienes se atreven a desafiar lo establecido.
+                    <br><br>
+                    Cada hilo de nuestras prendas lleva la tensión de la calle, la pasión del arte y la fuerza de quien no se rinde.
+                    Cuando usas UrbanHustler, no solo te vistes; te pones la piel de los que sueñan despiertos y trabajan mientras otros duermen.
+                    <br><br>
+                    <strong>Gracias por ser parte de la resistencia. Gracias por elegir la autenticidad.</strong>
+                </p>
+                <div class="lore-signature">
+                    <span>Mas que una marca, una familia !</span>
+                </div>
+            </div>
+        </div>
+    `;
 }

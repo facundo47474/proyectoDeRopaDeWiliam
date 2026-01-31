@@ -1,0 +1,590 @@
+.detail-layout {
+    padding-top: 120px;
+    min-height: 100vh;
+    background-color: #050505;
+    color: #fff;
+    padding-bottom: 4rem;
+}
+
+/* Contenedor Principal del Detalle */
+
+/* Layout Grid Upgrade */
+.product-detail-container {
+    max-width: 1300px;
+    margin: 2rem auto 6rem;
+    padding: 0 5%;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    /* Más espacio para la imagen */
+    gap: 4rem;
+    align-items: start;
+}
+
+/* ==================
+   GALERÍA DE IMÁGENES
+   ================== */
+.product-gallery {
+    display: flex;
+    gap: 20px;
+    height: 600px;
+    /* Altura fija para layout estable */
+}
+
+.gallery-thumbs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 80px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Ocultar scrollbar Firefox */
+}
+
+.gallery-thumbs::-webkit-scrollbar {
+    display: none;
+    /* Ocultar scrollbar Chrome */
+}
+
+.thumb-item {
+    width: 80px;
+    height: 100px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    opacity: 0.6;
+}
+
+.thumb-item:hover {
+    opacity: 1;
+}
+
+.thumb-item.active {
+    border-color: #D90429;
+    opacity: 1;
+}
+
+.thumb-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-main {
+    flex: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cambiar a 'contain' si se quieren ver bordes */
+    transition: transform 0.3s ease;
+}
+
+/* ==================
+   INFO DEL PRODUCTO
+   ================== */
+.detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 1rem;
+}
+
+.detail-category {
+    color: #D90429;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.detail-title {
+    font-size: 3.5rem;
+    /* Título grande */
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.detail-price-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.detail-price {
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: #eee;
+}
+
+.stock-badge {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.detail-description {
+    color: #aaa;
+    line-height: 1.7;
+    font-size: 1.05rem;
+    max-width: 90%;
+}
+
+/* Configuraciones (Talle / Cantidad) */
+.config-group {
+    margin-bottom: 1.5rem;
+}
+
+.config-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.sizes-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.size-btn {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #333;
+    background: transparent;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+.size-btn:hover {
+    border-color: #fff;
+}
+
+.size-btn.selected {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+.qty-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid #333;
+    width: fit-content;
+    height: 50px;
+}
+
+.qty-selector button {
+    width: 40px;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.qty-selector button:hover {
+    background: #222;
+}
+
+.qty-selector input {
+    width: 50px;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: #fff;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* Botón Agregar */
+.detail-actions {
+    margin-top: 1rem;
+}
+
+.btn-add-cart {
+    width: 100%;
+    padding: 20px;
+    background: #D90429;
+    color: #fff;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-add-cart:hover {
+    background: #ef233c;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(217, 4, 41, 0.3);
+}
+
+.extra-features {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    border-top: 1px solid #222;
+    padding-top: 2rem;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.feature i {
+    color: #fff;
+}
+
+/* =========================
+   MODO CLARO (Light Mode)
+   ========================= */
+body.light-mode .detail-layout {
+    background-color: #f8f9fa; /* Fondo claro suave */
+    color: #212529;
+}
+
+body.light-mode .gallery-main {
+    background-color: #fff;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    border: 1px solid #e0e0e0;
+}
+
+body.light-mode .detail-title {
+    color: #111;
+}
+
+body.light-mode .detail-category {
+    color: #D90429; /* Mantenemos el acento rojo */
+}
+
+body.light-mode .detail-price {
+    color: #333;
+}
+
+body.light-mode .detail-description {
+    color: #555;
+}
+
+body.light-mode .config-group label {
+    color: #222;
+}
+
+body.light-mode .size-btn {
+    border-color: #ccc;
+    color: #333;
+}
+
+body.light-mode .size-btn:hover {
+    border-color: #000;
+    background: #e9ecef;
+}
+
+body.light-mode .size-btn.selected {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+}
+
+body.light-mode .qty-selector {
+    border-color: #ccc;
+    background: #fff;
+}
+
+body.light-mode .qty-selector button {
+    color: #333;
+}
+
+body.light-mode .qty-selector button:hover {
+    background: #f0f0f0;
+}
+
+body.light-mode .qty-selector input {
+    color: #333;
+}
+
+body.light-mode .extra-features {
+    border-top-color: #e0e0e0;
+}
+
+body.light-mode .feature {
+    color: #666;
+}
+
+body.light-mode .feature i {
+    color: #333;
+}
+
+/* Responsividad Actualizada */
+@media (max-width: 900px) {
+    .product-detail-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .product-gallery {
+        height: auto;
+        flex-direction: column-reverse;
+    }
+
+    .gallery-thumbs {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+    }
+
+    .gallery-main {
+        height: 400px;
+    }
+
+    .detail-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* =========================
+   TITULO RELACIONADOS (Aro de Luz)
+   ========================= */
+.related-title {
+    position: relative;
+    width: fit-content;
+    margin: 5rem auto 3rem; /* Centrado horizontal */
+    padding: 20px 40px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 2rem;
+    font-weight: 800;
+    overflow: hidden;
+    background: #050505; /* Fondo para cubrir las líneas de retorno */
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+/* Elementos para la animación del borde */
+.related-title span {
+    position: absolute;
+    display: block;
+}
+
+/* Borde Superior */
+.related-title span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #D90429);
+    animation: border-anim1 2s linear infinite, color-cycle 2s linear infinite;
+}
+@keyframes border-anim1 { 0% { left: -100%; } 50%, 100% { left: 100%; } }
+
+/* Borde Derecho */
+.related-title span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #D90429);
+    animation: border-anim2 2s linear infinite, color-cycle 2s linear infinite;
+    animation-delay: 0.5s;
+}
+@keyframes border-anim2 { 0% { top: -100%; } 50%, 100% { top: 100%; } }
+
+/* Borde Inferior */
+.related-title span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(270deg, transparent, #D90429);
+    animation: border-anim3 2s linear infinite, color-cycle 2s linear infinite;
+    animation-delay: 1s;
+}
+@keyframes border-anim3 { 0% { right: -100%; } 50%, 100% { right: 100%; } }
+
+/* Borde Izquierdo */
+.related-title span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #D90429);
+    animation: border-anim4 2s linear infinite, color-cycle 2s linear infinite;
+    animation-delay: 1.5s;
+}
+@keyframes border-anim4 { 0% { bottom: -100%; } 50%, 100% { bottom: 100%; } }
+
+/* Animación de Color y Brillo (Neon Cycle) */
+@keyframes color-cycle {
+    0% {
+        filter: drop-shadow(0 0 5px #D90429) drop-shadow(0 0 15px #D90429) hue-rotate(0deg);
+    }
+    100% {
+        filter: drop-shadow(0 0 5px #D90429) drop-shadow(0 0 15px #D90429) hue-rotate(360deg);
+    }
+}
+
+/* Ajuste para Modo Claro */
+body.light-mode .related-title {
+    color: #111;
+    background: #f8f9fa;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   LORE SECTION (Historia)
+   ========================= */
+.lore-section {
+    margin: 6rem auto 4rem;
+    max-width: 900px;
+    padding: 6rem 3rem;
+    background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+    border: 1px solid #1a1a1a;
+    text-align: center;
+    position: relative;
+    animation: fadeIn 1s ease-out;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* Esquinas decorativas */
+.lore-section::before, .lore-section::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 2px solid #D90429;
+    transition: all 0.5s ease;
+    opacity: 0.7;
+}
+
+.lore-section::before {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+}
+
+.lore-section::after {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+}
+
+.lore-title {
+    font-size: 3rem;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #fff, #888);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 3rem;
+    letter-spacing: 6px;
+    font-weight: 900;
+    position: relative;
+    z-index: 2;
+}
+
+.lore-text {
+    font-family: 'Georgia', serif; /* Fuente serif para narrativa */
+    font-size: 1.3rem;
+    line-height: 2;
+    color: #ddd;
+    margin: 0 auto;
+    font-style: italic;
+    position: relative;
+    z-index: 2;
+}
+
+.lore-text strong {
+    font-family: var(--font-main);
+    color: #D90429;
+    font-weight: 800;
+    display: block;
+    margin-top: 3rem;
+    font-size: 1.4rem;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px rgba(217, 4, 41, 0.3);
+}
+
+.lore-signature span {
+    display: inline-block;
+    margin-top: 4rem;
+    padding: 12px 40px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    background: transparent;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.lore-signature span:hover {
+    border-color: #D90429;
+    background: rgba(217, 4, 41, 0.1);
+    box-shadow: 0 0 20px rgba(217, 4, 41, 0.2);
+}
+
+/* Marca de agua de comillas */
+.lore-content::before {
+    content: '\201C';
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20rem;
+    color: rgba(255, 255, 255, 0.02);
+    font-family: serif;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Ajuste Modo Claro Lore */
+body.light-mode .lore-section { background: #fff; border-color: #e0e0e0; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+body.light-mode .lore-text { color: #444; }
+body.light-mode .lore-title { background: linear-gradient(to right, #000, #555); -webkit-background-clip: text; background-clip: text; }
+body.light-mode .lore-signature span { color: #333; border-color: #ccc; }
+body.light-mode .lore-content::before { color: rgba(0,0,0,0.03); }
