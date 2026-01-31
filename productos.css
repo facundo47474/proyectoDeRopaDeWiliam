@@ -54,6 +54,13 @@
     flex-shrink: 0; /* Evita que se encojan */
 }
 
+/* Modo Claro para Cards */
+body.light-mode .product-card {
+    background: #fff;
+    border-color: #e0e0e0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
 /* Efecto Hover en la Tarjeta */
 .product-card:hover {
     transform: translateY(-5px);
@@ -138,6 +145,10 @@
     font-weight: 700;
 }
 
+body.light-mode .card-header h3 {
+    color: #111;
+}
+
 .price {
     color: #D90429;
     font-weight: 800;
@@ -149,6 +160,10 @@
     font-size: 0.95rem;
     line-height: 1.5;
     margin-bottom: 1rem;
+}
+
+body.light-mode .card-desc {
+    color: #555;
 }
 
 .tags {
@@ -166,6 +181,12 @@
     text-transform: uppercase;
     font-weight: 600;
     border: 1px solid #333;
+}
+
+body.light-mode .tags span {
+    background: #f0f0f0;
+    color: #333;
+    border-color: #ddd;
 }
 
 /* Botón Ver Más */

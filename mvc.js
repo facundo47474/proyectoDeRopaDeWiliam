@@ -93,8 +93,8 @@ class ProductView {
             `;
             this.grid.appendChild(card);
 
-            // Inyectar sección intermedia después de la 6ta tarjeta (índice 5)
-            if (index === 5) {
+            // Inyectar sección intermedia después de la 4ta tarjeta (índice 3)
+            if (index === 3) {
                 const breakSection = document.createElement('div');
                 breakSection.className = 'catalog-break-section';
                 breakSection.innerHTML = `
@@ -103,6 +103,9 @@ class ProductView {
                             <video autoplay muted loop playsinline>
                                 <source src="catalogo1.mp4" type="video/mp4">
                             </video>
+                            <button class="break-sound-toggle" aria-label="Activar sonido">
+                                <i class="fa-solid fa-volume-xmark"></i>
+                            </button>
                         </div>
                         <div class="break-comments">
                             <h3>Cuéntanos tu experiencia</h3>
@@ -115,7 +118,7 @@ class ProductView {
                         </div>
                     </div>
                 `;
-                
+
                 // Agregar funcionalidad simple al formulario
                 const form = breakSection.querySelector('form');
                 form.addEventListener('submit', (e) => {
@@ -123,6 +126,33 @@ class ProductView {
                     alert('¡Gracias por compartir tu experiencia con UrbanHustler!');
                     form.reset();
                 });
+
+                // Lógica para el botón de sonido
+                const video = breakSection.querySelector('video');
+                const soundBtn = breakSection.querySelector('.break-sound-toggle');
+
+                if (video && soundBtn) {
+                    soundBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        video.muted = !video.muted;
+                        soundBtn.innerHTML = video.muted ?
+                            '<i class="fa-solid fa-volume-xmark"></i>' :
+                            '<i class="fa-solid fa-volume-high"></i>';
+                    });
+
+                    // Observer para pausar el video cuando sale de pantalla
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (!entry.isIntersecting) {
+                                video.pause(); // Detiene video y audio al salir
+                            } else {
+                                video.play().catch(() => { }); // Reanuda al volver a entrar
+                            }
+                        });
+                    }, { threshold: 0.2 }); // Se activa cuando el 20% es visible
+
+                    observer.observe(breakSection);
+                }
 
                 this.grid.appendChild(breakSection);
             }
@@ -153,7 +183,7 @@ class ProductController {
         if (params.has('maxPrice')) {
             this.model.updateFilter('maxPrice', parseInt(params.get('maxPrice')));
         }
-        
+
         // 3. Render inicial
         this.updateDisplay();
 

@@ -1,19 +1,28 @@
-/* Layout Principal */
+/* =========================
+   Layout Principal
+========================= */
 .catalog-layout {
-    padding-top: 0; /* El carrusel ahora ocupa el header, quitamos padding */
+    padding-top: 0;
     min-height: 100vh;
     background-color: #050505;
     position: relative;
+    transition: background-color 0.3s ease;
+}
+
+body.light-mode .catalog-layout {
+    background-color: #f4f4f4;
 }
 
 .catalog-grid-wrapper {
     padding: 2rem 5%;
-    padding-top: 4rem; /* Espacio entre el carrusel y los productos */
+    padding-top: 4rem;
     max-width: 1400px;
     margin: 0 auto;
 }
 
-/* Grilla de Productos */
+/* =========================
+   Grilla de Productos
+========================= */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -21,14 +30,15 @@
     justify-items: center;
 }
 
-/* Ajuste para que las cards reutilizadas se comporten bien en la grilla */
 .products-grid .product-card {
     width: 100%;
     height: 480px;
-    margin: 0; /* Quitar márgenes externos si los hubiera */
+    margin: 0;
 }
 
-/* Mensaje cuando no hay resultados */
+/* =========================
+   Sin resultados
+========================= */
 .no-results {
     grid-column: 1 / -1;
     text-align: center;
@@ -37,17 +47,23 @@
     padding: 4rem;
 }
 
-/* Estilos específicos para el Carrusel del Catálogo */
+body.light-mode .no-results {
+    color: #333;
+}
+
+/* =========================
+   Carrusel
+========================= */
 .catalog-carousel {
-    height: 50vh !important; /* Sobrescribimos la altura de 100vh del index */
+    height: 50vh !important;
     min-height: 400px;
     position: relative;
 }
 
 .catalog-carousel .slide img {
-    filter: brightness(0.6); /* Un poco más oscuro para que resalte el texto */
+    filter: brightness(0.6);
 }
 
 .catalog-carousel .slide-content h2 {
-    font-size: 3rem; /* Texto un poco más pequeño que en la home */
+    font-size: 3rem;
 }

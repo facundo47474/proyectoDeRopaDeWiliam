@@ -11,7 +11,7 @@ class UIComponentLoader {
      */
     static async loadComponent(containerId, sourcePath) {
         const container = document.getElementById(containerId);
-        
+
         if (!container) {
             console.error(`[UIComponentLoader] Error: Contenedor #${containerId} no encontrado.`);
             return;
@@ -56,7 +56,7 @@ function setupNavigation() {
         if (navWomen) navWomen.addEventListener('click', (e) => applyNavFilter(e, 'gender', 'women'));
         if (navOffers) navOffers.addEventListener('click', (e) => applyNavFilter(e, 'maxPrice', 30000));
         if (navCollection) navCollection.addEventListener('click', (e) => {
-             applyNavFilter(e, 'category', 'all'); // Resetear filtros
+            applyNavFilter(e, 'category', 'all'); // Resetear filtros
         });
     } else {
         // Lógica por defecto (Home, Detalle, etc.)
@@ -79,10 +79,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Cargar Navbar
     await UIComponentLoader.loadComponent('navbar-container', 'navbar.html');
     setupNavigation();
-    
+
+    // Notificar al sistema que el navbar está listo
+    document.dispatchEvent(new Event('app:navbar-loaded'));
+
     // Cargar Carrusel
     await UIComponentLoader.loadComponent('carousel-container', 'carousel.html');
-    
+
     // Inicializar lógica del carrusel (función definida en carousel.js)
     if (typeof initCarousel === 'function') {
         initCarousel();

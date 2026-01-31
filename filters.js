@@ -33,4 +33,32 @@ function initFilters() {
             detail: { key: 'maxPrice', value: parseInt(val) }
         }));
     });
+
+    // --- Lógica de Modo Claro / Oscuro ---
+    // Inyectar el interruptor en el sidebar
+    if (sidebar) {
+        const themeContainer = document.createElement('div');
+        themeContainer.className = 'theme-toggle-container';
+        themeContainer.innerHTML = `
+            <span class="toggle-label">Modo Claro</span>
+            <label class="theme-switch">
+                <input type="checkbox" id="theme-switch">
+                <span class="theme-slider"></span>
+            </label>
+        `;
+        sidebar.appendChild(themeContainer);
+
+        const themeSwitch = document.getElementById('theme-switch');
+
+        // Cargar preferencia guardada
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            if (themeSwitch) themeSwitch.checked = true;
+        }
+
+        themeSwitch?.addEventListener('change', (e) => {
+            document.body.classList.toggle('light-mode', e.target.checked);
+            localStorage.setItem('theme', e.target.checked ? 'light' : 'dark');
+        });
+    }
 }
