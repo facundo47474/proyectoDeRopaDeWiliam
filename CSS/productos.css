@@ -20,6 +20,12 @@
     font-style: italic;
 }
 
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem; /* Título más pequeño */
+    }
+}
+
 .products-carousel-wrapper {
     position: relative;
     width: 100%;
@@ -61,6 +67,14 @@
     width: 280px;
     height: 480px;
     flex-shrink: 0; /* Evita que se encojan */
+}
+
+@media (max-width: 600px) {
+    .product-card {
+        width: 90vw; /* 90% del ancho de la pantalla */
+        max-width: 350px; 
+        margin: 0 auto; /* Centrado */
+    }
 }
 
 /* Modo Claro para Cards */

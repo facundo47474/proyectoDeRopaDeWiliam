@@ -263,4 +263,14 @@
     .btn-portada {
         align-self: center;
     }
+
+    .portada-info h3 {
+        font-size: 2rem; 
+        text-align: center;
+    }
+
+    .portada-blanca::before, .portada-roja::before {
+        font-size: 18vw; /* Marca de agua más discreta */
+        top: 0;
+    }
 }

@@ -190,51 +190,80 @@
 /* Mensaje tipo nube (Cloud Message) - Proactive Chat */
 .chatbot-cloud-message {
     position: absolute;
-    bottom: 85px;
+    bottom: 90px;
     right: 0;
-    background: #fff;
-    color: #000;
-    padding: 15px 20px;
-    border-radius: 15px;
-    border-bottom-right-radius: 2px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+    background: rgba(15, 15, 15, 0.95); /* Fondo oscuro premium */
+    backdrop-filter: blur(10px); /* Efecto cristal */
+    color: #fff;
+    padding: 18px 25px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    border-left: 4px solid #D90429; /* Acento de marca profesional */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
     font-size: 0.9rem;
-    font-weight: 600;
-    width: 240px;
+    font-weight: 400;
+    width: 280px;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(10px) scale(0.95);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateX(20px); /* Entrada desde la derecha */
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     z-index: 8999;
     cursor: pointer;
-    line-height: 1.4;
+    line-height: 1.6;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 0.3px;
 }
 
 .chatbot-cloud-message.visible {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0) scale(1);
+    transform: translateX(0);
 }
 
 .chatbot-cloud-close {
     position: absolute;
-    top: -10px;
-    left: -10px;
-    background: #D90429;
-    color: #fff;
+    top: 8px;
+    right: 8px;
+    left: auto; /* Mover a la derecha para estilo tarjeta */
+    background: transparent;
+    color: #888;
     border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 0.8rem;
+    width: 20px;
+    height: 20px;
+    font-size: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    transition: transform 0.2s;
+    box-shadow: none;
+    transition: color 0.2s;
 }
 
 .chatbot-cloud-close:hover {
-    transform: scale(1.1);
+    color: #fff;
+    transform: none;
+}
+
+/* Botón de acción dentro de la notificación (Panel de Control) */
+.chatbot-action-btn {
+    display: block;
+    margin-top: 12px;
+    background: #D90429;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    box-shadow: 0 4px 10px rgba(217, 4, 41, 0.3);
+}
+
+.chatbot-action-btn:hover {
+    background: transparent;
+    border-color: #D90429;
+    color: #D90429;
+    transform: translateY(-2px);
 }

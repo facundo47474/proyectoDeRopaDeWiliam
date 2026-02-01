@@ -54,6 +54,71 @@ function setupNavigation() {
         logo.onclick = () => window.location.href = 'index.html';
     }
 
+    // --- LÓGICA RESPONSIVE (HAMBURGER MENU) ---
+    const navbar = document.querySelector('.navbar');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (navbar && navLinks && !document.querySelector('.menu-toggle')) {
+        const toggleBtn = document.createElement('button');
+        toggleBtn.className = 'menu-toggle';
+        toggleBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+        toggleBtn.ariaLabel = "Menú";
+        
+        navbar.appendChild(toggleBtn);
+
+        toggleBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = toggleBtn.querySelector('i');
+            icon.className = navLinks.classList.contains('active') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        });
+
+        // Cerrar menú al hacer click en un enlace
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('active'));
+        });
+
+        // Cerrar menú al hacer scroll (Mejora UX móvil)
+        window.addEventListener('scroll', () => {
+            if(navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                toggleBtn.querySelector('i').className = 'fa-solid fa-bars';
+            }
+        });
+    }
+
+    // --- LÓGICA RESPONSIVE (SEARCH TOGGLE) ---
+    const searchContainer = document.querySelector('.nav-search-container');
+    const navIcons = document.querySelector('.nav-icons');
+
+    if (searchContainer && navIcons && !document.querySelector('.search-toggle-mobile')) {
+        const searchBtn = document.createElement('a');
+        searchBtn.className = 'search-toggle-mobile';
+        searchBtn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i>';
+        searchBtn.href = "#";
+        searchBtn.ariaLabel = "Buscar";
+        
+        // Insertar al principio de los iconos
+        navIcons.insertBefore(searchBtn, navIcons.firstChild);
+
+        searchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            searchContainer.classList.toggle('active');
+            
+            // Enfocar input si se abre para escribir rápido
+            if (searchContainer.classList.contains('active')) {
+                const input = searchContainer.querySelector('input');
+                if (input) setTimeout(() => input.focus(), 100);
+            }
+        });
+
+        // Cerrar al hacer scroll para limpiar la vista
+        window.addEventListener('scroll', () => {
+            if (searchContainer.classList.contains('active')) {
+                searchContainer.classList.remove('active');
+            }
+        });
+    }
+
     const isHome = document.body.classList.contains('home-page');
     const isCatalog = document.body.classList.contains('catalog-page');
 
@@ -171,6 +236,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cargar Sección de Footer
     await UIComponentLoader.loadComponent('footer-container', 'footer.html');
+
+    // Cargar Chatbot Globalmente (Asegura que aparezca en todas las páginas)
+    loadChatbotGlobal();
 });
 
 /* ==========================================
@@ -283,6 +351,13 @@ function handleCredentialResponse(response) {
     localStorage.setItem('user_token', response.credential);
     localStorage.setItem('user_info', JSON.stringify(responsePayload));
     
+    // Mensajes personalizados por usuario (Admin / Creador)
+    if (responsePayload.email === 'gimenez.william07@gmail.com') {
+        sessionStorage.setItem('login_greeting', "<strong style='font-size:1.1em; color:#fff;'>Hola Wiliam</strong><br><span style='color:#ccc;'>Soy tu asistente inteligente.</span><br><span style='color:#D90429; font-weight:600; display:block; margin-top:5px;'>Tienes total acceso a mi panel de control.</span><a href='controlCenter.html' class='chatbot-action-btn'>Ir al Panel de Control <i class='fa-solid fa-arrow-right'></i></a>");
+    } else if (responsePayload.email === 'facundotomas018@gmail.com') {
+        sessionStorage.setItem('login_greeting', "<strong style='font-size:1.1em; color:#fff;'>Hola Creador</strong><br><span style='color:#ccc;'>Es un gusto volver a verte.</span><br><span style='color:#D90429; font-weight:600; display:block; margin-top:5px;'>Acceso total a mi panel de control permitido !</span><a href='controlCenter.html' class='chatbot-action-btn'>Ir al Panel de Control <i class='fa-solid fa-arrow-right'></i></a>");
+    }
+
     showLoggedInState(responsePayload);
     location.reload(); // Recargar para actualizar estado en toda la app
 }
@@ -307,4 +382,20 @@ function decodeJwtResponse(token) {
         }).join(''));
         return JSON.parse(jsonPayload);
     } catch (e) { return {}; }
+}
+
+function loadChatbotGlobal() {
+    // 1. Cargar CSS si no existe
+    if (!document.querySelector('link[href*="chatbot.css"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '../CSS/chatbot.css';
+        document.head.appendChild(link);
+    }
+    // 2. Cargar JS si no existe
+    if (!document.querySelector('script[src*="chatbot.js"]')) {
+        const script = document.createElement('script');
+        script.src = '../JavaScript/chatbot.js';
+        document.body.appendChild(script);
+    }
 }

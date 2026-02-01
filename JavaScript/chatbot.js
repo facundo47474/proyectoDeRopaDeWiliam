@@ -7,6 +7,8 @@ class ChatbotManager {
         this.isOpen = false;
         this.idleTimer = null; // Timer para detectar inactividad
         this.userData = { name: null, age: null, location: null }; // Datos del usuario
+        this.helpRejected = sessionStorage.getItem('chatbot_help_rejected') === 'true'; // Estado de rechazo
+        this.chatHistory = JSON.parse(sessionStorage.getItem('chatbot_history')) || []; // Historial persistente
         // Base de conocimientos simple
         this.responses = {
             // 🧍‍♂️ 1. Preguntas generales (primer contacto)
@@ -143,6 +145,8 @@ class ChatbotManager {
         this.injectHTML();
         this.cacheDOM();
         this.bindEvents();
+        this.loadHistory(); // Restaurar conversación previa
+        this.checkLoginGreeting();
         this.startIdleTimer(); // Iniciar contador de 4 minutos
     }
 
@@ -199,6 +203,8 @@ class ChatbotManager {
         this.cloudCloseBtn.addEventListener('click', (e) => {
             e.stopPropagation(); // Evitar abrir el chat al cerrar la nube
             this.hideCloudMessage();
+            this.helpRejected = true;
+            sessionStorage.setItem('chatbot_help_rejected', 'true'); // Guardar preferencia
         });
         this.cloudMessage.addEventListener('click', () => {
             this.hideCloudMessage();
@@ -222,10 +228,26 @@ class ChatbotManager {
         }
     }
 
+    checkLoginGreeting() {
+        const greeting = sessionStorage.getItem('login_greeting');
+        if (greeting) {
+            const p = this.cloudMessage.querySelector('p');
+            if (p) p.innerHTML = greeting; // Usar innerHTML para respetar formato HTML
+            this.cloudMessage.classList.add('visible');
+            
+            // Agregar también al historial del chat para que persista si se cierra la nube
+            this.addMessage(greeting, 'bot');
+            
+            sessionStorage.removeItem('login_greeting');
+        }
+    }
+
     startIdleTimer() {
+        if (this.helpRejected) return; // Si ya rechazó, no iniciamos timer
+
         // 4 minutos = 240000 ms
         this.idleTimer = setTimeout(() => {
-            if (!this.isOpen) {
+            if (!this.isOpen && !this.helpRejected) {
                 this.cloudMessage.classList.add('visible');
                 // Sonido de notificación suave (opcional)
                 // const audio = new Audio('../assets/notification.mp3'); audio.play().catch(e=>{});
@@ -257,6 +279,10 @@ class ChatbotManager {
         msgDiv.innerHTML = `<p>${text}</p>`;
         this.messagesContainer.appendChild(msgDiv);
         this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+
+        // Guardar en historial
+        this.chatHistory.push({ text, sender });
+        sessionStorage.setItem('chatbot_history', JSON.stringify(this.chatHistory));
     }
 
     detectUserData(input) {
@@ -333,9 +359,27 @@ class ChatbotManager {
         }
         return this.formatResponse(this.responses["default"]);
     }
+
+    loadHistory() {
+        if (this.chatHistory.length > 0) {
+            this.messagesContainer.innerHTML = ''; // Limpiar mensaje por defecto
+            this.chatHistory.forEach(msg => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${msg.sender}`;
+                msgDiv.innerHTML = `<p>${msg.text}</p>`;
+                this.messagesContainer.appendChild(msgDiv);
+            });
+            this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        }
+    }
 }
 
 // Inicializar automáticamente
-document.addEventListener('DOMContentLoaded', () => {
+// Usamos check de readyState para soportar carga dinámica desde navbar.js
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        new ChatbotManager();
+    });
+} else {
     new ChatbotManager();
-});
+}

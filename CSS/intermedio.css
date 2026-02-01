@@ -31,6 +31,13 @@ body.light-mode .catalog-break-content {
     background: linear-gradient(135deg, #f9f9f9 0%, #eeeeee 100%);
 }
 
+@media (max-width: 768px) {
+    .catalog-break-content {
+        padding: 1.5rem;
+        gap: 2rem;
+    }
+}
+
 .break-video {
     flex: 0 1 360px; /* Ancho fijo estilo móvil, un poco más ancho que portada */
     min-width: 300px;
@@ -160,9 +167,13 @@ body.light-mode .comment-form textarea {
 @media (max-width: 768px) {
     .catalog-break-content {
         height: auto;
+        flex-direction: column; /* Apilar verticalmente */
+        padding: 2rem 1rem;
     }
     .break-video {
         min-height: 250px;
+        width: 100%; /* Video ocupa todo el ancho */
+        flex: none;
     }
 }
 

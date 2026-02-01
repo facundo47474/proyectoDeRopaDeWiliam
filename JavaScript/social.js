@@ -39,6 +39,28 @@ function initSocialMedia() {
             currentRotation = previousRotation + (diff * 0.3);
             slider.style.setProperty('--rot', `${currentRotation}deg`);
         });
+
+        // --- SOPORTE TÁCTIL (MOBILE) ---
+        socialContainer.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            // No prevenimos default aquí para permitir scroll vertical si no se arrastra horizontalmente
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
+            if (isDragging) {
+                isDragging = false;
+                previousRotation = currentRotation;
+            }
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const x = e.touches[0].clientX;
+            const diff = x - startX;
+            currentRotation = previousRotation + (diff * 0.3);
+            slider.style.setProperty('--rot', `${currentRotation}deg`);
+        }, { passive: true });
         
         // Animación de entrada de los paneles laterales
         const panels = document.querySelectorAll('.side-panel');
