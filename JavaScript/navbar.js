@@ -120,6 +120,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (typeof initSocialMedia === 'function') {
             initSocialMedia();
         }
+
+        // Actualizar número de WhatsApp (Buscamos específicamente el icono de WhatsApp)
+        setTimeout(() => {
+            const waIcon = document.querySelector('#social-media-container .fa-whatsapp');
+            if (waIcon) {
+                const waLink = waIcon.closest('a');
+                if (waLink) {
+                    waLink.href = "https://wa.me/5493758555948";
+                    waLink.target = "_blank";
+                    // IMPORTANTE: Evitar que el slider 3D capture el clic y lo bloquee
+                    waLink.addEventListener('mousedown', (e) => e.stopPropagation());
+                    waLink.addEventListener('click', (e) => e.stopPropagation());
+                }
+            }
+        }, 100);
     }
 
     // Cargar Sección de Portadas
@@ -162,11 +177,26 @@ document.addEventListener('DOMContentLoaded', async () => {
    LÓGICA DE LOGIN GOOGLE (Navbar Integration)
    ========================================== */
 function initGoogleLogin() {
-    // Esperar a que la librería de Google cargue
+    // Asegurar que la librería de Google esté presente (para Catalogo/Detalle si falta en HTML)
+    if (!document.querySelector('script[src*="accounts.google.com/gsi/client"]')) {
+        const script = document.createElement('script');
+        script.src = "https://accounts.google.com/gsi/client";
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+    }
+
+    // 1. Mostrar el contenedor con el logo inmediatamente (Placeholder)
+    renderGoogleLogin();
+
+    // 2. Esperar a que la librería de Google cargue para activar la funcionalidad
     const checkGoogle = setInterval(() => {
         if (typeof google !== 'undefined' && google.accounts) {
             clearInterval(checkGoogle);
-            renderGoogleLogin();
+            // Si no hay sesión activa, inicializamos el botón oficial interactivo
+            if (!localStorage.getItem('user_token')) {
+                showLoginButton();
+            }
         }
     }, 100);
 }
@@ -175,6 +205,9 @@ function renderGoogleLogin() {
     const navIcons = document.querySelector('.nav-icons');
     if (!navIcons) return;
 
+    // Evitar duplicados si ya existe
+    if (document.getElementById('google-login-container')) return;
+
     // Crear contenedor para el botón/avatar
     const container = document.createElement('div');
     container.id = 'google-login-container';
@@ -182,8 +215,18 @@ function renderGoogleLogin() {
     container.style.display = 'flex';
     container.style.alignItems = 'center';
     
-    // Insertar al principio de los iconos
-    navIcons.prepend(container);
+    // AÑADIDO: Icono por defecto (Logo de Google) para que sea visible inmediatamente
+    container.innerHTML = '<i class="fa-solid fa-user" style="font-size: 1.2rem; color: #fff; cursor: pointer;" title="Iniciar sesión"></i>';
+    
+    // Fallback: Hacemos que este icono sea clicable por si el botón oficial falla o tarda
+    container.onclick = function() {
+        if (typeof google !== 'undefined' && google.accounts) {
+            google.accounts.id.prompt(); // Intenta abrir el One Tap login
+        }
+    };
+    
+    // Insertar al final de los iconos (a la derecha del carrito)
+    navIcons.appendChild(container);
 
     // Verificar si ya hay sesión guardada
     const userToken = localStorage.getItem('user_token');
@@ -192,18 +235,43 @@ function renderGoogleLogin() {
     if (userToken && userInfo) {
         const user = JSON.parse(userInfo);
         showLoggedInState(user);
-    } else {
-        showLoginButton();
     }
 }
 
 function showLoginButton() {
+    const container = document.getElementById("google-login-container");
+    if (!container) return;
+
+    // IMPORTANTE: Si no has configurado tu ID real, no intentamos cargar el botón
+    // para evitar que desaparezca el icono por defecto.
+    const clientId = "775227629128-j92ormbg985g0v0lvl4i0eluk21act38.apps.googleusercontent.com";
+
+    // VERIFICACIÓN DE SEGURIDAD: Google Login no funciona en protocolo file://
+    if (window.location.protocol === 'file:') {
+        console.warn("⚠️ Google Login: No funciona abriendo el archivo directamente. Usa un servidor local (Live Server).");
+        console.warn("👉 Se mantiene el icono visual por defecto.");
+        return; // Salimos para no borrar el icono
+    }
+
+    if (clientId === "TU_CLIENT_ID_AQUI") {
+        console.warn("⚠️ Google Login: Falta configurar el Client ID. Se mantiene el icono visual.");
+        return;
+    }
+
+    // DEBUG: Muestra en la consola (F12) la URL exacta que debes autorizar
+    console.log("🌍 Google Login - Tu origen actual es:", window.location.origin);
+    console.log("👉 Copia esa URL y agrégala en 'Orígenes de JavaScript autorizados' en Google Cloud Console.");
+
+    // Limpiar el icono placeholder antes de renderizar el botón oficial
+    container.onclick = null; // Quitamos el evento manual para dejar que Google maneje el click
+    container.innerHTML = '';
+
     google.accounts.id.initialize({
-        client_id: "TU_CLIENT_ID_AQUI", // Reemplaza con tu Client ID real
+        client_id: clientId,
         callback: handleCredentialResponse
     });
     google.accounts.id.renderButton(
-        document.getElementById("google-login-container"),
+        container,
         { theme: "filled_black", size: "medium", shape: "circle", type: "icon" } 
     );
 }

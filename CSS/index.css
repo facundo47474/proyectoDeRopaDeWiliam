@@ -119,8 +119,13 @@ body {
 }
 
 /* Ocultar elementos en la Home Page */
-.home-page .nav-icons,
 .home-page .nav-filter-btn {
+    display: none !important;
+}
+
+/* En Home ocultamos buscador y carrito pero dejamos visible el contenedor (.nav-icons) para el usuario */
+.home-page .nav-search-container,
+.home-page .nav-cart-btn {
     display: none !important;
 }
 
@@ -760,4 +765,13 @@ body {
         width: 100%;
         right: -100%;
     }
+}
+
+/* Grilla de Productos (Global para reutilizar en Detalle y Catálogo) */
+.products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
 }

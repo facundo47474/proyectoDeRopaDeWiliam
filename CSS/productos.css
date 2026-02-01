@@ -40,6 +40,15 @@
     animation-play-state: paused;
 }
 
+/* Grilla estática para productos (usada en Detalle y Catálogo) */
+.products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+}
+
 /* Diseño de la Tarjeta */
 .product-card {
     background: #0a0a0a;
