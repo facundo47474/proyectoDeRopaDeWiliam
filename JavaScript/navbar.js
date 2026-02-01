@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (waIcon) {
                 const waLink = waIcon.closest('a');
                 if (waLink) {
-                    waLink.href = "https://wa.me/5493758555948";
+                    waLink.href = "https://wa.me/5493758545846";
                     waLink.target = "_blank";
                     // IMPORTANTE: Evitar que el slider 3D capture el clic y lo bloquee
                     waLink.addEventListener('mousedown', (e) => e.stopPropagation());
