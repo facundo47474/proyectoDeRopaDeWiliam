@@ -15,7 +15,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    const product = MOCK_DB.find(p => p.id === productId);
+    // Intentar obtener productos de LocalStorage (Editados), sino usar MOCK_DB
+    const storedProducts = localStorage.getItem('urbanHustlerProducts');
+    const db = storedProducts ? JSON.parse(storedProducts) : MOCK_DB;
+
+    const product = db.find(p => p.id === productId);
 
     if (!product) {
         document.getElementById('product-detail-container').innerHTML = '<h2>Producto no encontrado</h2>';
@@ -44,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 5. Inicializar lógica de productos relacionados con filtros
     // Cargamos todos los productos excepto el actual como candidatos
-    allRelatedProducts = MOCK_DB.filter(p => p.id !== product.id);
+    allRelatedProducts = db.filter(p => p.id !== product.id);
     
     // Filtro inicial: misma categoría que el producto actual
     relatedFilters.category = product.category;
@@ -180,7 +184,9 @@ window.addToCart = function (productId) {
     });
 
     // Verificar MOCK_DB
-    const db = window.MOCK_DB;
+    const storedProducts = localStorage.getItem('urbanHustlerProducts');
+    const db = storedProducts ? JSON.parse(storedProducts) : window.MOCK_DB;
+
     if (!db) {
         console.error("❌ [DETAIL] MOCK_DB no disponible");
         alert("Error: Base de datos de productos no cargada. Recarga la página (F5).");

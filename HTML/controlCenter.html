@@ -3,114 +3,593 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control | UrbanHustler AI</title>
-    <!-- Estilos Globales -->
-    <link rel="stylesheet" href="../CSS/index.css">
-    <!-- FontAwesome -->
+    <title>Panel de Control - UrbanHustler</title>
+    
+    <!-- Estilos Globales e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
+        /* Estilos específicos para el Dashboard */
         body {
-            background-color: #050505;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            background-color: #9c9c9a; /* Plateado (Silver) */
+            color: #2c3e50; /* Texto oscuro para contraste */
+            background-color: #636e72; /* Plateado Oscuro (Dark Silver) */
+            color: #ffffff; /* Texto blanco para resaltar */
         }
-        .control-container {
-            flex: 1;
+
+        .admin-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            min-height: 100vh;
+            padding-top: 100px; /* Espacio para el navbar */
+        }
+
+        .admin-sidebar {
+            width: 260px;
+            background: #000; /* Negro puro */
             padding: 2rem;
+            position: fixed;
+            height: calc(100vh - 100px);
+            left: 0;
+            top: 100px;
+            border-right: 1px solid #1a1a1a;
+            overflow-y: auto;
+        }
+
+        .admin-content {
+            flex: 1;
+            margin-left: 260px; /* Ancho del sidebar */
+            padding: 2rem 5%;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #bdc3c7; /* Gris claro */
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-nav-link:hover, .admin-nav-link.active {
+            background-color: #fff; /* Blanco */
+            color: #000; /* Texto Negro */
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-nav-link i {
+            width: 20px;
             text-align: center;
         }
-        .control-header h1 {
-            font-size: 3rem;
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #95a5a6; /* Línea divisoria más oscura */
+            border-bottom: 1px solid #b2bec3; /* Línea divisoria clara */
+            padding-bottom: 1rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            color: #000; /* Título negro */
+            color: #fff; /* Título blanco */
             text-transform: uppercase;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #fff, #888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4); /* Sombra para resaltar */
         }
-        .control-header p {
-            color: #888;
-            font-size: 1.2rem;
-            margin-bottom: 3rem;
+        
+        .dashboard-header p {
+            color: #2c3e50; /* Descripción oscura */
+            color: #dfe6e9; /* Descripción clara */
+            font-weight: 500;
         }
-        .dashboard-grid {
+
+        .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            width: 100%;
-            max-width: 1000px;
+            gap: 25px;
+            margin-bottom: 40px;
         }
-        .dashboard-card {
-            background: #111;
-            border: 1px solid #222;
+
+        .metric-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid #000; /* Acento Negro */
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .metric-info h3 {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #000;
+        }
+
+        .metric-icon {
+            font-size: 2.5rem;
+            color: #2c3e50; /* Gris plomo para el icono */
+            opacity: 0.15; /* Sutil */
+        }
+
+        .orders-table-container {
+            min-height: 200px;
+            overflow-x: auto;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .orders-table th,
+        .orders-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            color: #333; /* Texto oscuro dentro de las tablas blancas */
+        }
+
+        .orders-table th {
+            background-color: #000; /* Cabecera Negra */
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Estilos del Modal de Edición */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 5000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
             padding: 2rem;
             border-radius: 12px;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+
+        .modal-actions {
             display: flex;
-            flex-direction: column;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+
+        .btn-primary { 
+            background: #000; 
+            color: #fff; 
+            border: 1px solid #000; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.3s;
+        }
+        .btn-primary:hover { background: #333; transform: translateY(-2px); }
+        .btn-secondary { background: #ecf0f1; color: #2c3e50; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+
+        /* --- ESTILOS RESPONSIVE (MÓVIL) --- */
+        .admin-menu-toggle {
+            display: none; /* Oculto en escritorio */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2001;
+            background: #D90429;
+            color: white;
+            border: none;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 1.4rem;
+            cursor: pointer;
             align-items: center;
-            gap: 1rem;
+            justify-content: center;
+            transition: transform 0.2s;
         }
-        .dashboard-card:hover {
-            border-color: #D90429;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(217, 4, 41, 0.1);
+
+        .admin-menu-toggle:active { transform: scale(0.95); }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(2px);
         }
-        .dashboard-card i {
-            font-size: 2.5rem;
-            color: #D90429;
+        .sidebar-overlay.active { display: block; opacity: 1; }
+
+        @media (max-width: 768px) {
+            .admin-container { padding-top: 80px; display: block; }
+            
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                width: 280px;
+                height: 100vh;
+                top: 0;
+                z-index: 2000;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            }
+            .admin-sidebar.active { transform: translateX(0); }
+
+            .admin-content { margin-left: 0; padding: 1rem; width: 100%; }
+            .admin-menu-toggle { display: flex; }
+            .metrics-grid { grid-template-columns: 1fr; } /* Apilar tarjetas */
+            
+            .modal-content { width: 95%; padding: 1.5rem; margin: 10px; }
+            .dashboard-header h1 { font-size: 1.5rem; }
+            .orders-table-container { border: 1px solid #eee; }
         }
-        .dashboard-card h3 {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-        }
-        .back-btn {
-            margin-top: 3rem;
-            color: #666;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-        .back-btn:hover { color: #fff; }
     </style>
 </head>
 <body>
-    <div class="control-container">
-        <div class="control-header">
-            <h1>Centro de Comando</h1>
-            <p>Bienvenido al núcleo de UrbanHustler AI</p>
-        </div>
+    <!-- Contenedor para el Navbar (Cargado dinámicamente por navbar.js) -->
+    <div id="navbar-container"></div>
 
-        <div class="dashboard-grid">
-            <div class="dashboard-card">
-                <i class="fa-solid fa-chart-line"></i>
-                <h3>Métricas</h3>
-                <p style="color:#666; font-size:0.9rem;">Ver estadísticas de ventas</p>
-            </div>
-            <div class="dashboard-card">
-                <i class="fa-solid fa-users"></i>
-                <h3>Usuarios</h3>
-                <p style="color:#666; font-size:0.9rem;">Gestionar clientes</p>
-            </div>
-            <div class="dashboard-card">
-                <i class="fa-solid fa-box-open"></i>
-                <h3>Inventario</h3>
-                <p style="color:#666; font-size:0.9rem;">Control de stock</p>
-            </div>
-            <div class="dashboard-card">
-                <i class="fa-solid fa-robot"></i>
-                <h3>Configurar IA</h3>
-                <p style="color:#666; font-size:0.9rem;">Ajustar respuestas</p>
-            </div>
-        </div>
+    <div class="admin-container">
+        <!-- Sidebar de Navegación -->
+        <aside class="admin-sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#" class="admin-nav-link active" data-target="view-metrics">
+                        <i class="fa-solid fa-chart-line"></i> Métricas
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="admin-nav-link" data-target="view-products">
+                        <i class="fa-solid fa-box"></i> Productos
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="admin-nav-link" data-target="view-latest-drops">
+                        <i class="fa-solid fa-fire"></i> Latest Drops
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="admin-nav-link" data-target="view-users">
+                        <i class="fa-solid fa-users"></i> Usuarios
+                    </a>
+                </li>
+                <li style="margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                    <a href="index.html" class="admin-nav-link">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Tienda
+                    </a>
+                </li>
+            </ul>
+        </aside>
 
-        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Volver al sitio principal</a>
+        <!-- Contenido Principal -->
+        <main class="admin-content">
+            <!-- VISTA: MÉTRICAS (Dashboard Principal) -->
+            <div id="view-metrics" class="admin-view">
+                <div class="dashboard-header">
+                    <h1>Panel de Control</h1>
+                    <p>Métricas en tiempo real y gestión administrativa.</p>
+                </div>
+
+                <!-- Grid de Métricas -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Ventas</h3>
+                            <div class="metric-value" id="metric-revenue">$0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Pedidos</h3>
+                            <div class="metric-value" id="metric-orders">0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Productos</h3>
+                            <div class="metric-value" id="metric-visitors">0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-shirt"></i></div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Consultas IA</h3>
+                            <div class="metric-value" id="metric-chatbot">0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-robot"></i></div>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Ventas -->
+                <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; color: #333; font-size: 1.1rem;">Ingresos por Categoría</h3>
+                        <select id="chart-filter" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; background: #f9f9f9; cursor: pointer;">
+                            <option value="all">Histórico Completo</option>
+                            <option value="7days">Últimos 7 días</option>
+                            <option value="30days">Últimos 30 días</option>
+                        </select>
+                    </div>
+                    <canvas id="salesChart" style="max-height: 400px;"></canvas>
+                </div>
+
+                <!-- Tabla de Últimas Órdenes -->
+                <h2>Últimas Órdenes</h2>
+                <div class="orders-table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Total</th>
+                                <th>Cant.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="latest-orders-body">
+                            <!-- Aquí se insertarán las filas de la tabla -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VISTA: PRODUCTOS (Gestión Real) -->
+            <div id="view-products" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <h1>Gestión de Productos</h1>
+                    <p>Administra el inventario de la tienda.</p>
+                </div>
+                
+                <div style="margin-bottom: 1rem; text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button class="btn-secondary" id="btn-manage-categories"><i class="fa-solid fa-tags"></i> Categorías</button>
+                    <button class="btn-primary" id="btn-add-product"><i class="fa-solid fa-plus"></i> Nuevo Producto</button>
+                </div>
+
+                <div class="orders-table-container" style="background: #fff; padding: 20px; border-radius: 12px;">
+                    <table class="orders-table" id="products-table">
+                        <thead>
+                            <tr>
+                                <th>Img</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Talles</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            <!-- Se llena con JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VISTA: LATEST DROPS (NUEVA SECCIÓN) -->
+            <div id="view-latest-drops" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <h1>Latest Drops</h1>
+                    <p>Gestiona los lanzamientos destacados en la Home.</p>
+                </div>
+                
+                <div style="margin-bottom: 1rem; text-align: right;">
+                    <button class="btn-primary" id="btn-add-drop"><i class="fa-solid fa-plus"></i> Nuevo Drop</button>
+                </div>
+
+                <div class="orders-table-container" style="background: #fff; padding: 20px; border-radius: 12px;">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Img</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Categoría</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="latest-drops-table-body">
+                            <!-- Se llena con JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VISTA: USUARIOS (Placeholder) -->
+            <div id="view-users" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <h1>Usuarios</h1>
+                    <p>Gestión de clientes y administradores.</p>
+                </div>
+                
+                <div class="orders-table-container" style="background: #fff; padding: 20px; border-radius: 12px;">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Origen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Se llena con JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
+
+    <!-- Modal de Edición de Producto -->
+    <div class="modal-overlay" id="edit-product-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem;">Editar Producto</h2>
+            <form id="edit-product-form">
+                <input type="hidden" id="edit-id">
+                
+                <div class="form-group">
+                    <label>Sección</label>
+                    <select id="edit-section">
+                        <option value="ropa">Ropa (General)</option>
+                        <option value="new_drops">New Drops</option>
+                        <option value="combos">Combos</option>
+                        <option value="ofertas">Ofertas</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Precio ($)</label>
+                    <input type="number" id="edit-price" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="edit-category">
+                        <option value="hoodie">Hoodie</option>
+                        <option value="pants">Pantalones</option>
+                        <option value="tshirt">Remeras</option>
+                        <option value="accessories">Accesorios</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Género</label>
+                    <select id="edit-gender">
+                        <option value="unisex">Unisex</option>
+                        <option value="men">Hombre</option>
+                        <option value="women">Mujer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Talles (separados por coma)</label>
+                    <input type="text" id="edit-sizes" placeholder="S, M, L, XL">
+                </div>
+
+                <div class="form-group">
+                    <label>URL Imagen Principal</label>
+                    <input type="text" id="edit-image">
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="edit-description" rows="3"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-edit">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Gestión de Categorías -->
+    <div class="modal-overlay" id="manage-categories-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem;">Gestionar Categorías</h2>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
+                <input type="text" id="new-category-input" placeholder="Nueva categoría..." style="flex: 1;">
+                <button class="btn-primary" id="btn-add-category">Agregar</button>
+            </div>
+
+            <ul id="categories-list" style="list-style: none; padding: 0; max-height: 300px; overflow-y: auto; margin-bottom: 1.5rem;">
+                <!-- Se llena con JS -->
+            </ul>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="close-categories-modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../JavaScript/navbar.js"></script>
+    <script src="../JavaScript/data.js"></script> <!-- Importante: Datos iniciales -->
+    <!-- VINCULACIÓN SOLICITADA: Lógica del Panel de Control -->
+    <script src="../JavaScript/controlCenter.js"></script>
 </body>
 </html>

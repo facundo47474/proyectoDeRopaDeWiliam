@@ -29,11 +29,138 @@ class UIComponentLoader {
 }
 
 function setupNavigation() {
+    // --- LÓGICA ESPECÍFICA PARA PANEL DE CONTROL ---
+    if (window.location.pathname.includes('controlCenter.html')) {
+        const navList = document.querySelector('.nav-links');
+        const navIcons = document.querySelector('.nav-icons');
+
+        // 1. Reemplazar enlaces de tienda por enlaces de administración
+        if (navList) {
+            navList.innerHTML = ''; // Limpiar menú estándar
+            
+            const adminLinks = [
+                { text: 'Métricas', target: 'view-metrics', icon: 'fa-chart-line' },
+                { text: 'Productos', target: 'view-products', icon: 'fa-box' },
+                { text: 'Latest Drops', target: 'view-latest-drops', icon: 'fa-fire' },
+                { text: 'Usuarios', target: 'view-users', icon: 'fa-users' },
+                { text: 'Volver a Tienda', href: 'index.html', icon: 'fa-arrow-left' }
+            ];
+
+            adminLinks.forEach(link => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.innerHTML = `<i class="fa-solid ${link.icon}"></i> ${link.text}`;
+                a.className = 'admin-nav-link'; // Clase para que controlCenter.js lo detecte
+                if (link.target) a.setAttribute('data-target', link.target);
+                if (link.href) a.href = link.href;
+                else a.href = '#';
+                
+                li.appendChild(a);
+                navList.appendChild(li);
+            });
+        }
+
+        // 2. Ocultar iconos innecesarios (Carrito, Buscador, Login) en el panel
+        if (navIcons) navIcons.style.display = 'none';
+
+        // 3. Centralizar y limpiar el layout del Panel (Responsive Fix)
+        const navbar = document.querySelector('.navbar');
+        
+        if (navbar) {
+            // Inyectar estilos CSS dinámicos para manejar media queries correctamente
+            const styleId = 'admin-navbar-styles';
+            if (!document.getElementById(styleId)) {
+                const style = document.createElement('style');
+                style.id = styleId;
+                style.innerHTML = `
+                    .navbar.admin-mode {
+                        justify-content: center;
+                        background: #000 !important; /* Fondo negro sólido */
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    }
+                    .navbar.admin-mode .logo,
+                    .navbar.admin-mode .nav-icons,
+                    .navbar.admin-mode .nav-filter-btn {
+                        display: none !important;
+                    }
+                    .navbar.admin-mode .nav-links {
+                        margin: 0;
+                        gap: 40px;
+                        width: auto;
+                    }
+                    .navbar.admin-mode .nav-links li a {
+                        color: #fff;
+                        font-weight: 600;
+                        letter-spacing: 1px;
+                        font-size: 0.95rem;
+                    }
+                    .navbar.admin-mode .nav-links li a:hover { color: #bdc3c7; }
+                    @media (max-width: 768px) {
+                        .navbar.admin-mode {
+                            justify-content: flex-end !important;
+                            padding: 15px 20px;
+                            height: 70px;
+                        }
+                        .navbar.admin-mode .menu-toggle {
+                            display: block;
+                            font-size: 2rem;
+                            margin: 0;
+                        }
+                        .navbar.admin-mode .nav-links {
+                            gap: 0;
+                            padding-top: 60px;
+                        }
+                        .navbar.admin-mode .nav-links li {
+                            margin: 25px 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            navbar.classList.add('admin-mode');
+        }
+    }
+    // -----------------------------------------------------------
+
+    // --- MODIFICACIÓN ESTRUCTURAL DEL NAVBAR (DOM Patching) ---
+    const navList = document.querySelector('.nav-links');
+    const oldNavMen = document.getElementById('nav-men');
+    const oldNavWomen = document.getElementById('nav-women');
+    const oldNavCollection = document.getElementById('nav-collection');
+
+    // 1. Eliminar Hombre y Mujer
+    if (oldNavMen && oldNavMen.parentElement) oldNavMen.parentElement.remove();
+    if (oldNavWomen && oldNavWomen.parentElement) oldNavWomen.parentElement.remove();
+
+    // 2. Agregar "New Drops" (si no existe)
+    if (navList && !document.getElementById('nav-new-drops') && !window.location.pathname.includes('controlCenter.html')) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.id = 'nav-new-drops';
+        a.textContent = 'New Drops';
+        a.href = 'index.html#productos-container'; // Link a la sección Latest Drops
+        li.appendChild(a);
+        
+        // Insertar después de Home
+        const navHomeRef = document.getElementById('nav-home');
+        if (navHomeRef && navHomeRef.parentElement) {
+            navHomeRef.parentElement.after(li);
+        } else {
+            navList.prepend(li);
+        }
+    }
+
+    // 3. Transformar Colección en Combos
+    if (oldNavCollection) {
+        oldNavCollection.id = 'nav-combos';
+        oldNavCollection.textContent = 'Combos';
+    }
+    // -----------------------------------------------------------
+
     const navHome = document.getElementById('nav-home');
-    const navMen = document.getElementById('nav-men');
-    const navWomen = document.getElementById('nav-women');
+    const navNewDrops = document.getElementById('nav-new-drops');
     const navOffers = document.getElementById('nav-offers');
-    const navCollection = document.getElementById('nav-collection');
+    const navCombos = document.getElementById('nav-combos');
 
     // --- LÓGICA DE RECUPERACIÓN DEL LOGO ---
     const logo = document.querySelector('.logo');
@@ -136,19 +263,16 @@ function setupNavigation() {
             window.history.pushState({}, '', url);
         };
 
-        if (navMen) navMen.addEventListener('click', (e) => applyNavFilter(e, 'gender', 'men'));
-        if (navWomen) navWomen.addEventListener('click', (e) => applyNavFilter(e, 'gender', 'women'));
-        if (navOffers) navOffers.addEventListener('click', (e) => applyNavFilter(e, 'maxPrice', 30000));
-        if (navCollection) navCollection.addEventListener('click', (e) => {
-            applyNavFilter(e, 'category', 'all'); // Resetear filtros
+        if (navOffers) navOffers.addEventListener('click', (e) => applyNavFilter(e, 'isOffer', 'true'));
+        if (navCombos) navCombos.addEventListener('click', (e) => {
+            applyNavFilter(e, 'category', 'combos'); // Filtrar por combos
         });
     } else {
         // Lógica por defecto (Home, Detalle, etc.)
         // Configurar enlaces para redirigir al catálogo con parámetros
-        if (navMen) navMen.href = "catalogo.html?gender=men";
-        if (navWomen) navWomen.href = "catalogo.html?gender=women";
-        if (navOffers) navOffers.href = "catalogo.html?maxPrice=30000";
-        if (navCollection) navCollection.href = "catalogo.html";
+        if (navNewDrops) navNewDrops.href = "index.html#productos-container";
+        if (navOffers) navOffers.href = "catalogo.html?isOffer=true";
+        if (navCombos) navCombos.href = "catalogo.html?category=combos";
 
         // Caso específico Home: Cambiar texto de Inicio
         if (isHome && navHome) {
@@ -213,6 +337,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Cargar Sección de Productos
     if (document.getElementById('productos-container')) {
         await UIComponentLoader.loadComponent('productos-container', 'productos.html');
+        
+        // Renderizar productos dinámicos (Latest Drops) desde la base de datos
+        renderLatestDrops();
+
         if (typeof initProductos === 'function') {
             initProductos();
         }
@@ -237,8 +365,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Cargar Sección de Footer
     await UIComponentLoader.loadComponent('footer-container', 'footer.html');
 
-    // Cargar Chatbot Globalmente (Asegura que aparezca en todas las páginas)
-    loadChatbotGlobal();
+    // Cargar Chatbot Globalmente (EXCEPTO en el Panel de Control)
+    if (!window.location.pathname.includes('controlCenter.html')) {
+        loadChatbotGlobal();
+    }
 });
 
 /* ==========================================
@@ -351,6 +481,24 @@ function handleCredentialResponse(response) {
     localStorage.setItem('user_token', response.credential);
     localStorage.setItem('user_info', JSON.stringify(responsePayload));
     
+    // Guardar usuario en localStorage para el panel de control
+    const users = JSON.parse(localStorage.getItem('urbanHustlerUsers')) || [];
+    const existingIndex = users.findIndex(u => u.email === responsePayload.email);
+    
+    const userData = {
+        email: responsePayload.email,
+        name: responsePayload.name,
+        source: 'google',
+        date: new Date().toISOString()
+    };
+
+    if (existingIndex > -1) {
+        users[existingIndex] = { ...users[existingIndex], ...userData };
+    } else {
+        users.push(userData);
+    }
+    localStorage.setItem('urbanHustlerUsers', JSON.stringify(users));
+
     // Mensajes personalizados por usuario (Admin / Creador)
     if (responsePayload.email === 'gimenez.william07@gmail.com') {
         sessionStorage.setItem('login_greeting', "<strong style='font-size:1.1em; color:#fff;'>Hola Wiliam</strong><br><span style='color:#ccc;'>Soy tu asistente inteligente.</span><br><span style='color:#D90429; font-weight:600; display:block; margin-top:5px;'>Tienes total acceso a mi panel de control.</span><a href='controlCenter.html' class='chatbot-action-btn'>Ir al Panel de Control <i class='fa-solid fa-arrow-right'></i></a>");
@@ -398,4 +546,51 @@ function loadChatbotGlobal() {
         script.src = '../JavaScript/chatbot.js';
         document.body.appendChild(script);
     }
+}
+
+function renderLatestDrops() {
+    const slider = document.querySelector('.products-slider');
+    if (!slider) return;
+
+    // Obtener productos (LocalStorage o MOCK_DB)
+    const storedProducts = localStorage.getItem('urbanHustlerProducts');
+    const allProducts = storedProducts ? JSON.parse(storedProducts) : (window.MOCK_DB || []);
+
+    // Filtrar SOLO los que tienen la marca isLatestDrop
+    let products = allProducts.filter(p => p.isLatestDrop === true);
+
+    // Fallback: Si no hay ningún Drop configurado, mostrar los últimos 5 agregados
+    if (products.length === 0) {
+        products = [...allProducts].reverse().slice(0, 5);
+    } else {
+        // Si hay drops, los mostramos en orden inverso (los últimos creados primero)
+        products = products.reverse();
+    }
+
+    if (products.length === 0) return;
+
+    // Generar HTML de las cards usando los datos reales
+    const cardsHTML = products.map(product => `
+        <div class="product-card">
+            <div class="card-image">
+                <img src="${product.image}" alt="${product.name}">
+                <div class="card-actions">
+                    <button class="btn-shop" onclick="window.location.href='detailProduct.html?id=${product.id}'">Lo Quiero 🔥</button>
+                </div>
+            </div>
+            <div class="card-details">
+                <div class="card-header">
+                    <h3>${product.name}</h3>
+                    <span class="price">$${product.price.toLocaleString()}</span>
+                </div>
+                <p class="card-desc">${product.description || 'Estilo urbano de alta calidad.'}</p>
+                <div class="tags">
+                    <span>${(product.category || 'Varios').toUpperCase()}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    // Duplicar contenido para el efecto de scroll infinito (marquee CSS)
+    slider.innerHTML = cardsHTML + cardsHTML;
 }

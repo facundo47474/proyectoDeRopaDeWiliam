@@ -5,6 +5,13 @@
 class ProductService {
     async fetchProducts() {
         return new Promise(resolve => {
+            // 1. Intentar cargar desde LocalStorage (Datos editados por Admin)
+            const storedProducts = localStorage.getItem('urbanHustlerProducts');
+            if (storedProducts) {
+                resolve(JSON.parse(storedProducts));
+                return;
+            }
+
             // Verificamos que MOCK_DB exista para evitar errores
             if (typeof MOCK_DB === 'undefined') {
                 console.error("Error: MOCK_DB no está definido. Asegúrate de cargar data.js");
@@ -26,7 +33,8 @@ class ProductModel {
             category: 'all',
             gender: 'all',
             maxPrice: 100000,
-            searchTerm: ''
+            searchTerm: '',
+            isOffer: false
         };
     }
 
@@ -47,7 +55,8 @@ class ProductModel {
             const priceMatch = product.price <= this.filters.maxPrice;
             const term = this.filters.searchTerm.toLowerCase();
             const searchMatch = product.name.toLowerCase().includes(term);
-            return catMatch && genderMatch && priceMatch && searchMatch;
+            const offerMatch = !this.filters.isOffer || product.isOffer === true;
+            return catMatch && genderMatch && priceMatch && searchMatch && offerMatch;
         });
     }
 }
@@ -87,7 +96,7 @@ class ProductView {
                     <p class="card-desc">Estilo urbano de alta calidad. Edición limitada.</p>
                     <div class="tags">
                         <span>${product.category.toUpperCase()}</span>
-                        <span>NUEVO</span>
+                        ${product.isOffer ? '<span style="background: #D90429; color: #fff; border: none;">OFERTA</span>' : ''}
                     </div>
                 </div>
             `;
@@ -183,6 +192,9 @@ class ProductController {
         }
         if (params.has('maxPrice')) {
             this.model.updateFilter('maxPrice', parseInt(params.get('maxPrice')));
+        }
+        if (params.has('isOffer')) {
+            this.model.updateFilter('isOffer', params.get('isOffer') === 'true');
         }
 
         // 3. Render inicial

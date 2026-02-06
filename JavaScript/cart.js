@@ -116,11 +116,32 @@ class CartManager {
             return;
         }
 
+        // Registrar orden para métricas del panel de control
+        this.recordOrder();
+
         alert("¡Compra procesada con éxito! Gracias por elegir UrbanHustler.");
         this.cart = [];
         this.saveCart();
         this.renderCart();
         this.closeCart();
+    }
+
+    recordOrder() {
+        const orders = JSON.parse(localStorage.getItem('urbanHustlerOrders')) || [];
+        const userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
+        
+        const newOrder = {
+            id: Date.now(),
+            date: new Date().toISOString(),
+            total: this.calculateTotal(),
+            itemsCount: this.cart.reduce((acc, item) => acc + item.quantity, 0),
+            items: [...this.cart],
+            customer: userInfo.name || 'Cliente',
+            email: userInfo.email || 'Anónimo'
+        };
+
+        orders.push(newOrder);
+        localStorage.setItem('urbanHustlerOrders', JSON.stringify(orders));
     }
 
     openCart() {
@@ -148,6 +169,7 @@ class CartManager {
                 name: product.name,
                 price: product.price,
                 image: product.image, // Asegúrate de que el objeto producto tenga esta propiedad
+                category: product.category || 'Varios',
                 size: size,
                 quantity: quantity
             });
