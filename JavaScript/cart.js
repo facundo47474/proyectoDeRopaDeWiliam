@@ -72,6 +72,20 @@ class CartManager {
     injectCartHTML() {
         const cartHTML = `
             <div class="cart-overlay"></div>
+            <!-- Overlay de Compra en Proceso -->
+            <div class="checkout-overlay">
+                <div class="checkout-content">
+                    <div class="checkout-logo">
+                        <!-- Agregamos onerror para manejar si la imagen no carga -->
+                        <img src="img.jpeg/logo.jpeg" alt="UrbanHustler" onerror="this.src='https://via.placeholder.com/150/000000/FFFFFF/?text=UH'">
+                    </div>
+                    <h2 class="checkout-text">Compra en Proceso...</h2>
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                </div>
+            </div>
             <div class="cart-drawer">
                 <div class="cart-header">
                     <h3>Tu Carrito</h3>
@@ -116,14 +130,39 @@ class CartManager {
             return;
         }
 
-        // Registrar orden para métricas del panel de control
-        this.recordOrder();
+        // 1. Mostrar Overlay de Animación
+        const overlay = document.querySelector('.checkout-overlay');
+        if (overlay) overlay.classList.add('active');
 
-        alert("¡Compra procesada con éxito! Gracias por elegir UrbanHustler.");
-        this.cart = [];
-        this.saveCart();
-        this.renderCart();
-        this.closeCart();
+        // 2. Esperar 2 segundos antes de procesar
+        setTimeout(() => {
+            // Registrar orden para métricas del panel de control
+            this.recordOrder();
+
+            // Construir mensaje de WhatsApp
+            let message = "Hola UrbanHustler! 👋 Quiero realizar el siguiente pedido:\n\n";
+            
+            this.cart.forEach(item => {
+                message += `▪️ ${item.name} (Talle: ${item.size}) x${item.quantity}\n`;
+            });
+
+            const total = this.calculateTotal().toLocaleString();
+            message += `\n💰 *Total Estimado: $${total}*`;
+            message += `\n\nQuedo a la espera para coordinar el pago y envío. Gracias!`;
+
+            const phoneNumber = "5493758555948";
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            window.open(url, '_blank');
+
+            this.cart = [];
+            this.saveCart();
+            this.renderCart();
+            this.closeCart();
+
+            // Ocultar overlay
+            if (overlay) overlay.classList.remove('active');
+        }, 2000);
     }
 
     recordOrder() {

@@ -1,8 +1,8 @@
 /* Estilos para la sección de Productos */
 .productos-section {
-    background-color: #050505;
+    background-color: #1A1A1A;
     padding: 6rem 5%;
-    color: #fff;
+    color: #E6E6E6;
     position: relative;
 }
 
@@ -13,10 +13,15 @@
     margin-bottom: 4rem;
     letter-spacing: 2px;
     font-weight: 800;
+    /* Aplicamos el efecto Split aquí */
+    background: linear-gradient(90deg, #E6E6E6 45%, #8C8C8C 55%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 5px rgba(140, 140, 140, 0.3));
 }
 
 .section-title .highlight {
-    color: #D90429;
+    color: inherit; /* Hereda el gradiente */
     font-style: italic;
 }
 
@@ -57,16 +62,25 @@
 
 /* Diseño de la Tarjeta */
 .product-card {
-    background: #0a0a0a;
+    background: #333333;
     border-radius: 4px;
     overflow: hidden;
     position: relative;
     transition: all 0.3s ease-out;
-    border: 1px solid #222;
+    border: 1px solid #8C8C8C;
     min-width: 280px; /* Tamaño promedio */
     width: 280px;
     height: 480px;
     flex-shrink: 0; /* Evita que se encojan */
+    /* Animación de entrada inicial */
+    animation: fadeUpCard 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; /* Efecto elástico */
+    opacity: 0;
+    will-change: transform, opacity; /* Optimización de rendimiento */
+}
+
+@keyframes fadeUpCard {
+    from { opacity: 0; transform: translateY(60px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @media (max-width: 600px) {
@@ -86,9 +100,9 @@ body.light-mode .product-card {
 
 /* Efecto Hover en la Tarjeta */
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(217, 4, 41, 0.1);
-    border-color: #D90429;
+    /* Transform y Shadow ahora son manejados por JS para el efecto 3D */
+    border-color: #E6E6E6;
+    z-index: 10;
 }
 
 .card-image {
@@ -129,22 +143,34 @@ body.light-mode .product-card {
 
 .btn-shop {
     padding: 12px 30px;
-    background: #D90429;
-    color: white;
-    border: none;
+    background: #1A1A1A;
+    color: #E6E6E6;
+    border: 1px solid #8C8C8C;
     border-radius: 4px;
     text-transform: uppercase;
     font-weight: bold;
     cursor: pointer;
     font-size: 0.9rem;
     letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(217, 4, 41, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     transition: background 0.3s;
 }
 
 .btn-shop:hover {
-    background: #fff;
-    color: #D90429;
+    background: #8C8C8C;
+    color: #1A1A1A;
+}
+
+/* Animación de pulsación al hacer click */
+.btn-shop.btn-clicked {
+    animation: clickPulse 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    pointer-events: none; /* Evita doble clic */
+}
+
+@keyframes clickPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.9); background-color: #E6E6E6; color: #1A1A1A; box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
+    100% { transform: scale(1); background-color: #E6E6E6; color: #1A1A1A; }
 }
 
 .card-details {
@@ -197,13 +223,13 @@ body.light-mode .card-desc {
 
 .tags span {
     font-size: 0.75rem;
-    background: #222;
+    background: #1A1A1A;
     padding: 4px 10px;
     border-radius: 4px;
-    color: #fff;
+    color: #8C8C8C;
     text-transform: uppercase;
     font-weight: 600;
-    border: 1px solid #333;
+    border: 1px solid #8C8C8C;
 }
 
 body.light-mode .tags span {

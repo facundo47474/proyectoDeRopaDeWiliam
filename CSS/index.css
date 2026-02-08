@@ -2,12 +2,35 @@
 
 :root {
     /* Variables para escalabilidad y consistencia del tema */
-    --bg-body: #f4f4f4;
-    --bg-navbar: #111;
-    --text-light: #fff;
-    --text-muted: #bbb;
+    --bg-body: #1A1A1A; /* Negro Carbono */
+    --bg-navbar: #1A1A1A;
+    --text-light: #E6E6E6; /* Blanco Gélido */
+    --text-muted: #8C8C8C; /* Gris Cemento */
+    --bg-card: #333333; /* Antracita */
     --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --spacing-standard: 1rem;
+}
+
+/* --- ANIMACIONES GLOBALES (SCROLL REVEAL) --- */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); /* Efecto suave */
+}
+
+.reveal-up.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- EFECTO TEXTO "SPLIT" (Mitad y Mitad) --- */
+.split-text-gradient {
+    /* Gradiente duro: 50% un color, 50% el otro */
+    background: linear-gradient(90deg, #E6E6E6 0%, #E6E6E6 50%, #8C8C8C 50%, #8C8C8C 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px rgba(230, 230, 230, 0.15)); /* Glow para intensidad */
 }
 
 * {
@@ -24,20 +47,90 @@ body {
 
 /* Estilos del Navbar */
 .navbar {
-    display: flex;
-    align-items: center;
-    background-color: transparent;
-    /* Transparente para superponerse */
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
-    /* Degradado para legibilidad */
-    padding: var(--spacing-standard) 5%;
-    color: var(--text-light);
-    position: absolute;
-    /* Superpuesto sobre el contenido */
-    width: 100%;
+    /* --- NOTCH STYLE (Diseño tipo iPhone/Mac) --- */
+    position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    margin: 0 auto; /* Centrado absoluto */
+    width: 160px; /* Ancho inicial del notch (colapsado) */
+    height: 30px; /* Alto inicial del notch (colapsado) */
+    background-color: var(--bg-navbar);
+    border-radius: 0 0 20px 20px; /* Bordes redondeados abajo */
+    border: 1px solid #333;
+    border-top: none;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.8);
     z-index: 1000;
+    overflow: hidden; /* Oculta el contenido del menú */
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Animación de rebote premium */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.navbar.expanded {
+    width: 95%; /* Se expande casi al ancho total */
+    max-width: 1400px;
+    height: 80px; /* Altura completa */
+    padding: 0 2rem;
+    justify-content: space-between;
+    border-radius: 0 0 30px 30px;
+    background: rgba(26, 26, 26, 0.95); /* Fondo semi-transparente */
+    backdrop-filter: blur(10px);
+    overflow: visible; /* Permitir que dropdowns (como búsqueda móvil) se vean */
+}
+
+/* Ocultar elementos (Logo, Links) cuando está colapsado */
+.navbar > *:not(.nav-notch-toggle) {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.navbar.expanded > *:not(.nav-notch-toggle) {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+    transition-delay: 0.2s; /* Aparecen después de que el notch baja */
+}
+
+/* Flecha del Notch (Botón de despliegue) */
+.nav-notch-toggle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1rem;
+    transition: all 0.4s ease;
+    z-index: 1002;
+    background: transparent;
+}
+
+.nav-notch-toggle:hover {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.nav-notch-toggle i {
+    transition: transform 0.4s ease;
+}
+
+.navbar.expanded .nav-notch-toggle {
+    height: 20px;
+    bottom: 0;
+}
+
+/* Rotar flecha al expandir */
+.navbar.expanded .nav-notch-toggle i {
+    transform: rotate(180deg);
 }
 
 .logo {
@@ -99,8 +192,12 @@ body {
 
 @media (max-width: 768px) {
     .navbar {
-        justify-content: space-between;
-        padding: 0.8rem 1rem; /* Padding optimizado para pantallas 6.1" */
+        /* En móvil mantenemos el notch centrado al inicio */
+    }
+    .navbar.expanded {
+        width: 100%; /* En móvil ocupa todo el ancho al abrir */
+        border-radius: 0 0 20px 20px;
+        padding: 0 1rem;
     }
 
     .logo {
@@ -170,7 +267,9 @@ body {
         background: #000; /* Fondo sólido para legibilidad */
         backdrop-filter: blur(10px);
         flex-direction: column;
-        justify-content: center; /* Centrado vertical */
+        justify-content: flex-start; /* Cambiado para permitir scroll si es necesario */
+        padding-top: 100px; /* Espacio para el notch */
+        overflow-y: auto; /* Scroll si el menú es muy alto */
         align-items: center;
         transition: right 0.4s ease;
         z-index: 1000;
@@ -201,7 +300,7 @@ body {
 }
 
 .nav-filter-btn:hover {
-    color: #D90429;
+    color: #8C8C8C;
 }
 
 /* Botón de búsqueda móvil (Lupa) */
@@ -256,7 +355,22 @@ body {
     height: 100vh;
     /* Ocupa toda la altura de la ventana */
     overflow: hidden;
-    background-color: #000;
+    background-color: var(--bg-body);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    border-bottom: 1px solid #333333;
+}
+
+/* Gradiente de integración (Fade) */
+.carousel::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to top, #1A1A1A 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 2;
 }
 
 .carousel-track {
@@ -284,28 +398,50 @@ body {
     height: 100%;
     object-fit: cover;
     /* Asegura que la imagen cubra todo sin deformarse */
-    filter: brightness(0.7);
-    /* Oscurece la imagen para resaltar texto y navbar */
+    filter: brightness(0.7) contrast(1.1) saturate(0.8);
+    transition: transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel:hover .slide img {
+    filter: brightness(0.9) contrast(1.1) saturate(1);
+}
+
+.slide.active img {
+    transform: scale(1.1);
 }
 
 .slide-content {
     position: absolute;
     top: 50%;
-    left: 10%;
+    left: 0;
+    width: 100%;
+    text-align: center;
     transform: translateY(-50%);
     color: #fff;
     z-index: 10;
 }
 
 .slide-content h2 {
-    font-size: 4rem;
+    font-size: 6vw;
+    font-weight: 900;
+    color: #E6E6E6;
     text-transform: uppercase;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    text-shadow: 0 20px 60px rgba(0,0,0,0.9);
+    opacity: 0;
+    animation: revealText 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.3s;
     margin-bottom: 1rem;
+}
+
+@keyframes revealText {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @media (max-width: 768px) {
     .slide-content h2 {
-        font-size: 2.5rem; /* Ajuste para móviles */
+        font-size: 3rem; /* Ajuste para móviles */
     }
 }
 
@@ -350,7 +486,7 @@ body {
 
 /* Estilos de la sección Social Media */
 .social-3d-container {
-    background-color: #000;
+    background-color: var(--bg-body);
     /* Fondo negro profundo para resaltar el 3D */
     height: 450px;
     /* Altura reducida para ser más sutil */
@@ -465,9 +601,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(20, 20, 20, 0.6);
+    background: #333333;
     /* Fondo más oscuro para contraste */
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid #8C8C8C;
     border-radius: 15px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
@@ -642,9 +778,9 @@ body {
 }
 
 .social-sound-toggle:hover {
-    background: #D90429;
+    background: #8C8C8C;
     transform: scale(1.1);
-    border-color: #D90429;
+    border-color: #8C8C8C;
 }
 
 /* ===========================
@@ -675,7 +811,7 @@ body {
     right: -500px;
     width: 450px;
     height: 100vh;
-    background: #050505; /* Fondo casi negro premium */
+    background: #1A1A1A; /* Fondo casi negro premium */
     z-index: 3000;
     transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1); /* Easing suave */
     display: flex;
@@ -694,7 +830,7 @@ body {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #1a1a1a;
-    background: #0a0a0a;
+    background: #1A1A1A;
 }
 
 .cart-header h3 {
@@ -740,7 +876,7 @@ body {
     width: 6px;
 }
 .cart-items-container::-webkit-scrollbar-track {
-    background: #050505;
+    background: #1A1A1A;
 }
 .cart-items-container::-webkit-scrollbar-thumb {
     background: #333;
@@ -763,7 +899,7 @@ body {
     grid-template-columns: 90px 1fr 30px;
     gap: 20px;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid #333333;
     position: relative;
     animation: fadeIn 0.3s ease-out;
 }
@@ -796,7 +932,7 @@ body {
 }
 
 .cart-item-meta {
-    color: #888;
+    color: #8C8C8C;
     font-size: 0.85rem;
     margin-top: 5px;
 }
@@ -805,11 +941,11 @@ body {
     display: flex;
     align-items: center;
     gap: 0;
-    border: 1px solid #333;
+    border: 1px solid #8C8C8C;
     width: fit-content;
     border-radius: 4px;
     margin-top: 10px;
-    background: #000;
+    background: #333333;
 }
 
 .btn-qty {
@@ -850,13 +986,14 @@ body {
 }
 
 .btn-remove:hover {
-    color: #D90429;
+    color: #8C8C8C;
 }
 
 .cart-footer {
     padding: 2rem;
-    background: #0a0a0a;
+    background: #1A1A1A;
     border-top: 1px solid #1a1a1a;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom)); /* Respetar barra de inicio en iPhone */
 }
 
 .cart-total {
@@ -867,7 +1004,7 @@ body {
 }
 
 .cart-total span:first-child {
-    color: #888;
+    color: #8C8C8C;
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -883,9 +1020,9 @@ body {
 .btn-checkout {
     width: 100%;
     padding: 18px;
-    background: #D90429;
-    color: #fff;
-    border: none;
+    background: #333333;
+    color: #E6E6E6;
+    border: 1px solid #8C8C8C;
     font-weight: 800;
     text-transform: uppercase;
     font-size: 1rem;
@@ -897,16 +1034,16 @@ body {
 }
 
 .btn-checkout:hover {
-    background: #fff;
-    color: #D90429;
-    box-shadow: 0 0 20px rgba(217, 4, 41, 0.4);
+    background: #8C8C8C;
+    color: #1A1A1A;
+    box-shadow: 0 0 20px rgba(140, 140, 140, 0.4);
 }
 
 .cart-count-badge {
     position: absolute;
     top: -8px;
     right: -12px;
-    background: #D90429;
+    background: #8C8C8C;
     color: #fff;
     font-size: 0.7rem;
     font-weight: bold;
@@ -925,8 +1062,8 @@ body {
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: #D90429;
-    color: white;
+    background: #333333;
+    color: #E6E6E6;
     padding: 12px 24px;
     border-radius: 50px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -1034,4 +1171,151 @@ body {
         bottom: 90px;
         right: 5vw;
     }
+}
+
+/* ===========================
+   ANIMACIÓN DE CHECKOUT (Overlay)
+   =========================== */
+.checkout-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.85); /* Fondo oscuro semitransparente */
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px); /* Efecto Glassmorphism intenso */
+}
+
+.checkout-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.checkout-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto elástico */
+}
+
+.checkout-overlay.active .checkout-content {
+    transform: translateY(0) scale(1);
+}
+
+.checkout-logo {
+    width: 140px; /* Más grande */
+    height: 140px;
+    border-radius: 50%;
+    margin-bottom: 30px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    background: #1A1A1A; /* Fondo un poco más claro que negro puro */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px; /* Espacio para que la imagen no toque el borde */
+}
+
+/* Anillo de carga giratorio alrededor del logo */
+.checkout-logo::before {
+    content: '';
+    position: absolute;
+    top: -5px; left: -5px; right: -5px; bottom: -5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #D90429; /* Rojo marca */
+    border-right-color: #8C8C8C; /* Gris */
+    animation: spinRing 1.5s linear infinite;
+    box-shadow: 0 0 20px rgba(217, 4, 41, 0.3);
+}
+
+@keyframes spinRing {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.checkout-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #333; /* Borde interno sutil */
+}
+
+@media (max-width: 768px) {
+    .checkout-logo {
+        width: 100px; /* Más pequeño en móvil */
+        height: 100px;
+        margin-bottom: 20px;
+    }
+    .checkout-text {
+        font-size: 1.3rem; /* Texto ajustado */
+    }
+}
+
+.checkout-text {
+    color: #E6E6E6;
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    animation: pulseText 2s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Checkmark SVG Animation */
+.checkmark {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #2ecc71; /* Verde Éxito */
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #2ecc71;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #2ecc71;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% { stroke-dashoffset: 0; }
+}
+
+@keyframes scale {
+    0%, 100% { transform: none; }
+    50% { transform: scale3d(1.1, 1.1, 1); }
+}
+
+@keyframes fill {
+    100% { box-shadow: inset 0px 0px 0px 30px transparent; }
 }

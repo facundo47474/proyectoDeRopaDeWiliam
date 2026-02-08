@@ -1,8 +1,8 @@
 /* Estilos para la sección de Portadas */
 .portadas-section {
-    background-color: #050505;
+    background-color: #1A1A1A;
     /* Fondo oscuro acorde al tema */
-    color: #fff;
+    color: #E6E6E6;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -18,6 +18,10 @@
     padding: 4rem 0;
     margin-bottom: 0;
     letter-spacing: 2px;
+    /* Título general con gradiente suave */
+    background: linear-gradient(90deg, #E6E6E6, #8C8C8C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .portada-item {
@@ -92,6 +96,10 @@
 .portada-info h3 {
     font-size: 2rem;
     margin-bottom: 1rem;
+    /* Título interno con efecto Split marcado */
+    background: linear-gradient(90deg, #E6E6E6 50%, #8C8C8C 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .portada-info p {
@@ -136,9 +144,9 @@
 }
 
 .sound-toggle:hover {
-    background: #D90429;
+    background: #8C8C8C;
     transform: scale(1.1);
-    border-color: #D90429;
+    border-color: #8C8C8C;
 }
 
 /* --- TEMA BLANCO --- */
@@ -191,7 +199,7 @@
     display: block;
     font-size: 0.9rem;
     font-weight: 800;
-    color: #D90429;
+    color: #8C8C8C;
     margin-bottom: 1rem;
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -199,9 +207,9 @@
 
 /* --- TEMA ROJO --- */
 .portada-roja {
-    background: linear-gradient(135deg, #D90429 0%, #b00220 100%);
+    background: linear-gradient(135deg, #333333 0%, #1A1A1A 100%);
     /* Degradado rojo intenso */
-    color: #fff;
+    color: #E6E6E6;
     position: relative;
     overflow: hidden;
 }
@@ -227,7 +235,10 @@
 }
 
 .portada-roja .portada-info h3 {
-    color: #fff;
+    /* Mantenemos el efecto incluso sobre fondo rojo oscuro */
+    background: linear-gradient(90deg, #E6E6E6 50%, #8C8C8C 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-size: 3.5rem;
     font-weight: 800;
     line-height: 1.1;
@@ -238,9 +249,9 @@
 }
 
 .portada-roja .btn-portada:hover {
-    background-color: #fff;
-    color: #D90429;
-    border-color: #fff;
+    background-color: #8C8C8C;
+    color: #1A1A1A;
+    border-color: #8C8C8C;
 }
 
 /* Responsividad para móviles */

@@ -280,6 +280,30 @@ function setupNavigation() {
             navHome.href = "catalogo.html";
         }
     }
+
+    // --- LÓGICA DEL NOTCH (Despliegue) ---
+    // Usamos un nombre distinto para evitar conflictos de variables o referencias nulas
+    const navbarElement = document.querySelector('.navbar');
+    if (navbarElement && !document.querySelector('.nav-notch-toggle')) {
+        const toggle = document.createElement('div');
+        toggle.className = 'nav-notch-toggle';
+        toggle.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+        toggle.title = "Desplegar Menú";
+        navbarElement.appendChild(toggle);
+
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar conflictos
+            navbarElement.classList.toggle('expanded');
+            
+            // Si el usuario colapsa el notch, cerramos también el menú móvil si estaba abierto
+            const navLinks = document.querySelector('.nav-links');
+            if (!navbarElement.classList.contains('expanded') && navLinks && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                const menuToggle = document.querySelector('.menu-toggle i');
+                if (menuToggle) menuToggle.className = 'fa-solid fa-bars';
+            }
+        });
+    }
 }
 
 // Inicialización de componentes
@@ -297,7 +321,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Cargar Carrusel
     if (document.getElementById('carousel-container')) {
         await UIComponentLoader.loadComponent('carousel-container', 'carousel.html');
-        // Inicializar lógica del carrusel (función definida en carousel.js)
         if (typeof initCarousel === 'function') {
             initCarousel();
         }
@@ -369,7 +392,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!window.location.pathname.includes('controlCenter.html')) {
         loadChatbotGlobal();
     }
+
+    // --- INICIALIZAR ANIMACIONES DE SCROLL ---
+    initScrollAnimations();
 });
+
+function initScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Si es una portada, usa su lógica existente (.visible)
+                if (entry.target.classList.contains('portada-item')) {
+                    entry.target.classList.add('visible');
+                } else {
+                    // Para el resto, usa la nueva animación (.active)
+                    entry.target.classList.add('active');
+                }
+            }
+        });
+    }, { threshold: 0.15 }); // Se activa al ver el 15% del elemento
+
+    // Seleccionar elementos a animar
+    const elements = document.querySelectorAll('.section-title, .portada-item, .newsletter-content, .info-card, .social-title');
+    
+    elements.forEach(el => {
+        // Solo agregamos la clase base si NO es portada (para no romper su transform X)
+        if (!el.classList.contains('portada-item')) {
+            el.classList.add('reveal-up');
+        }
+        observer.observe(el);
+    });
+}
 
 /* ==========================================
    LÓGICA DE LOGIN GOOGLE (Navbar Integration)
