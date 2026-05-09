@@ -1,0 +1,719 @@
+/* ====================================
+   ESTILOS DEL CARRUSEL RESPONSIVO
+   ==================================== */
+
+/* ============================= */
+/* TÍTULO GRADIENTE ANIMADO */
+/* ============================= */
+
+/* Sección del título */
+.gradient-title-section {
+  width: 100vw;
+  padding: 20px 20px 20px; /* Reducido padding para estar más pegado */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  position: relative;
+  overflow: hidden;
+  margin-left: calc(-50vw + 50%);
+  margin: 0 !important; /* Forzar sin margen */
+}
+
+/* Efecto de fondo sutil */
+.gradient-title-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 20% 80%, rgba(255, 0, 150, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 255, 200, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255, 200, 0, 0.05) 0%, transparent 50%);
+  animation: backgroundShift 8s ease-in-out infinite alternate;
+}
+
+/* Título principal */
+.gradient-title {
+  margin: 0 0 10px 0; /* Reducido margen inferior */
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  font-family: "Montserrat", "Arial Black", system-ui, sans-serif;
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 2;
+}
+
+/* Palabras con gradiente animado */
+.gradient-word {
+  background: linear-gradient(
+    45deg,
+    #ff0080,
+    #ff4000,
+    #ff8000,
+    #ffff00,
+    #80ff00,
+    #00ff80,
+    #00ffff,
+    #0080ff,
+    #8000ff,
+    #ff0080
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    0 8px 16px rgba(0, 0, 0, 0.1);
+
+  filter: drop-shadow(0 0 20px rgba(255, 0, 150, 0.3));
+  animation: gradientShift 4s ease-in-out infinite, textGlow 3s ease-in-out infinite alternate;
+}
+
+/* Diferencia en DROPS */
+.gradient-word:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+/* Decoración del título */
+.title-decoration {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.decoration-line {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff0080, #00ffff, transparent);
+  background-size: 200% 100%;
+  animation: lineGlow 2s ease-in-out infinite alternate;
+  border-radius: 2px;
+}
+
+.decoration-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.decoration-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff0080, #00ffff);
+  animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+.decoration-dots span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.decoration-dots span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+/* ============================= */
+/* ANIMACIONES */
+/* ============================= */
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes textGlow {
+  0% {
+    filter: drop-shadow(0 0 20px rgba(255, 0, 150, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 30px rgba(0, 255, 200, 0.5));
+  }
+}
+
+@keyframes backgroundShift {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes lineGlow {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 0 10px rgba(255, 0, 150, 0.5);
+  }
+  100% {
+    background-position: 100% 50%;
+    box-shadow: 0 0 20px rgba(0, 255, 200, 0.8);
+  }
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+/* ============================= */
+/* RESPONSIVE GRADIENTE */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .gradient-title-section {
+    padding: 55px 16px 40px;
+    margin-left: calc(-50vw + 50%);
+  }
+
+  .gradient-title {
+    gap: 20px;
+    font-size: clamp(3rem, 15vw, 6rem);
+  }
+
+  .title-decoration {
+    gap: 15px;
+  }
+
+  .decoration-line {
+    width: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gradient-title-section {
+    margin-left: calc(-50vw + 50%);
+  }
+
+  .gradient-title {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .decoration-line {
+    width: 40px;
+  }
+
+  .decoration-dots {
+    gap: 6px;
+  }
+
+  .decoration-dots span {
+    width: 5px;
+    height: 5px;
+  }
+}
+
+/* ============================= */
+/* CONTENEDOR PRINCIPAL SIN ESPACIOS */
+/* ============================= */
+
+.catalog-break-content > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.catalog-break-content > *:first-child {
+  margin-top: 0 !important;
+}
+
+.catalog-break-content > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ============================= */
+/* TICKER TEXTO CORRIENDO */
+/* ============================= */
+
+.ticker-container {
+  width: 100%;
+  height: 32px;
+  background: #000;
+  overflow: hidden;
+  position: relative;
+  margin: 0 !important; /* Forzar sin margen */
+  padding: 0 !important; /* Forzar sin padding */
+  /* Sin borders para que esté pegado */
+}
+
+.ticker-text {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  position: absolute;
+  right: 100%; /* Cambiar de left a right para que vaya de derecha a izquierda */
+  white-space: nowrap;
+  animation: tickerScroll 25s linear infinite;
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ticker-text span {
+  display: inline-block;
+}
+
+.ticker-separator {
+  color: #666;
+  font-size: 16px;
+  margin: 0 10px;
+}
+
+/* Crear múltiples copias para scroll continuo */
+.ticker-text::before,
+.ticker-text::after {
+  content: "no te lo pierdas ! • seguinos en instagram @urbanhustler_indumentaria • ";
+  display: inline-block;
+}
+
+/* ============================= */
+/* ANIMACIÓN TICKER */
+/* ============================= */
+
+@keyframes tickerScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%); /* Cambiar a positivo para que vaya de derecha a izquierda */
+  }
+}
+
+/* Hover effect */
+.ticker-container:hover .ticker-text {
+  animation-play-state: paused;
+}
+
+/* ============================= */
+/* RESPONSIVE TICKER */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .ticker-container {
+    height: 28px;
+  }
+
+  .ticker-text {
+    font-size: 12px;
+    gap: 30px;
+  }
+
+  .ticker-separator {
+    font-size: 14px;
+    margin: 0 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ticker-container {
+    height: 24px;
+  }
+
+  .ticker-text {
+    font-size: 11px;
+    gap: 20px;
+  }
+
+  .ticker-separator {
+    font-size: 12px;
+    margin: 0 6px;
+  }
+}
+
+.content-row {
+  display: flex;
+  gap: 30px;
+  align-items: center; /* Centrado verticalmente con el carrusel */
+  width: 100%;
+}
+
+.content-row > * {
+  flex: 1;
+}
+
+.break-comments {
+  margin-right: 24px; /* Aleja la caja de comentarios un poco del borde derecho */
+}
+
+/* ============================= */
+/* RESPONSIVE GENERAL */
+/* ============================= */
+
+@media (max-width: 768px) {
+  /* EN MÓVILES: CAMBIAR A LAYOUT VERTICAL */
+  .content-row {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  .mobile-gallery-section-home,
+  .break-video-carousel {
+    flex: none !important;
+  }
+
+  .break-comments {
+    flex: none !important;
+    max-width: none !important;
+  }
+}
+
+/* ============================= */
+/* DISPOSITIVO MÓVIL MOCKUP */
+/* ============================= */
+
+.mobile-device {
+    width: min(360px, 88vw);
+    aspect-ratio: 9 / 18.8;
+    background: #050505;
+    border-radius: 42px;
+    padding: 12px;
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.28),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    position: relative;
+}
+
+.mobile-device::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: 40px;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobile-device::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 72px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.15);
+    z-index: 10;
+}
+
+/* PANTALLA INTERNA */
+.mobile-device-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 32px;
+    overflow: hidden;
+    background: #111;
+    position: relative;
+    touch-action: pan-y;
+    user-select: none;
+    cursor: grab;
+}
+
+.mobile-device-screen:active {
+    cursor: grabbing;
+}
+
+.mobile-device-screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+    background:
+        linear-gradient(
+            120deg,
+            rgba(255, 255, 255, 0.14),
+            transparent 28%,
+            transparent 72%,
+            rgba(255, 255, 255, 0.05)
+        );
+    mix-blend-mode: screen;
+    opacity: 0.35;
+}
+
+/* SLIDER */
+.mobile-slider {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.mobile-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateX(100%);
+    transition:
+        transform 0.45s ease,
+        opacity 0.45s ease;
+    overflow: hidden;
+    background: #000;
+    pointer-events: none;
+}
+
+.mobile-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    z-index: 2;
+}
+
+.mobile-slide.prev-out {
+    opacity: 0;
+    transform: translateX(-100%);
+    z-index: 1;
+}
+
+.mobile-slide.next-in {
+    transform: translateX(100%);
+}
+
+.mobile-slide.next-out {
+    opacity: 0;
+    transform: translateX(100%);
+    z-index: 1;
+}
+
+.mobile-slide.prev-in {
+    transform: translateX(-100%);
+}
+
+/* IMÁGENES */
+.mobile-slide img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: var(--x, 50%) var(--y, 50%);
+    transform: scale(var(--zoom, 1.38));
+    transform-origin: center center;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* INDICADORES */
+.mobile-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    z-index: 12;
+}
+
+.mobile-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    border: none;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.38);
+    cursor: pointer;
+    transition:
+        width 0.25s ease,
+        background 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.mobile-dot.active {
+    width: 22px;
+    background: #ffffff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .mobile-gallery-section-home {
+        padding: 50px 16px;
+        min-height: auto;
+    }
+
+    .mobile-device {
+        width: min(330px, 92vw);
+        border-radius: 38px;
+        padding: 10px;
+    }
+
+    .mobile-device-screen {
+        border-radius: 29px;
+    }
+}
+
+@media (max-width: 420px) {
+    .mobile-device {
+        width: min(310px, 94vw);
+    }
+}
+    position: relative;
+    touch-action: pan-y;
+    user-select: none;
+    cursor: grab;
+}
+
+.mobile-device-screen:active {
+    cursor: grabbing;
+}
+
+.mobile-device-screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+    background:
+        linear-gradient(
+            120deg,
+            rgba(255, 255, 255, 0.14),
+            transparent 28%,
+            transparent 72%,
+            rgba(255, 255, 255, 0.05)
+        );
+    mix-blend-mode: screen;
+    opacity: 0.35;
+}
+
+/* SLIDER */
+.mobile-slider {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.mobile-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateX(100%);
+    transition:
+        transform 0.45s ease,
+        opacity 0.45s ease;
+    overflow: hidden;
+    background: #000;
+    pointer-events: none;
+}
+
+.mobile-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    z-index: 2;
+}
+
+.mobile-slide.prev-out {
+    opacity: 0;
+    transform: translateX(-100%);
+    z-index: 1;
+}
+
+.mobile-slide.next-in {
+    transform: translateX(100%);
+}
+
+.mobile-slide.next-out {
+    opacity: 0;
+    transform: translateX(100%);
+    z-index: 1;
+}
+
+.mobile-slide.prev-in {
+    transform: translateX(-100%);
+}
+
+/* IMÁGENES */
+.mobile-slide img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: var(--x, 50%) var(--y, 50%);
+    transform: scale(var(--zoom, 1.38));
+    transform-origin: center center;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* INDICADORES */
+.mobile-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    z-index: 12;
+}
+
+.mobile-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    border: none;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.38);
+    cursor: pointer;
+    transition:
+        width 0.25s ease,
+        background 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.mobile-dot.active {
+    width: 22px;
+    background: #ffffff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .mobile-gallery-section-home {
+        padding: 50px 16px;
+        min-height: auto;
+    }
+
+    .mobile-device {
+        width: min(330px, 92vw);
+        border-radius: 38px;
+        padding: 10px;
+    }
+
+    .mobile-device-screen {
+        border-radius: 29px;
+    }
+}
+
+@media (max-width: 420px) {
+    .mobile-device {
+        width: min(310px, 94vw);
+    }
+}

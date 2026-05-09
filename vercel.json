@@ -1,0 +1,23 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/HTML/index.html",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*).(jpg|jpeg|png|webp|webp|mp4|svg|woff2)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/(.*).(js|css)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, must-revalidate" }
+      ]
+    }
+  ]
+}

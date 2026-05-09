@@ -1,0 +1,1181 @@
+/* Reset básico para consistencia */
+
+:root {
+    /* Variables para escalabilidad y consistencia del tema */
+    --bg-body: #1A1A1A; /* Negro Carbono */
+    --bg-navbar: #1A1A1A;
+    --text-light: #E6E6E6; /* Blanco Gélido */
+    --text-muted: #8C8C8C; /* Gris Cemento */
+    --bg-card: #333333; /* Antracita */
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --spacing-standard: 1rem;
+}
+
+/* --- MODO CLARO (Light Mode) --- */
+body.light-mode {
+    --bg-body: #f4f4f4;
+    --bg-navbar: #ffffff;
+    --text-light: #1a1a1a;
+    --text-muted: #555555;
+    --bg-card: #ffffff;
+}
+body.light-mode .navbar {
+    border-color: rgba(0,0,0,0.1);
+}
+body.light-mode .navbar::before {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: inset 0 -1px 1px rgba(0,0,0,0.05);
+}
+body.light-mode .logo { color: #000; text-shadow: none; }
+body.light-mode .nav-notch-toggle { color: #333; }
+body.light-mode .nav-notch-toggle:hover { color: #000; }
+
+/* --- DROPDOWN MENU (Categorías) --- */
+.nav-item-dropdown {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilos Base del Dropdown (Comunes) */
+.dropdown-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1100;
+}
+
+/* --- ESTILOS ESCRITORIO (Solo pantallas grandes) --- */
+@media (min-width: 769px) {
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: var(--bg-card);
+        min-width: 200px;
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .nav-item-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    body.light-mode .dropdown-menu {
+        border: 1px solid rgba(0,0,0,0.1);
+        background: #fff;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .dropdown-menu li a {
+        display: block;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        text-transform: capitalize;
+        color: var(--text-muted);
+        white-space: nowrap;
+        text-decoration: none;
+    }
+
+    .dropdown-menu li a:hover {
+        background: rgba(128,128,128,0.1);
+        color: var(--text-light);
+    }
+}
+
+/* --- ANIMACIONES GLOBALES (SCROLL REVEAL) --- */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Efecto más corto para mayor fluidez */
+}
+
+.reveal-up.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- EFECTO TEXTO "SPLIT" (Mitad y Mitad) --- */
+.split-text-gradient {
+    /* Gradiente duro: 50% un color, 50% el otro */
+    background: linear-gradient(90deg, #E6E6E6 0%, #E6E6E6 50%, #8C8C8C 50%, #8C8C8C 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px rgba(230, 230, 230, 0.15)); /* Glow para intensidad */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    background-color: var(--bg-body);
+}
+
+/* Estilos del Navbar */
+/* --- NAVBAR RECREADO DESDE CERO (Compacto & Sin Errores) --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: rgba(60, 60, 60, 0.5); /* Gris desenfocado inicial */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-top: none;
+}
+
+/* Navbar Dinámico al Scrollear */
+.navbar.scrolled {
+    background: rgba(45, 45, 45, 0.9); /* Gris más oscuro y sólido al bajar */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    height: 70px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Fondo del Navbar (Blur Effect) */
+.navbar::before {
+    display: none;
+}
+
+/* Estado Expandido */
+.navbar.expanded {
+    width: 100%;
+    border-radius: 0;
+}
+
+/* Elementos internos (ocultos por defecto) */
+.logo, .nav-links, .nav-icons, .menu-toggle, .nav-filter-btn, .nav-search-container {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Botón del Notch (Flecha) */
+.nav-notch-toggle {
+    display: none !important;
+}
+
+.nav-notch-toggle i {
+    font-size: 0.8rem;
+    transition: transform 0.4s;
+}
+
+/* Rotar flecha */
+.navbar.expanded .nav-notch-toggle i {
+    transform: rotate(180deg);
+}
+
+.logo {
+    font-size: 1.5rem; /* Reducido ligeramente para móviles */
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Sombra para legibilidad */
+    text-decoration: none;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: var(--text-light);
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+}
+
+.nav-icons a {
+    text-decoration: none;
+    color: var(--text-light);
+    margin-left: 20px;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+/* --- ESTILOS RESPONSIVE NAVBAR --- */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    margin-left: 15px;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        width: 100%;
+        height: 60px;
+        padding: 0 1rem;
+        background: rgba(15, 15, 15, 0.95); /* En móvil siempre visible */
+    }
+    .navbar.expanded {
+        width: 100%;
+    }
+
+    .logo {
+        font-size: 1.3rem; /* Logo más compacto en móvil */
+    }
+    
+    /* Ajuste del botón de despliegue para la nueva altura */
+    .nav-notch-toggle {
+        height: 26px;
+    }
+    
+    .menu-toggle {
+        display: block;
+        order: 3;
+        margin-left: 10px;
+    }
+
+    .nav-icons {
+        margin-left: auto;
+        order: 2;
+    }
+
+    .nav-icons a {
+        margin-left: 12px; /* Iconos más juntos */
+        font-size: 1.1rem;
+    }
+
+    /* Ajuste del buscador para móvil (debajo del navbar) */
+    .nav-search-container {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 15px 1rem;
+        border-radius: 0;
+        justify-content: center;
+        border-bottom: 1px solid #333;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        
+        /* Animación de despliegue (Cortina) */
+        transform-origin: top;
+        transform: scaleY(0);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-search-container input {
+        width: 85%;
+        max-width: 280px;
+        background: #222;
+        padding: 5px 15px;
+        border-radius: 20px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+
+    .nav-search-container.active {
+        transform: scaleY(1);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 85px; /* Debajo del navbar expandido */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 85%; /* Ancho reducido y compacto */
+        height: auto;
+        background: rgba(15, 15, 15, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px); /* FIX iOS */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+        gap: 1rem;
+        z-index: 999;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        
+        /* Animación de entrada */
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Watermark decorativo */
+    .nav-links::before {
+        display: none; /* Eliminado para limpiar el diseño */
+    }
+
+    .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* Estado inicial para animación */
+    .nav-links:not(.active) {
+        transform: translateX(-50%) translateY(-10px);
+    }
+
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+        opacity: 1;
+        transform: none;
+    }
+
+    /* Animación escalonada al abrir */
+    .nav-links.active li {
+        /* Sin animación compleja para evitar bugs */
+    }
+
+    .nav-links li a {
+        font-size: 1.1rem; /* Texto más pequeño y elegante */
+        font-weight: 600;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: block;
+        padding: 10px 0;
+        transition: color 0.3s;
+    }
+
+    /* Efecto Hover */
+    .nav-links li a::after {
+        display: none; /* Simplificado */
+    }
+
+    .nav-links li a:hover {
+        color: #D90429;
+    }
+
+    /* --- ESTILOS MÓVIL (Simple y Directo) --- */
+    .nav-item-dropdown .dropdown-menu {
+        display: none; /* Oculto por defecto */
+        width: 100%;
+        text-align: center;
+        padding-top: 5px;
+        background: transparent;
+        position: static;
+        box-shadow: none;
+        border: none;
+        transform: none;
+    }
+
+    .nav-item-dropdown.active .dropdown-menu {
+        display: block; /* Mostrar al activar */
+    }
+
+    .dropdown-menu li a {
+        font-size: 0.95rem;
+        padding: 8px 0;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: block;
+        text-decoration: none;
+    }
+
+    .dropdown-menu li a:hover {
+        color: #fff;
+    }
+
+    /* Rotación de flecha en móvil */
+    .nav-item-dropdown.active > a > i {
+        transform: rotate(180deg);
+        transition: transform 0.3s;
+    }
+}
+
+
+/* Helper para elementos solo móviles */
+.mobile-only { display: none; }
+@media (max-width: 768px) {
+    .mobile-only { display: block; }
+}
+
+/* Botón de búsqueda móvil (Lupa) */
+.search-toggle-mobile {
+    display: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+@media (max-width: 768px) {
+    .search-toggle-mobile {
+        display: block;
+    }
+}
+
+/* Estilos del Buscador en Navbar */
+.nav-search-container {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 5px 15px;
+    margin-right: 15px;
+}
+
+.nav-search-container input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    outline: none;
+    width: 150px;
+}
+
+/* En Home ocultamos buscador y carrito pero dejamos visible el contenedor (.nav-icons) para el usuario */
+.home-page .nav-search-container,
+.home-page .search-toggle-mobile {
+    display: none !important;
+}
+
+/* Estilos del Carrusel */
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh; /* FIX iOS: Altura dinámica que descuenta la barra de navegación */
+    /* Ocupa toda la altura de la ventana */
+    overflow: hidden;
+    background-color: var(--bg-body);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    border-bottom: 1px solid #333333;
+}
+
+/* Gradiente de integración (Fade) */
+.carousel::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to top, #1A1A1A 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.carousel-track {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Asegura que la imagen cubra todo sin deformarse */
+    filter: brightness(0.7) contrast(1.1) saturate(0.8);
+    transition: filter 0.35s ease;
+}
+
+.carousel:hover .slide img {
+    filter: brightness(0.9) contrast(1.1) saturate(1);
+}
+
+.slide.active img {
+    transform: none;
+}
+
+/* --- ESTILOS PARA COLLAGE (Múltiples imágenes por slide) --- */
+.collage {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.collage img {
+    flex: 1; /* Se reparten el espacio disponible */
+    min-width: 0; /* Evita desbordes en Flexbox */
+    object-fit: cover; /* Mantiene la proporción sin estirarse */
+}
+
+@media (max-width: 768px) {
+    .collage {
+        flex-direction: column; /* En móvil se apilan verticalmente */
+    }
+    .collage img {
+        height: auto; /* Permite que la altura sea dinámica */
+        width: 100%;
+    }
+}
+
+.slide-content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    transform: translateY(-50%);
+    color: #fff;
+    z-index: 10;
+}
+
+.slide-content h1,
+.slide-content h2 {
+    font-size: 6vw;
+    font-weight: 900;
+    color: #E6E6E6;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    text-shadow: 0 20px 60px rgba(0,0,0,0.9);
+    opacity: 0;
+    animation: revealText 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.2s;
+    margin-bottom: 1rem;
+}
+
+@keyframes revealText {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    /* En móvil desactivamos las animaciones de scroll para mejorar fluidez */
+    .reveal-up {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .slide-content h1,
+    .slide-content h2 {
+        font-size: 3rem; /* Ajuste para móviles */
+    }
+}
+
+/* --- ESTILOS DEL CARRUSEL (Restaurados) --- */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 1rem;
+    cursor: pointer;
+    z-index: 100;
+    transition: background 0.3s;
+}
+
+.carousel-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
+/* ===========================
+   ESTILOS GLOABLES DEL CARRITO
+   =========================== */
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px); /* Efecto blur moderno */
+    -webkit-backdrop-filter: blur(4px); /* FIX iOS */
+    z-index: 2999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cart-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -500px;
+    width: 450px;
+    height: 100vh;
+    height: 100dvh; /* FIX iOS: Evita que la barra del navegador tape el botón de compra */
+    background: #1A1A1A; /* Fondo casi negro premium */
+    z-index: 3000;
+    transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1); /* Easing suave */
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #222;
+    box-shadow: -10px 0 50px rgba(0, 0, 0, 0.8);
+}
+
+.cart-drawer.open {
+    right: 0;
+}
+
+.cart-header {
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1a1a1a;
+    background: #1A1A1A;
+}
+
+.cart-header h3 {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: 1px;
+    font-weight: 800;
+}
+
+.close-cart {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-cart:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+}
+
+.cart-items-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Scrollbar personalizado para el carrito */
+.cart-items-container::-webkit-scrollbar {
+    width: 6px;
+}
+.cart-items-container::-webkit-scrollbar-track {
+    background: #1A1A1A;
+}
+.cart-items-container::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+.empty-cart-msg {
+    color: #666;
+    text-align: center;
+    margin-top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Item de Carrito */
+.cart-item {
+    display: grid;
+    grid-template-columns: 90px 1fr 30px;
+    gap: 20px;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #333333;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.cart-item img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.cart-item-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cart-item-details h4 {
+    color: #fff;
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.cart-item-meta {
+    color: #8C8C8C;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid #8C8C8C;
+    width: fit-content;
+    border-radius: 4px;
+    margin-top: 10px;
+    background: #333333;
+}
+
+.btn-qty {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-qty:hover {
+    background: #222;
+}
+
+.cart-item-controls span {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    width: 30px;
+    text-align: center;
+}
+
+.btn-remove {
+    background: transparent;
+    border: none;
+    color: #444;
+    cursor: pointer;
+    transition: color 0.2s;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 5px;
+}
+
+.btn-remove:hover {
+    color: #8C8C8C;
+}
+
+.cart-footer {
+    padding: 2rem;
+    background: #1A1A1A;
+    border-top: 1px solid #1a1a1a;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom)); /* Respetar barra de inicio en iPhone */
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.cart-total span:first-child {
+    color: #8C8C8C;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cart-total span:last-child {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+.btn-checkout {
+    width: 100%;
+    padding: 18px;
+    background: #333333;
+    color: #E6E6E6;
+    border: 1px solid #8C8C8C;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-checkout:hover {
+    background: #8C8C8C;
+    color: #1A1A1A;
+    border-color: #8C8C8C;
+}
+
+.cart-count-badge {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    background: #2ecc71;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #000;
+}
+
+/* Toast Notification */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #333333;
+    color: #E6E6E6;
+    padding: 12px 24px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 4000;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+@media (max-width: 500px) {
+    .cart-drawer {
+        width: 100%;
+        right: -100%;
+    }
+}
+
+/* Grilla de Productos (Global para reutilizar en Detalle y Catálogo) */
+.products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+/* ===========================
+   ESTILOS CHATBOT (Responsive)
+   =========================== */
+#chatbot-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.chatbot-window {
+    width: 350px;
+    height: 500px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+}
+
+.chatbot-window.active {
+    display: flex;
+}
+
+.chatbot-header {
+    background: #000;
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f9f9f9;
+}
+
+.chatbot-input {
+    padding: 10px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+#chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: box-shadow 0.2s ease;
+}
+
+#chatbot-toggle:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+@media (max-width: 480px) {
+    .chatbot-window {
+        width: 90vw; /* Ancho casi total en móviles */
+        height: 60vh;
+        position: fixed;
+        bottom: 90px;
+        right: 5vw;
+    }
+}
+
+/* ===========================
+   ANIMACIÓN DE CHECKOUT (Overlay)
+   =========================== */
+.checkout-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.85); /* Fondo oscuro semitransparente */
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px); /* Efecto Glassmorphism intenso */
+    -webkit-backdrop-filter: blur(20px); /* FIX iOS */
+}
+
+.checkout-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.checkout-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(30px);
+    transition: transform 0.35s ease;
+}
+
+.checkout-overlay.active .checkout-content {
+    transform: translateY(0);
+}
+
+.checkout-logo {
+    width: 140px; /* Más grande */
+    height: 140px;
+    border-radius: 50%;
+    margin-bottom: 30px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    background: #1A1A1A; /* Fondo un poco más claro que negro puro */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px; /* Espacio para que la imagen no toque el borde */
+}
+
+/* Anillo de carga giratorio alrededor del logo */
+.checkout-logo::before {
+    content: '';
+    position: absolute;
+    top: -5px; left: -5px; right: -5px; bottom: -5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #2ecc71; /* Verde marca */
+    border-right-color: #8C8C8C; /* Gris */
+    animation: spinRing 1.5s linear infinite;
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.3);
+}
+
+@keyframes spinRing {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.checkout-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #333; /* Borde interno sutil */
+}
+
+@media (max-width: 768px) {
+    .checkout-logo {
+        width: 100px; /* Más pequeño en móvil */
+        height: 100px;
+        margin-bottom: 20px;
+    }
+    .checkout-text {
+        font-size: 1.3rem; /* Texto ajustado */
+    }
+}
+
+.checkout-text {
+    color: #E6E6E6;
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    /* Solo un pulso corto en lugar de animación infinita */
+    animation: pulseText 1.5s ease-in-out 1;
+}
+
+@keyframes pulseText {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Checkmark SVG Animation */
+.checkmark {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #2ecc71; /* Verde Éxito */
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #2ecc71;
+    animation: fill .4s ease-in-out .4s forwards;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #2ecc71;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% { stroke-dashoffset: 0; }
+}
+
+@keyframes fill {
+    100% { box-shadow: inset 0px 0px 0px 30px transparent; }
+}

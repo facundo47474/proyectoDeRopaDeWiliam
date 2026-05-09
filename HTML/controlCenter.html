@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - UrbanHustler</title>
+    
+    <!-- Estilos Globales e Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="stylesheet" href="../CSS/controlCenter.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Contenedor para el Navbar (Cargado dinámicamente por navbar.js) -->
+    <div id="navbar-container"></div>
+
+    <div class="admin-container">
+        <!-- Sidebar de Navegación -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#" class="admin-nav-link active" data-target="view-metrics">
+                        <i class="fa-solid fa-chart-line"></i> Métricas
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="admin-nav-link" data-target="view-products">
+                        <i class="fa-solid fa-box"></i> Productos
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="admin-nav-link" data-target="view-users">
+                        <i class="fa-solid fa-users"></i> Usuarios
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="admin-nav-link" data-target="view-experience">
+                        <i class="fa-solid fa-comments"></i> Experiencia
+                    </a>
+                </li>
+                <li style="margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                    <a href="index.html" class="admin-nav-link">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Tienda
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="admin-content">
+            <!-- VISTA: MÉTRICAS (Dashboard Principal) -->
+            <div id="view-metrics" class="admin-view">
+                <div class="dashboard-header">
+                    <h1>Panel de Control</h1>
+                    <p>Métricas en tiempo real y gestión administrativa.</p>
+                </div>
+
+                <!-- Grid de Métricas -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Ventas</h3>
+                            <div class="metric-value" id="metric-revenue">$0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Pedidos</h3>
+                            <div class="metric-value" id="metric-orders">0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Productos</h3>
+                            <div class="metric-value" id="metric-visitors">0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-shirt"></i></div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Consultas IA</h3>
+                            <div class="metric-value" id="metric-chatbot">0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-robot"></i></div>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Ventas -->
+                <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; color: #333; font-size: 1.1rem;">Ingresos por Categoría</h3>
+                        <select id="chart-filter" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; background: #f9f9f9; cursor: pointer;">
+                            <option value="all">Histórico Completo</option>
+                            <option value="7days">Últimos 7 días</option>
+                            <option value="30days">Últimos 30 días</option>
+                        </select>
+                    </div>
+                    <canvas id="salesChart" style="max-height: 400px;"></canvas>
+                </div>
+
+                <!-- Tabla de Últimas Órdenes -->
+                <h2>Últimas Órdenes</h2>
+                <div class="orders-table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Total</th>
+                                <th>Cant.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="latest-orders-body">
+                            <!-- Aquí se insertarán las filas de la tabla -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VISTA: PRODUCTOS (Gestión Real) -->
+            <div id="view-products" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <h1>Gestión de Productos</h1>
+                    <p>Administra el inventario de la tienda.</p>
+                </div>
+                
+                <div style="margin-bottom: 1rem; text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button class="btn-secondary" id="btn-manage-categories"><i class="fa-solid fa-tags"></i> Categorías</button>
+                    <button class="btn-primary" id="btn-add-product"><i class="fa-solid fa-plus"></i> Nuevo Producto</button>
+                </div>
+
+                <div class="orders-table-container" style="background: #fff; padding: 20px; border-radius: 12px;">
+                    <table class="orders-table" id="products-table">
+                        <thead>
+                            <tr>
+                                <th>Img</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Talles</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            <!-- Se llena con JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VISTA: USUARIOS (Placeholder) -->
+            <div id="view-users" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <h1>Usuarios</h1>
+                    <p>Gestión de clientes y administradores.</p>
+                </div>
+                
+                <div class="orders-table-container" style="background: #fff; padding: 20px; border-radius: 12px;">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Origen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Se llena con JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VISTA: EXPERIENCIA DE USUARIO (COMENTARIOS) -->
+            <div id="view-experience" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <h1>Experiencia de Usuario</h1>
+                    <p>Gestiona los comentarios y testimonios de los clientes.</p>
+                </div>
+                
+                <div class="orders-table-container" style="background: #fff; padding: 20px; border-radius: 12px;">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Usuario</th>
+                                <th>Comentario</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="experience-table-body">
+                            <!-- Se llena con JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Edición de Producto -->
+    <div class="modal-overlay" id="edit-product-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem;">Editar Producto</h2>
+            <form id="edit-product-form">
+                <input type="hidden" id="edit-id">
+                
+                <div class="form-group">
+                    <label>Sección</label>
+                    <select id="edit-section">
+                        <option value="ropa">Ropa (General)</option>
+                        <option value="new_drops">New Drops</option>
+                        <option value="combos">Combos</option>
+                        <option value="ofertas">Ofertas</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Precio ($)</label>
+                    <input type="number" id="edit-price" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="edit-category">
+                        <option value="hoodie">Hoodie</option>
+                        <option value="pants">Pantalones</option>
+                        <option value="tshirt">Remeras</option>
+                        <option value="accessories">Accesorios</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Género</label>
+                    <select id="edit-gender">
+                        <option value="unisex">Unisex</option>
+                        <option value="men">Hombre</option>
+                        <option value="women">Mujer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Talles (separados por coma)</label>
+                    <input type="text" id="edit-sizes" placeholder="S, M, L, XL">
+                </div>
+
+                <div class="form-group">
+                    <label>URL Imagen Principal</label>
+                    <input type="text" id="edit-image">
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="edit-description" rows="3"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-edit">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Gestión de Categorías -->
+    <div class="modal-overlay" id="manage-categories-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem;">Gestionar Categorías</h2>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
+                <input type="text" id="new-category-input" placeholder="Nueva categoría..." style="flex: 1;">
+                <button class="btn-primary" id="btn-add-category">Agregar</button>
+            </div>
+
+            <ul id="categories-list" style="list-style: none; padding: 0; max-height: 300px; overflow-y: auto; margin-bottom: 1.5rem;">
+                <!-- Se llena con JS -->
+            </ul>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="close-categories-modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Cargar Firebase primero para que controlCenter.js arranque con la BD real -->
+    <script src="../JavaScript/firebase.js" defer></script>
+    <script src="../JavaScript/navbar.js"></script>
+    <script src="../JavaScript/data.js"></script> <!-- Importante: Datos iniciales -->
+    <!-- VINCULACIÓN SOLICITADA: Lógica del Panel de Control -->
+    <script src="../JavaScript/controlCenter.js"></script>
+</body>
+</html>

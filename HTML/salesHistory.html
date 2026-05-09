@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Ventas - UrbanHustler</title>
+    <!-- Rutas ajustadas con ../ para salir de la carpeta HTML -->
+    <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="stylesheet" href="../CSS/optimizations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #1A1A1A; color: #fff; padding-top: 80px; }
+        .history-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .filters-section { background: #222; padding: 20px; border-radius: 10px; display: flex; gap: 15px; align-items: flex-end; margin-bottom: 30px; flex-wrap: wrap; border: 1px solid #333; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 0.9rem; color: #888; }
+        .filter-group input { padding: 10px; background: #333; border: 1px solid #444; color: #fff; border-radius: 5px; }
+        .btn-filter { padding: 10px 20px; background: #D90429; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-reset { padding: 10px 20px; background: #444; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+        
+        .sales-table { width: 100%; border-collapse: collapse; background: #222; border-radius: 10px; overflow: hidden; }
+        .sales-table th { background: #111; padding: 15px; text-align: left; color: #888; font-weight: 600; }
+        .sales-table td { padding: 15px; border-bottom: 1px solid #333; }
+        .sales-table tr:hover { background: #2a2a2a; }
+        
+        .btn-details { background: #333; color: #fff; border: 1px solid #555; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+        .btn-details:hover { background: #fff; color: #000; }
+
+        /* Modal Detalles */
+        .detail-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
+        .detail-modal.active { display: flex; }
+        .detail-content { background: #1A1A1A; width: 90%; max-width: 600px; border-radius: 10px; border: 1px solid #333; overflow: hidden; animation: slideUp 0.3s ease; }
+        .detail-header { padding: 20px; background: #111; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .detail-body { padding: 20px; max-height: 60vh; overflow-y: auto; }
+        .detail-footer { padding: 20px; background: #111; border-top: 1px solid #333; text-align: right; }
+        
+        .product-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; }
+        .product-info { display: flex; gap: 10px; }
+        .product-qty { color: #D90429; font-weight: bold; }
+        
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+
+    <div class="history-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1><i class="fa-solid fa-receipt"></i> Historial de Ventas</h1>
+            <a href="controlCenter.html" class="btn-reset"><i class="fa-solid fa-arrow-left"></i> Volver al Panel</a>
+        </div>
+
+        <div class="filters-section">
+            <div class="filter-group">
+                <label>Fecha Inicio</label>
+                <input type="date" id="date-start">
+            </div>
+            <div class="filter-group">
+                <label>Fecha Fin</label>
+                <input type="date" id="date-end">
+            </div>
+            <button class="btn-filter" id="apply-filters">Filtrar</button>
+            <button class="btn-reset" id="reset-filters">Ver Todo</button>
+            
+            <div style="margin-left: auto; text-align: right;">
+                <div style="font-size: 0.9rem; color: #888;">Total Ventas</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #D90429;" id="total-revenue">$0</div>
+            </div>
+        </div>
+
+        <table class="sales-table">
+            <thead>
+                <tr>
+                    <th>ID / Fecha</th>
+                    <th>Cliente</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="sales-table-body">
+                <!-- JS inyectará filas aquí -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de Detalles -->
+    <div class="detail-modal" id="detail-modal">
+        <div class="detail-content">
+            <div class="detail-header">
+                <h3>Detalle de Compra #<span id="modal-order-id"></span></h3>
+                <button onclick="closeDetailModal()" style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div class="detail-body" id="modal-items-list">
+                <!-- Items -->
+            </div>
+            <div class="detail-footer">
+                <span style="color:#888; margin-right: 10px;">Total Pagado:</span>
+                <span style="font-size: 1.5rem; font-weight: bold; color: #fff;" id="modal-total"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rutas ajustadas con ../ -->
+    <script src="../JavaScript/navbar.js"></script>
+    <script src="../JavaScript/salesHistory.js"></script>
+</body>
+</html>

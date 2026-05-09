@@ -1,0 +1,188 @@
+.newsletter-section {
+    background-color: #1A1A1A; /* Negro Carbono */
+    padding: 8rem 5%;
+    text-align: center;
+    color: #E6E6E6;
+    border-top: 1px solid #333333;
+    position: relative;
+    overflow: hidden;
+    /* Fondo con imagen de estudio y superposición oscura */
+    background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.95)), url('https://i.postimg.cc/tJk1HQdb/studio-backgrounds.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Efecto de luz ambiental */
+.newsletter-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(140, 140, 140, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.newsletter-content {
+    position: relative;
+    z-index: 2;
+    max-width: 750px;
+    margin: 0 auto;
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 4rem;
+    border: 1px solid rgba(140, 140, 140, 0.2);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+    /* Esquinas cortadas estilo Sci-Fi */
+    clip-path: polygon(
+        20px 0, 100% 0, 
+        100% calc(100% - 20px), calc(100% - 20px) 100%, 
+        0 100%, 0 20px
+    );
+    transition: border-color 0.2s ease;
+}
+
+/* Logo de la marca */
+.newsletter-content::before {
+    content: '';
+    display: block;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 2rem;
+    background-image: url('../img.jpeg/logo.jpeg');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    border: 2px solid #8C8C8C;
+    box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+.newsletter-content:hover {
+    border-color: rgba(140, 140, 140, 0.4);
+}
+
+.newsletter-content h2 {
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: #E6E6E6;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.newsletter-content p {
+    color: #8C8C8C;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.newsletter-form {
+    display: flex;
+    justify-content: center;
+    gap: 0; /* Elementos unidos */
+    position: relative;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    background: #050505;
+    border: 1px solid #333;
+    border-right: none;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+    font-family: inherit;
+}
+
+.newsletter-form input:focus {
+    background: #111;
+    border-color: #8C8C8C;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.newsletter-form button {
+    padding: 1.5rem 3rem;
+    border: 1px solid #8C8C8C;
+    background: #333333;
+    color: #E6E6E6;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.newsletter-form button:hover {
+    background: #8C8C8C;
+    color: #1A1A1A;
+    border-color: #8C8C8C;
+}
+
+/* Animación de carga simulada en el borde inferior del input */
+.newsletter-form::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #8C8C8C;
+    transition: width 0.5s ease;
+    z-index: 10;
+}
+
+.newsletter-form:focus-within::after {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .newsletter-content {
+        padding: 2rem;
+        clip-path: none; /* Simplificar en móvil */
+        border-radius: 8px;
+    }
+    
+    .newsletter-section {
+        /* Evitar background fijo en mobile para un scroll más fluido */
+        background-attachment: scroll;
+    }
+    
+    .newsletter-content h2 {
+        font-size: 2rem;
+    }
+
+    .newsletter-form {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .newsletter-form input {
+        border-right: 1px solid #333;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    .newsletter-form button {
+        border-radius: 4px;
+        width: 100%;
+    }
+    
+    .newsletter-form::after {
+        display: none;
+    }
+}

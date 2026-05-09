@@ -1,0 +1,272 @@
+/* Estilos para la sección intermedia del catálogo */
+.catalog-break-section {
+    grid-column: 1 / -1; /* Fuerza a ocupar todo el ancho de la grilla */
+    width: 100%;
+    margin: 4rem 0;
+    background-color: #0a0a0a;
+    border: 1px solid #222;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+}
+
+body.light-mode .catalog-break-section {
+    background-color: #fff;
+    border-color: #e0e0e0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.catalog-break-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    gap: 4rem;
+    position: relative;
+    z-index: 1;
+    background-color: #8C8C8C; /* Gris Cemento (Territorio a ocupar) */
+    overflow: hidden;
+}
+
+/* Animación: El blanco intenta "cargar" sobre el gris */
+.catalog-break-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-color: #FFFFFF;
+    z-index: -1;
+    border-radius: 0 50% 50% 0; /* Forma redondeada inicial */
+    box-shadow: 10px 0 50px rgba(0,0,0,0.3); /* Sombra de profundidad */
+    animation: loadingPush 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    will-change: width, border-radius;
+}
+
+@keyframes loadingPush {
+    0% { width: 50%; border-radius: 0 40% 60% 0; }
+    30% { width: 60%; border-radius: 0 70% 30% 0; } /* Se deforma hacia arriba al empujar */
+    50% { width: 58%; border-radius: 0 50% 50% 0; } /* Resistencia (se equilibra) */
+    70% { width: 75%; border-radius: 0 30% 70% 0; } /* Empuje máximo (se deforma hacia abajo) */
+    100% { width: 50%; border-radius: 0 40% 60% 0; }
+}
+
+@media (max-width: 768px) {
+    .catalog-break-content {
+        padding: 1.5rem;
+        gap: 2rem;
+    }
+}
+
+.break-video {
+    flex: 0 1 360px; /* Ancho fijo estilo móvil, un poco más ancho que portada */
+    min-width: 300px;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border: 2px solid #1a1a1a;
+    background: #000;
+}
+
+.break-video video {
+    width: 100%;
+    height: auto; /* Adapta la altura al contenido sin recortar */
+    display: block;
+}
+
+.break-comments {
+    flex: 1 1 400px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: transparent;
+}
+
+.break-comments h3 {
+    color: #1A1A1A; /* Texto oscuro para contraste sobre Gris Cemento */
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 900;
+}
+
+.break-comments p {
+    color: #333; /* Texto secundario oscuro */
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.comment-form input,
+.comment-form textarea {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 12px;
+    color: #fff;
+    border-radius: 4px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+body.light-mode .comment-form input,
+body.light-mode .comment-form textarea {
+    background: #fff;
+    border-color: #ccc;
+    color: #111;
+}
+
+.comment-form input:focus,
+.comment-form textarea:focus {
+    border-color: #2ecc71;
+}
+
+.comment-form textarea {
+    resize: vertical;
+    min-height: 50px; /* Reducimos altura mínima del textarea */
+}
+
+.comment-form button {
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    text-transform: uppercase;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    letter-spacing: 1px;
+}
+
+.comment-form button:hover {
+    background-color: #fff;
+    color: #2ecc71;
+}
+
+/* Botón de sonido para el video intermedio */
+.break-sound-toggle {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.break-sound-toggle:hover {
+    background: #2ecc71;
+    border-color: #2ecc71;
+}
+
+/* Ajuste para móviles: altura automática */
+@media (max-width: 768px) {
+    .catalog-break-content {
+        height: auto;
+        flex-direction: column; /* Apilar verticalmente */
+        padding: 2rem 1rem;
+    }
+    .break-video {
+        min-height: 250px;
+        width: 100%; /* Video ocupa todo el ancho */
+        flex: none;
+    }
+
+    /* Adaptación Móvil: La carga es vertical (de arriba a abajo) */
+    .catalog-break-content::before {
+        width: 100%;
+        height: 45%;
+        border-right: none;
+        border-radius: 0 0 50% 50%; /* Curva suave abajo para móviles */
+        animation: loadingPushMobile 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+}
+
+@keyframes loadingPushMobile {
+    0% { height: 45%; border-radius: 0 0 40% 40%; }
+    50% { height: 60%; border-radius: 0 0 80% 80%; } /* La curva se estira por la presión */
+    100% { height: 45%; border-radius: 0 0 40% 40%; }
+}
+
+/* =========================
+   Efecto Aro de Luz (Animación)
+   ========================= */
+.catalog-break-section span {
+    position: absolute;
+    display: block;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Borde Superior */
+.catalog-break-section span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #2ecc71);
+    animation: break-anim1 2s linear infinite, break-color-cycle 2s linear infinite;
+}
+@keyframes break-anim1 { 0% { left: -100%; } 50%, 100% { left: 100%; } }
+
+/* Borde Derecho */
+.catalog-break-section span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #2ecc71);
+    animation: break-anim2 2s linear infinite, break-color-cycle 2s linear infinite;
+    animation-delay: 0.5s;
+}
+@keyframes break-anim2 { 0% { top: -100%; } 50%, 100% { top: 100%; } }
+
+/* Borde Inferior */
+.catalog-break-section span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(270deg, transparent, #2ecc71);
+    animation: break-anim3 2s linear infinite, break-color-cycle 2s linear infinite;
+    animation-delay: 1s;
+}
+@keyframes break-anim3 { 0% { right: -100%; } 50%, 100% { right: 100%; } }
+
+/* Borde Izquierdo */
+.catalog-break-section span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #2ecc71);
+    animation: break-anim4 2s linear infinite, break-color-cycle 2s linear infinite;
+    animation-delay: 1.5s;
+}
+@keyframes break-anim4 { 0% { bottom: -100%; } 50%, 100% { bottom: 100%; } }
+
+@keyframes break-color-cycle {
+    0% { filter: drop-shadow(0 0 5px #2ecc71) hue-rotate(0deg); }
+    100% { filter: drop-shadow(0 0 5px #2ecc71) hue-rotate(360deg); }
+}

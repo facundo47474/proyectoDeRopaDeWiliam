@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto - UrbanHustler</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="stylesheet" href="../CSS/footer.css">
+    <link rel="stylesheet" href="../CSS/productos.css"> <!-- Reutilizamos estilos de cards para sugerencias -->
+    <link rel="stylesheet" href="../CSS/detailProduct.css">
+    <link rel="stylesheet" href="../CSS/filters.css">
+    <link rel="stylesheet" href="../CSS/chatbot.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="detail-page">
+
+    <div id="navbar-container"></div>
+
+    <main class="detail-layout">
+        <div style="grid-column: 1 / -1; padding: 100px 5% 0 5%;">
+            <button onclick="window.history.back()" style="background: transparent; border: 1px solid #fff; color: #fff; padding: 8px 16px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: all 0.3s;" onmouseover="this.style.borderColor='#D90429'; this.style.color='#D90429'" onmouseout="this.style.borderColor='#fff'; this.style.color='#fff'">
+                <i class="fa-solid fa-arrow-left"></i> Volver
+            </button>
+        </div>
+        <div id="filters-container"></div>
+        <div id="product-detail-container" class="product-detail-container">
+            <!-- El contenido se inyecta vía JS -->
+        </div>
+
+        <div id="related-products-container" class="related-products-container"></div>
+        <div id="lore-container"></div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../JavaScript/data.js" defer></script>
+    <script src="../JavaScript/navbar.js" defer></script>
+    <script src="../JavaScript/cart.js" defer></script> <!-- Ruta correcta -->
+    <script src="../JavaScript/detailProduct.js" defer></script>
+    <script src="../JavaScript/chatbot.js" defer></script>
+</body>
+
+</html>

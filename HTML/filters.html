@@ -1,0 +1,32 @@
+<div class="overlay" id="overlay"></div>
+<aside class="filters-sidebar" id="filters-sidebar">
+    <div class="filters-header">
+        <h3>Filtrar Por</h3>
+        <button id="close-filters"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <div class="filter-group">
+        <h4>Categorías</h4>
+        <label class="checkbox-container">Todos
+            <input type="radio" name="category" value="all" checked>
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-container">Hoodies & Buzos
+            <input type="radio" name="category" value="hoodie">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-container">Pantalones & Cargo
+            <input type="radio" name="category" value="pants">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-container">Remeras Oversize
+            <input type="radio" name="category" value="tshirt">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+
+    <div class="filter-group">
+        <h4>Precio Máximo: $<span id="price-value">100000</span></h4>
+        <input type="range" id="price-range" min="0" max="100000" value="100000" step="1000">
+    </div>
+</aside>

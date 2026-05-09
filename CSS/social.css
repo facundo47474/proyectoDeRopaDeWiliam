@@ -1,0 +1,177 @@
+/* =========================================
+   ESTILOS SECCIÓN SOCIAL MEDIA (Instagram)
+   ========================================= */
+
+.ig-section {
+    position: relative;
+    padding: 6rem 5%;
+    background-color: #1A1A1A; /* Color de respaldo */
+    /* Imagen de fondo con superposición oscura para resaltar texto */
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+        url('/img.jpeg/local.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efecto Parallax */
+    color: #fff;
+    text-align: center;
+    border-top: 1px solid #333;
+    overflow: hidden;
+}
+
+/* --- Encabezado --- */
+.ig-header {
+    margin-bottom: 3.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.ig-logo-wrap {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    /* Gradiente oficial de Instagram */
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    filter: drop-shadow(0 0 15px rgba(214, 36, 159, 0.3));
+}
+
+.ig-header-text .ig-handle {
+    font-size: 1rem;
+    color: #8C8C8C; /* Gris Cemento */
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.ig-title {
+    font-size: 2.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    color: #fff;
+    letter-spacing: -1px;
+}
+
+.ig-subtitle {
+    color: #ccc;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    line-height: 1.5;
+}
+
+.ig-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    color: #000;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 2px solid #fff;
+}
+
+.ig-btn:hover {
+    background: transparent;
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* --- Grilla de Posts --- */
+.ig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsivo automático */
+    gap: 15px;
+    max-width: 1200px;
+    margin: 0 auto 3rem auto;
+    position: relative;
+    z-index: 2;
+}
+
+.ig-item {
+    position: relative;
+    aspect-ratio: 1 / 1; /* Cuadrado perfecto */
+    overflow: hidden;
+    border-radius: 8px;
+    display: block;
+    background: #222;
+    border: 1px solid #333;
+}
+
+.ig-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 1, 0.2, 1);
+}
+
+.ig-item:hover img {
+    transform: scale(1.1);
+}
+
+.ig-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.ig-overlay i {
+    font-size: 2.5rem;
+    color: #fff;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.ig-item:hover .ig-overlay { opacity: 1; }
+.ig-item:hover .ig-overlay i { transform: translateY(0); }
+
+/* --- Footer CTA --- */
+.ig-footer .ig-btn-outline {
+    background: transparent;
+    border: 1px solid #8C8C8C;
+    color: #E6E6E6;
+}
+
+.ig-footer .ig-btn-outline:hover {
+    border-color: #fff;
+    background: rgba(255,255,255,0.1);
+}
+
+/* --- Responsive Mobile --- */
+@media (max-width: 768px) {
+    .ig-section {
+        padding: 4rem 1rem;
+        background-attachment: scroll; /* Mejor rendimiento en móviles */
+    }
+
+    .ig-title { font-size: 2rem; }
+    .ig-logo-wrap { font-size: 2.5rem; }
+
+    .ig-grid {
+        grid-template-columns: repeat(3, 1fr); /* Estilo feed Instagram móvil */
+        gap: 2px;
+    }
+    
+    .ig-item {
+        border-radius: 0; /* Bordes rectos en grilla compacta móvil */
+        border: none;
+    }
+
+    /* Ocultar elementos sobrantes en móvil para mantener limpio */
+    .ig-hide-mobile { display: none; }
+}

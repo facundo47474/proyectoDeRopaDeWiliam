@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos - UrbanHustler</title>
+    <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="stylesheet" href="../CSS/optimizations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #1A1A1A; color: #fff; padding-top: 80px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px; }
+        .btn-back { background: #333; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .btn-back:hover { background: #444; }
+
+        .orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        
+        .order-card { background: #222; border: 1px solid #333; border-radius: 10px; padding: 20px; position: relative; transition: transform 0.2s; }
+        .order-card:hover { transform: translateY(-5px); border-color: #555; }
+        
+        .order-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; color: #888; }
+        .order-total { font-size: 1.5rem; font-weight: bold; color: #fff; margin-bottom: 15px; }
+        
+        .order-items { margin-bottom: 20px; background: #1a1a1a; padding: 10px; border-radius: 5px; max-height: 150px; overflow-y: auto; }
+        .item-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9rem; border-bottom: 1px solid #2a2a2a; padding-bottom: 5px; }
+        
+        .actions { display: flex; gap: 10px; }
+        .btn-action { flex: 1; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        
+        .btn-confirm { background: #2ecc71; color: #fff; }
+        .btn-confirm:hover { background: #27ae60; }
+        
+        .btn-reject { background: #e74c3c; color: #fff; }
+        .btn-reject:hover { background: #c0392b; }
+
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 50px; color: #666; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+
+    <div class="container">
+        <div class="header-flex">
+            <div>
+                <h1><i class="fa-solid fa-clipboard-list"></i> Pedidos Pendientes</h1>
+                <p style="color: #888; margin-top: 5px;">Confirma si la venta se concretó en WhatsApp.</p>
+            </div>
+            <a href="controlCenter.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Panel</a>
+        </div>
+
+        <div id="orders-list" class="orders-grid">
+            <!-- Se llena con JS -->
+        </div>
+    </div>
+
+    <script src="../JavaScript/navbar.js"></script>
+    <script>
+        // Lógica Inline para simplicidad (o podrías crear ordersManagement.js)
+        document.addEventListener('DOMContentLoaded', () => {
+            renderOrders();
+        });
+
+        function renderOrders() {
+            // Cargar ordersManagement.js dinámicamente si prefieres separar, 
+            // pero aquí inyectaremos el script para que funcione directo.
+            const script = document.createElement('script');
+            script.src = '../JavaScript/ordersManagement.js';
+            document.body.appendChild(script);
+        }
+    </script>
+</body>
+</html>

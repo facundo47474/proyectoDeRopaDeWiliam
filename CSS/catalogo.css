@@ -1,0 +1,159 @@
+/* =========================
+   Layout Principal
+========================= */
+.catalog-layout {
+    padding-top: 0;
+    min-height: 100vh;
+    background-color: #1A1A1A; /* Negro Carbono Base */
+    /* Capas: Grilla técnica sutil + Luz cenital + Fondo oscuro */
+    background-image: 
+        linear-gradient(rgba(140, 140, 140, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(140, 140, 140, 0.03) 1px, transparent 1px),
+        radial-gradient(circle at 50% 0%, #333333 0%, #1A1A1A 70%);
+    background-size: 50px 50px, 50px 50px, 100% 100%;
+    position: relative;
+    transition: background 0.3s ease;
+    overflow: hidden; /* Evita que el texto gigante genere scroll horizontal */
+}
+
+body.light-mode .catalog-layout {
+    background: #f4f4f4; /* Reseteamos fondo e imagen para modo claro */
+}
+
+/* Texto de fondo animado (Marquee) */
+.catalog-layout::before {
+    content: "URBAN HUSTLER   URBAN HUSTLER   URBAN HUSTLER   URBAN HUSTLER   URBAN HUSTLER   URBAN HUSTLER";
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 15vw; /* Tamaño gigante responsivo */
+    font-weight: 900;
+    white-space: nowrap;
+    color: transparent; /* Texto transparente */
+    -webkit-text-stroke: 2px rgba(230, 230, 230, 0.04); /* Solo borde sutil (Tech-Noir) */
+    z-index: 0;
+    pointer-events: none;
+    animation: marqueeBackground 60s linear infinite;
+}
+
+body.light-mode .catalog-layout::before {
+    -webkit-text-stroke: 2px rgba(0, 0, 0, 0.05); /* Borde oscuro en modo claro */
+}
+
+.catalog-grid-wrapper {
+    padding: 2rem 5%;
+    padding-top: 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================
+   Grilla de Productos
+========================= */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    justify-items: center;
+}
+
+.products-grid .product-card {
+    width: 100%;
+    height: 480px;
+    margin: 0;
+}
+
+/* =========================
+   Sin resultados
+========================= */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #8C8C8C; /* Gris Cemento */
+    font-size: 1.1rem;
+    padding: 4rem 2rem;
+    border: 1px dashed #333333;
+    border-radius: 8px;
+    background: rgba(51, 51, 51, 0.3); /* Antracita translúcido */
+    margin-top: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+body.light-mode .no-results {
+    color: #333;
+    background: rgba(0,0,0,0.05);
+    border-color: #ccc;
+}
+
+/* =========================
+   Carrusel
+========================= */
+.catalog-carousel {
+    height: 75vh !important; /* Más inmersivo */
+    min-height: 500px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    border-bottom: 1px solid #333333; /* Separador sutil Antracita */
+}
+
+/* Gradiente de integración (Fade) */
+.catalog-carousel::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to top, #1A1A1A 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.catalog-carousel .slide img {
+    filter: brightness(0.7) contrast(1.1) saturate(0.8); /* Look cinematográfico desaturado */
+    transition: filter 0.35s ease;
+}
+
+.catalog-carousel:hover .slide img {
+    filter: brightness(0.9) contrast(1.1) saturate(1); /* Color al interactuar */
+}
+
+.catalog-carousel .slide.active img {
+    transform: none;
+}
+
+.catalog-carousel .slide-content {
+    z-index: 3;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    top: 45%; /* Centrado visual ajustado por el fade inferior */
+    transform: translateY(-50%);
+}
+
+.catalog-carousel .slide-content h1,
+.catalog-carousel .slide-content h2 {
+    font-size: 6vw; /* Responsivo y gigante */
+    font-weight: 900;
+    color: #E6E6E6; /* Blanco Gélido */
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    text-shadow: 0 20px 60px rgba(0,0,0,0.9);
+    opacity: 0;
+    animation: revealText 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.3s;
+}
+
+@keyframes revealText {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marqueeBackground {
+    from { transform: translateY(-50%) translateX(0); }
+    to { transform: translateY(-50%) translateX(-50%); }
+}

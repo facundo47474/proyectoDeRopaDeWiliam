@@ -1,0 +1,287 @@
+
+/* Estilos específicos para el Dashboard */
+body {
+    background-color: #9c9c9a; /* Plateado (Silver) */
+    color: #2c3e50; /* Texto oscuro para contraste */
+    background-color: #636e72; /* Plateado Oscuro (Dark Silver) */
+    color: #ffffff; /* Texto blanco para resaltar */
+}
+
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+    padding-top: 100px; /* Espacio para el navbar */
+}
+
+.admin-sidebar {
+    width: 260px;
+    background: #000; /* Negro puro */
+    padding: 2rem;
+    position: fixed;
+    height: calc(100vh - 100px);
+    left: 0;
+    top: 100px;
+    border-right: 1px solid #1a1a1a;
+    overflow-y: auto;
+}
+
+.admin-content {
+    flex: 1;
+    margin-left: 260px; /* Ancho del sidebar */
+    padding: 2rem 5%;
+}
+
+.sidebar-menu {
+    list-style: none;
+}
+
+.sidebar-menu li {
+    margin-bottom: 0.5rem;
+}
+
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    color: #bdc3c7; /* Gris claro */
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.admin-nav-link:hover, .admin-nav-link.active {
+    background-color: #fff; /* Blanco */
+    color: #000; /* Texto Negro */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.admin-nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #95a5a6; /* Línea divisoria más oscura */
+    border-bottom: 1px solid #b2bec3; /* Línea divisoria clara */
+    padding-bottom: 1rem;
+}
+
+.dashboard-header h1 {
+    font-size: 2rem;
+    color: #000; /* Título negro */
+    color: #fff; /* Título blanco */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4); /* Sombra para resaltar */
+}
+
+.dashboard-header p {
+    color: #2c3e50; /* Descripción oscura */
+    color: #dfe6e9; /* Descripción clara */
+    font-weight: 500;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.metric-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 5px solid #000; /* Acento Negro */
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.metric-info h3 {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #000;
+}
+
+.metric-icon {
+    font-size: 2.5rem;
+    color: #2c3e50; /* Gris plomo para el icono */
+    opacity: 0.15; /* Sutil */
+}
+
+.orders-table-container {
+    min-height: 200px;
+    overflow-x: auto;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.orders-table th,
+.orders-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    color: #333; /* Texto oscuro dentro de las tablas blancas */
+}
+
+.orders-table th {
+    background-color: #000; /* Cabecera Negra */
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Estilos del Modal de Edición */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1.5rem;
+}
+
+.btn-primary { 
+    background: #000; 
+    color: #fff; 
+    border: 1px solid #000; 
+    padding: 10px 20px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    transition: all 0.3s;
+}
+.btn-primary:hover { background: #333; transform: translateY(-2px); }
+.btn-secondary { background: #ecf0f1; color: #2c3e50; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+.btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+
+/* --- ESTILOS RESPONSIVE (MÓVIL) --- */
+.admin-menu-toggle {
+    display: none; /* Oculto en escritorio */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2001;
+    background: #D90429;
+    color: white;
+    border: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    font-size: 1.4rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.admin-menu-toggle:active { transform: scale(0.95); }
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(2px);
+}
+.sidebar-overlay.active { display: block; opacity: 1; }
+
+@media (max-width: 768px) {
+    .admin-container { padding-top: 80px; display: block; }
+    
+    .admin-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 220px;
+        height: 100vh;
+        top: 0;
+        z-index: 2000;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+    }
+    .admin-sidebar.active { transform: translateX(0); }
+
+    .admin-content { margin-left: 0; padding: 1rem; width: 100%; }
+    .admin-menu-toggle { display: flex; }
+    .metrics-grid { grid-template-columns: 1fr; } /* Apilar tarjetas */
+    
+    .modal-content { width: 95%; padding: 1.5rem; margin: 10px; }
+    .dashboard-header h1 { font-size: 1.5rem; }
+    .orders-table-container { border: 1px solid #eee; }
+}
