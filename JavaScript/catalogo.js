@@ -4,14 +4,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     if (typeof UIComponentLoader !== 'undefined') {
         // Cargar componentes específicos del catálogo
-        await UIComponentLoader.loadComponent('filters-container', 'filters.html');
+        await UIComponentLoader.loadComponent('filters-container', '/HTML/filters.html');
         
         // Cargar Carrusel del Catálogo
-        await UIComponentLoader.loadComponent('catalog-carousel-container', 'catalogCarousel.html');
+        await UIComponentLoader.loadComponent('catalog-carousel-container', '/HTML/catalogCarousel.html');
         
         // Inicializar scripts de los componentes cargados
-        loadScript('../JavaScript/filters.js', () => { if (typeof initFilters === 'function') initFilters(); });
-        loadScript('../JavaScript/carousel.js', () => { if (typeof initCarousel === 'function') initCarousel(); });
+        loadScript('/JavaScript/filters.js', () => { if (typeof initFilters === 'function') initFilters(); });
+        loadScript('/JavaScript/carousel.js', () => { if (typeof initCarousel === 'function') initCarousel(); });
 
         // Configurar eventos del Navbar (Buscador y Botón Filtros)
         const navSearchInput = document.getElementById('navbar-search-input');

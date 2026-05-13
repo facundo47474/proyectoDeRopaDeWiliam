@@ -55,7 +55,8 @@ class UIComponentLoader {
 
 function setupNavigation() {
     // --- LÓGICA ESPECÍFICA PARA PANEL DE CONTROL ---
-    if (window.location.pathname.includes('controlCenter.html')) {
+    const isControlCenter = window.location.pathname.includes('controlCenter.html') || window.location.pathname.endsWith('/admin');
+    if (isControlCenter) {
         // VERIFICACIÓN DE SEGURIDAD PREVIA (Evitar renderizar navbar admin si no es admin)
         const authorizedEmails = ['gimenez.william07@gmail.com', 'facundotomas018@gmail.com'];
         const userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
@@ -239,14 +240,14 @@ function setupNavigation() {
     const navList = document.querySelector('.nav-links');
     
     // Solo reconstruir si NO estamos en el panel de control (que tiene su propia lógica)
-    if (navList && !window.location.pathname.includes('controlCenter.html')) {
+    if (navList && !isControlCenter) {
         navList.innerHTML = ''; // Limpiar cualquier HTML residual (Hombres, Mujeres, etc.)
 
         const menuItems = [
-            { id: 'nav-home', text: 'Home', href: 'index.html' },
-            { id: 'nav-new-drops', text: 'New Drops', href: 'index.html#productos-container' },
-            { id: 'nav-combos', text: 'Combos', href: 'index.html?category=combos#productos-container' },
-            { id: 'nav-offers', text: 'Ofertas 🔥', href: 'index.html?filter=offers#productos-container', style: 'color: #2ecc71;' }
+            { id: 'nav-home', text: 'Home', href: '/' },
+            { id: 'nav-new-drops', text: 'New Drops', href: '/#productos-container' },
+            { id: 'nav-combos', text: 'Combos', href: '/?category=combos#productos-container' },
+            { id: 'nav-offers', text: 'Ofertas 🔥', href: '/?filter=offers#productos-container', style: 'color: #2ecc71;' }
         ];
 
         menuItems.forEach(item => {
@@ -508,25 +509,25 @@ function renderHomeExperience() {
                             <div class="mobile-device-screen">
                                 <div class="mobile-slider">
                                     <div class="mobile-slide active" style="--zoom: 1.42; --x: 50%; --y: 50%;">
-                                        <img src="../img/img 1 (1).jpeg" alt="Look 1">
+                                        <img src="/img/img 1 (1).jpeg" alt="Look 1">
                                     </div>
                                     <div class="mobile-slide" style="--zoom: 1.42; --x: 50%; --y: 50%;">
-                                        <img src="../img/img 1 (2).jpeg" alt="Look 2">
+                                        <img src="/img/img 1 (2).jpeg" alt="Look 2">
                                     </div>
                                     <div class="mobile-slide" style="--zoom: 1.42; --x: 50%; --y: 50%;">
-                                        <img src="../img/img 1 (3).jpeg" alt="Look 3">
+                                        <img src="/img/img 1 (3).jpeg" alt="Look 3">
                                     </div>
                                     <div class="mobile-slide" style="--zoom: 1.42; --x: 50%; --y: 50%;">
-                                        <img src="../img/img 1 (4).jpeg" alt="Look 4">
+                                        <img src="/img/img 1 (4).jpeg" alt="Look 4">
                                     </div>
                                     <div class="mobile-slide" style="--zoom: 1.42; --x: 50%; --y: 50%;">
-                                        <img src="../img/img 1 (5).jpeg" alt="Look 5">
+                                        <img src="/img/img 1 (5).jpeg" alt="Look 5">
                                     </div>
                                     <div class="mobile-slide" style="--zoom: 1.42; --x: 50%; --y: 50%;">
-                                        <img src="../img/img 1 (6).jpeg" alt="Look 6">
+                                        <img src="/img/img 1 (6).jpeg" alt="Look 6">
                                     </div>
                                     <div class="mobile-slide" style="--zoom: 1.42; --x: 50%; --y: 50%;">
-                                        <img src="../img/img 1 (7).jpeg" alt="Look 7">
+                                        <img src="/img/img 1 (7).jpeg" alt="Look 7">
                                     </div>
                                 </div>
                                 <div class="mobile-dots"></div>
@@ -579,12 +580,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 0. Cargar Firebase Manager (Base de Datos Real)
     if (!document.querySelector('script[src*="firebase.js"]')) {
         const fbScript = document.createElement('script');
-        fbScript.src = '../JavaScript/firebase.js';
+        fbScript.src = '/JavaScript/firebase.js';
         fbScript.defer = true;
         document.head.appendChild(fbScript);
     }
 
-    await UIComponentLoader.loadComponent('navbar-container', 'navbar.html');
+    await UIComponentLoader.loadComponent('navbar-container', '../HTML/navbar.html');
     setupNavigation();
     
     // Inicializar Login de Google en el Navbar
@@ -598,7 +599,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cargar Carrusel
     if (document.getElementById('carousel-container')) {
-        await UIComponentLoader.loadComponent('carousel-container', 'carousel.html');
+        await UIComponentLoader.loadComponent('carousel-container', '../HTML/carousel.html');
         if (typeof initCarousel === 'function') {
             initCarousel();
         }
@@ -606,7 +607,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cargar Sección de Redes Sociales
     if (document.getElementById('social-media-container')) {
-        await UIComponentLoader.loadComponent('social-media-container', 'SocialMedia.html');
+        await UIComponentLoader.loadComponent('social-media-container', '../HTML/SocialMedia.html');
         // La función initSocialMedia se encarga de las animaciones de la nueva sección.
         if (typeof initSocialMedia === 'function') {
             initSocialMedia();
@@ -615,7 +616,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cargar Sección de Portadas
     if (document.getElementById('portadas-container')) {
-        await UIComponentLoader.loadComponent('portadas-container', 'portadas.html');
+        await UIComponentLoader.loadComponent('portadas-container', '/HTML/portadas.html');
         if (typeof initPortadas === 'function') {
             initPortadas();
         }
@@ -640,7 +641,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Si aún no está disponible, cargar data.js dinámicamente
                 return new Promise((resolve) => {
                     const script = document.createElement('script');
-                    script.src = '../JavaScript/data.js';
+                    script.src = '/JavaScript/data.js';
                     script.onload = () => {
                         console.log("✅ data.js cargado dinámicamente. MOCK_DB:", !!window.MOCK_DB);
                         resolve();
@@ -669,7 +670,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cargar Sección de Ubicación
     if (document.getElementById('ubicacion-container')) {
-        await UIComponentLoader.loadComponent('ubicacion-container', 'ubicacion.html');
+        await UIComponentLoader.loadComponent('ubicacion-container', '/HTML/ubicacion.html');
         if (typeof initUbicacion === 'function') {
             initUbicacion();
         }
@@ -677,7 +678,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cargar Sección de Newsletter
     if (document.getElementById('newsletter-container')) {
-        await UIComponentLoader.loadComponent('newsletter-container', 'newsletter.html');
+        await UIComponentLoader.loadComponent('newsletter-container', '../HTML/newsletter.html');
         if (typeof initNewsletter === 'function') {
             initNewsletter();
         }
@@ -685,11 +686,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cargar Sección de Footer (solo si existe el contenedor)
     if (document.getElementById('footer-container')) {
-        await UIComponentLoader.loadComponent('footer-container', 'footer.html');
+        await UIComponentLoader.loadComponent('footer-container', '../HTML/footer.html');
     }
 
     // Cargar Chatbot Globalmente (EXCEPTO en el Panel de Control)
-    if (!window.location.pathname.includes('controlCenter.html')) {
+    const isControlCenter = window.location.pathname.includes('controlCenter.html') || window.location.pathname.endsWith('/admin');
+    if (!isControlCenter) {
         loadChatbotGlobal();
     }
 
@@ -894,9 +896,9 @@ function handleCredentialResponse(response) {
 
     // Mensajes personalizados por usuario (Admin / Creador)
     if (responsePayload.email === 'gimenez.william07@gmail.com') {
-        sessionStorage.setItem('login_greeting', "<strong style='font-size:1.1em; color:#fff;'>Hola Wiliam</strong><br><span style='color:#ccc;'>Soy tu asistente inteligente.</span><br><span style='color:#2ecc71; font-weight:600; display:block; margin-top:5px;'>Tienes total acceso a mi panel de control.</span><a href='controlCenter.html' class='chatbot-action-btn'>Ir al Panel de Control <i class='fa-solid fa-arrow-right'></i></a>");
+        sessionStorage.setItem('login_greeting', "<strong style='font-size:1.1em; color:#fff;'>Hola Wiliam</strong><br><span style='color:#ccc;'>Soy tu asistente inteligente.</span><br><span style='color:#2ecc71; font-weight:600; display:block; margin-top:5px;'>Tienes total acceso a mi panel de control.</span><a href='/admin' class='chatbot-action-btn'>Ir al Panel de Control <i class='fa-solid fa-arrow-right'></i></a>");
     } else if (responsePayload.email === 'facundotomas018@gmail.com') {
-        sessionStorage.setItem('login_greeting', "<strong style='font-size:1.1em; color:#fff;'>Hola Creador</strong><br><span style='color:#ccc;'>Es un gusto volver a verte.</span><br><span style='color:#2ecc71; font-weight:600; display:block; margin-top:5px;'>Acceso total a mi panel de control permitido !</span><a href='controlCenter.html' class='chatbot-action-btn'>Ir al Panel de Control <i class='fa-solid fa-arrow-right'></i></a>");
+        sessionStorage.setItem('login_greeting', "<strong style='font-size:1.1em; color:#fff;'>Hola Creador</strong><br><span style='color:#ccc;'>Es un gusto volver a verte.</span><br><span style='color:#2ecc71; font-weight:600; display:block; margin-top:5px;'>Acceso total a mi panel de control permitido !</span><a href='/admin' class='chatbot-action-btn'>Ir al Panel de Control <i class='fa-solid fa-arrow-right'></i></a>");
     }
 
     showLoggedInState(responsePayload);
@@ -930,13 +932,13 @@ function loadChatbotGlobal() {
     if (!document.querySelector('link[href*="chatbot.css"]')) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = '../CSS/chatbot.css';
+        link.href = '/CSS/chatbot.css';
         document.head.appendChild(link);
     }
     // 2. Cargar JS si no existe
     if (!document.querySelector('script[src*="chatbot.js"]')) {
         const script = document.createElement('script');
-        script.src = '../JavaScript/chatbot.js';
+        script.src = '/JavaScript/chatbot.js';
         document.body.appendChild(script);
     }
 }
@@ -1011,7 +1013,7 @@ async function renderLatestDrops() {
         console.log("✅ Renderizando", products.length, "productos con optimización");
         const cardsHTML = products.map((product, index) => {
             const safeId = String(product.id);
-            const href = `detailProduct.html?id=${safeId}`;
+            const href = product.slug ? `/producto/${product.slug}` : `/HTML/detailProduct.html?id=${safeId}`;
             
             // Optimización LCP: Primeras 2 imágenes cargan con prioridad alta
             const optimizedImg = window.optimizeCloudinary(product.image, 500);

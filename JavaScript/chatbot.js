@@ -39,7 +39,7 @@ class ChatbotManager {
     loadKnowledgeBase() {
         return new Promise((resolve) => {
             const script = document.createElement('script');
-            script.src = '../JavaScript/chatbotData.js';
+            script.src = '/JavaScript/chatbotData.js';
             script.onload = resolve;
             script.onerror = () => console.warn("⚠️ No se pudo cargar chatbotData.js");
             document.body.appendChild(script);

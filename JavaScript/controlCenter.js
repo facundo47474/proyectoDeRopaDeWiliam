@@ -1141,7 +1141,7 @@ class ControlCenterManager {
         <h2 style="font-size: 26px; margin: 10px 0; font-weight: 800;">${product.name}</h2>
         <p style="font-size: 22px; color: #2ecc71; font-weight: bold; margin: 5px 0;">${window.formatPrice ? window.formatPrice(product.price) : '$' + product.price.toLocaleString()}</p>
         <p style="color: #cccccc; line-height: 1.6; margin: 20px 0;">${product.description}</p>
-        <a href="${window.location.origin}/detailProduct.html?id=${product.id}" style="display: inline-block; background: #ffffff; color: #000000; padding: 18px 40px; text-decoration: none; font-weight: bold; border-radius: 50px; margin-top: 25px; text-transform: uppercase; transition: transform 0.2s;">Comprar Ahora</a>
+        <a href="${window.location.origin}${product.slug ? '/producto/' + product.slug : '/HTML/detailProduct.html?id=' + product.id}" style="display: inline-block; background: #ffffff; color: #000000; padding: 18px 40px; text-decoration: none; font-weight: bold; border-radius: 50px; margin-top: 25px; text-transform: uppercase; transition: transform 0.2s;">Comprar Ahora</a>
     </div>
     <div style="background: #1a1a1a; padding: 20px; text-align: center; font-size: 12px; color: #666666; border-top: 1px solid #222;">
         UrbanHustler - Streetwear Premium<br>
@@ -1241,7 +1241,7 @@ class ControlCenterManager {
                     subject: document.querySelector('#email-campaign-modal input').value,
                     message_html: emailHTML, // El HTML generado
                     product_name: product.name,
-                    product_link: window.location.origin + '/detailProduct.html?id=' + product.id
+                    product_link: window.location.origin + (product.slug ? '/producto/' + product.slug : '/HTML/detailProduct.html?id=' + product.id)
                 };
 
                 // Enviar

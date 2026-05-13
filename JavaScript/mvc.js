@@ -119,6 +119,7 @@ class ProductView {
             const optimizedImg = window.optimizeCloudinary(product.image, 400);
 
             const safeId = String(product.id); // Asegurar que el ID sea string para la URL
+            const url = product.slug ? `/producto/${product.slug}` : `/HTML/detailProduct.html?id=${safeId}`;
 
             card.innerHTML = `
                 <div class="card-image" style="aspect-ratio: 1/1; background: #222; overflow: hidden;">
@@ -126,7 +127,7 @@ class ProductView {
                          width="350" height="350" 
                          loading="lazy" decoding="async">
                     <div class="card-actions">
-                        <button class="btn-shop" onclick="animateAndRedirect(this, 'detailProduct.html?id=${safeId}')">Comprar Ahora</button>
+                        <button class="btn-shop" onclick="animateAndRedirect(this, '${url}')">Comprar Ahora</button>
                     </div>
                 </div>
                 <div class="card-details">

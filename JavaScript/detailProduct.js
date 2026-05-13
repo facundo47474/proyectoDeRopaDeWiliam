@@ -60,17 +60,18 @@ let relatedFilters = {
 
 async function initDetailProduct() {
     try {
-        // 1. Obtener ID de la URL
+        // 1. Obtener ID o Slug de la URL
         const params = new URLSearchParams(window.location.search);
+        const productSlug = params.get('producto');
         const productId = params.get('id');
 
-        if (!productId) {
-            console.error("❌ No se proporcionó ID de producto");
+        if (!productSlug && !productId) {
+            console.error("❌ No se proporcionó ID ni Slug de producto");
             window.location.href = 'index.html';
             return;
         }
 
-        console.log("🔍 [Detail] Buscando producto con ID:", productId);
+        console.log("🔍 [Detail] Buscando producto:", productSlug || productId);
 
         // 2. Obtener todas las fuentes de data
         const allProducts = await fetchAllProducts();
@@ -83,17 +84,20 @@ async function initDetailProduct() {
                 return;
             }
             console.error("❌ No hay productos disponibles");
-            renderErrorState(productId, 0);
+            renderErrorState(productSlug || productId, 0);
             return;
         }
 
-        // 3. Convertir ambos a strings para comparación consistente
-        const product = allProducts.find(p => String(p.id) === String(productId));
+        // 3. Buscar por slug o ID
+        const product = allProducts.find(p => {
+            if (productSlug && p.slug) return String(p.slug) === String(productSlug);
+            return String(p.id) === String(productId);
+        });
 
         if (!product) {
-            console.error("❌ Producto no encontrado. ID buscado:", productId);
+            console.error("❌ Producto no encontrado:", productSlug || productId);
             await new Promise(r => setTimeout(r, 1500)); // Espera elegante
-            renderErrorState(productId, allProducts.length);
+            renderErrorState(productSlug || productId, allProducts.length);
             return;
         }
 
@@ -104,6 +108,7 @@ async function initDetailProduct() {
         // 4. Renderizar componentes en orden
         renderProductDetail(product);
         renderRelatedProducts(product, allProducts);
+        updateSEOMetadata(product);
 
         // 5. Cargar componentes externos (no-blocking)
         loadExternalComponents();
@@ -112,6 +117,67 @@ async function initDetailProduct() {
         console.error("❌ Error en initDetailProduct:", error);
         renderErrorState('UNKNOWN', 0);
     }
+}
+
+// ============================================
+// SEO Y METADATOS DINÁMICOS
+// ============================================
+
+function updateSEOMetadata(product) {
+    // 1. Actualizar Título
+    document.title = `${product.name} | UrbanHustler`;
+
+    // 2. Actualizar Meta Description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.name = "description";
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = product.description || `Compra ${product.name} en UrbanHustler. Lo mejor en streetwear.`;
+
+    // 3. Actualizar OpenGraph (Opcional en SPA pero bueno para compartir)
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = `${product.name} | UrbanHustler`;
+    
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.content = metaDesc.content;
+
+    const ogImg = document.querySelector('meta[property="og:image"]');
+    if (ogImg) ogImg.content = product.image;
+
+    // 4. Inyectar JSON-LD (Datos Estructurados para Google Shopping)
+    const oldJsonLd = document.getElementById('json-ld-product');
+    if (oldJsonLd) oldJsonLd.remove();
+
+    const jsonLd = {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": product.name,
+        "image": [product.image],
+        "description": metaDesc.content,
+        "sku": String(product.id),
+        "brand": {
+            "@type": "Brand",
+            "name": "UrbanHustler"
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": window.location.href,
+            "priceCurrency": "ARS",
+            "price": product.price,
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+        }
+    };
+
+    const script = document.createElement('script');
+    script.id = 'json-ld-product';
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(jsonLd);
+    document.head.appendChild(script);
+    
+    console.log("🛠️ [SEO] Metadatos y JSON-LD inyectados para:", product.name);
 }
 
 // ============================================
@@ -313,16 +379,16 @@ function renderRelatedProducts(currentProduct, allProducts) {
 
         // 4. Generar HTML
         const cardsHtml = related.map(p => {
-            const safeId = String(p.id);
+            const url = p.slug ? `/producto/${p.slug}` : `/HTML/detailProduct.html?id=${p.id}`;
             const optimizedImg = window.optimizeCloudinary(p.image, 400);
 
             return `
-        <div class="product-card" onclick="window.location.href='detailProduct.html?id=${safeId}'" style="cursor: pointer;">
+        <div class="product-card" onclick="window.location.href='${url}'" style="cursor: pointer;">
             <div class="card-image">
                 <img src="${optimizedImg}" alt="${p.name}" 
                      width="300" height="300" loading="lazy">
                 <div class="card-actions">
-                    <button class="btn-shop" onclick="event.stopPropagation(); window.location.href='detailProduct.html?id=${safeId}'">
+                    <button class="btn-shop" onclick="event.stopPropagation(); window.location.href='${url}'">
                         Lo Quiero 🔥
                     </button>
                 </div>
@@ -515,7 +581,7 @@ function loadExternalComponents() {
     setTimeout(() => {
         try {
             if (typeof UIComponentLoader !== 'undefined') {
-                UIComponentLoader.loadComponent('filters-container', 'filters.html');
+                UIComponentLoader.loadComponent('filters-container', '../HTML/filters.html');
 
                 // Cargar filtros
                 const script = document.createElement('script');

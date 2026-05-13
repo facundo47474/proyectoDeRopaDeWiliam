@@ -70,9 +70,7 @@ class CartManager {
     }
 
     injectCartHTML() {
-        // Detectar si estamos en una subcarpeta (ej: /HTML/) para ajustar la ruta
-        const basePath = window.location.pathname.includes('/HTML/') ? '../' : '';
-        const logoPath = `${basePath}img.jpeg/logo.jpeg`;
+        const logoPath = "../img.jpeg/logo.jpeg";
 
         const cartHTML = `
             <div class="cart-overlay"></div>
