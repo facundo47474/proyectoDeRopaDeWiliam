@@ -835,6 +835,12 @@ class ControlCenterManager {
         // Recolectar imágenes del UI dinámico
         const imageInputs = document.querySelectorAll('.image-url-input');
         const images = Array.from(imageInputs).map(input => input.value.trim()).filter(val => val !== '');
+        
+        // --- SEO DINÁMICO ---
+        const rawName = document.getElementById('edit-name').value;
+        const slug = rawName.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 -]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
+        const rawDescription = document.getElementById('edit-description').value;
+        const seoDescription = rawDescription || `Compra ${rawName} en UrbanHustler. Talles disponibles y envío a todo el país. Lo mejor en streetwear.`;
 
         if (idVal) {
             // MODO EDICIÓN (Existe ID)
@@ -849,7 +855,8 @@ class ControlCenterManager {
             products[index].images = images; // Array completo
             products[index].category = category;
             products[index].gender = document.getElementById('edit-gender').value;
-            products[index].description = document.getElementById('edit-description').value;
+            products[index].description = seoDescription;
+            products[index].slug = slug;
             products[index].isLatestDrop = isLatestDrop;
             products[index].isOffer = isOffer;
             
@@ -869,7 +876,8 @@ class ControlCenterManager {
                 category: category,
                 gender: document.getElementById('edit-gender').value,
                 sizes: document.getElementById('edit-sizes').value.split(',').map(s => s.trim()).filter(s => s !== ''),
-                description: document.getElementById('edit-description').value || 'Nuevo producto agregado desde el panel.',
+                description: seoDescription,
+                slug: slug,
                 isLatestDrop: isLatestDrop,
                 isOffer: isOffer
             };
