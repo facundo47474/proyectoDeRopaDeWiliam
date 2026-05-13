@@ -4,36 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UrbanHustler | Ropa urbana, sneakers y outfits</title>
-    <meta name="description" content="UrbanHustler: tienda de ropa urbana, sneakers y outfits exclusivos. Descubre latest drops, ofertas y colección streetwear.">
+    <title>UrbanHustler | Ropa urbana, sneakers y streetwear</title>
+    <meta name="description"
+        content="Descubre UrbanHustler, una tienda de ropa urbana, sneakers y streetwear con estilo moderno para destacar en la ciudad.">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="author" content="UrbanHustler">
     <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Open Graph -->
     <meta property="og:locale" content="es_AR">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="UrbanHustler">
-    <meta property="og:title" content="UrbanHustler | Ropa urbana, sneakers y outfits">
-    <meta property="og:description" content="Streetwear y latest drops con estilo urbano. Compra ropa, sneakers y outfits en UrbanHustler.">
-    <meta property="og:image" content="/img.jpeg/logo.jpeg">
-    <meta property="og:url" content="/">
+    <meta property="og:title" content="UrbanHustler | Ropa urbana, sneakers y streetwear">
+    <meta property="og:description"
+        content="Descubre UrbanHustler, una tienda de ropa urbana, sneakers y streetwear con estilo moderno para destacar en la ciudad.">
+    <meta property="og:image" content="https://urbanhustler.vercel.app/img.jpeg/logo.jpeg">
+    <meta property="og:url" content="https://urbanhustler.vercel.app/">
+
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="UrbanHustler | Ropa urbana, sneakers y outfits">
-    <meta name="twitter:description" content="Tienda de streetwear con latest drops, ofertas y colección urbana.">
-    <meta name="twitter:image" content="/img.jpeg/logo.jpeg">
-    <meta name="google-signin-client_id" content="543305563101-b2bln4jo9vil1b4c1ns5iq1k6m1fm8fc.apps.googleusercontent.com">
-    <link rel="canonical" href="/HTML/index.html">
+    <meta name="twitter:title" content="UrbanHustler | Ropa urbana, sneakers y streetwear">
+    <meta name="twitter:description"
+        content="Descubre UrbanHustler, una tienda de ropa urbana, sneakers y streetwear con estilo moderno para destacar en la ciudad.">
+    <meta name="twitter:image" content="https://urbanhustler.vercel.app/img.jpeg/logo.jpeg">
+
+    <meta name="google-signin-client_id"
+        content="543305563101-b2bln4jo9vil1b4c1ns5iq1k6m1fm8fc.apps.googleusercontent.com">
+    <link rel="canonical" href="https://urbanhustler.vercel.app/">
     <link rel="icon" type="image/jpeg" href="/img.jpeg/logo.jpeg">
+
+    <!-- Schema Markup JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "UrbanHustler",
+      "url": "https://urbanhustler.vercel.app/",
+      "image": "https://urbanhustler.vercel.app/img.jpeg/logo.jpeg",
+      "description": "Descubre UrbanHustler, una tienda de ropa urbana, sneakers y streetwear con estilo moderno para destacar en la ciudad.",
+      "telephone": "",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "AR"
+      }
+    }
+    </script>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://accounts.google.com">
     <link rel="preconnect" href="https://i.postimg.cc" crossorigin>
     <link rel="stylesheet" href="../CSS/index.css">
     <link rel="stylesheet" href="../CSS/portadas.css">
     <link rel="stylesheet" href="../CSS/productos.css">
-    <link rel="stylesheet" href="../CSS/ubicacion.css">
-    <link rel="stylesheet" href="../CSS/footer.css">
-    <link rel="stylesheet" href="../CSS/chatbot.css">
+    <link rel="stylesheet" href="../CSS/ubicacion.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../CSS/footer.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../CSS/chatbot.css" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="../CSS/carousel-responsive.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Precarga de imagen principal LCP -->
+    <link rel="preload" href="/img.jpeg/reemplazoDelCarrusel%201.jpeg" as="image" fetchpriority="high">
+    <!-- Carga diferida de FontAwesome (Evitar CSS render blocking) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
@@ -46,6 +79,11 @@
     <div id="navbar-container"></div>
 
     <main id="main-content">
+        <!-- Título principal oculto para accesibilidad (SEO / Screen Readers) -->
+        <h1 class="sr-only"
+            style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+            UrbanHustler - Tienda de Ropa Urbana y Streetwear</h1>
+
         <!-- SECCION DEL CARRUSEL -->
         <div id="carousel-container"></div>
 

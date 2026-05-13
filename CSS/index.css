@@ -5,7 +5,7 @@
     --bg-body: #1A1A1A; /* Negro Carbono */
     --bg-navbar: #1A1A1A;
     --text-light: #E6E6E6; /* Blanco Gélido */
-    --text-muted: #8C8C8C; /* Gris Cemento */
+    --text-muted: #A0A0A0; /* Gris Cemento (Aclarado para Accesibilidad AA) */
     --bg-card: #333333; /* Antracita */
     --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --spacing-standard: 1rem;
@@ -111,7 +111,7 @@ body.light-mode .nav-notch-toggle:hover { color: #000; }
 /* --- EFECTO TEXTO "SPLIT" (Mitad y Mitad) --- */
 .split-text-gradient {
     /* Gradiente duro: 50% un color, 50% el otro */
-    background: linear-gradient(90deg, #E6E6E6 0%, #E6E6E6 50%, #8C8C8C 50%, #8C8C8C 100%);
+    background: linear-gradient(90deg, #E6E6E6 0%, #E6E6E6 50%, #A0A0A0 50%, #A0A0A0 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;

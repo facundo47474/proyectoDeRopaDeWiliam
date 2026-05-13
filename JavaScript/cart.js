@@ -93,7 +93,7 @@ class CartManager {
             <div class="cart-drawer">
                 <div class="cart-header">
                     <h3>Tu Carrito</h3>
-                    <button class="close-cart"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="close-cart" aria-label="Cerrar carrito"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="cart-items-container"></div>
                 <div class="cart-footer">
@@ -327,12 +327,12 @@ class CartManager {
                     <h4>${item.name}</h4>
                     <div class="cart-item-meta">Talle: ${item.size} | ${window.formatPrice ? window.formatPrice(item.price) : '$' + item.price.toLocaleString()}</div>
                     <div class="cart-item-controls">
-                        <button class="btn-qty" onclick="window.cartManager.updateQuantity(${index}, -1)">-</button>
+                        <button class="btn-qty" onclick="window.cartManager.updateQuantity(${index}, -1)" aria-label="Disminuir cantidad">-</button>
                         <span>${item.quantity}</span>
-                        <button class="btn-qty" onclick="window.cartManager.updateQuantity(${index}, 1)">+</button>
+                        <button class="btn-qty" onclick="window.cartManager.updateQuantity(${index}, 1)" aria-label="Aumentar cantidad">+</button>
                     </div>
                 </div>
-                <button class="btn-remove" onclick="window.cartManager.removeItem(${index})">
+                <button class="btn-remove" onclick="window.cartManager.removeItem(${index})" aria-label="Eliminar producto">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             `;
