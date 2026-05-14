@@ -1,17 +1,23 @@
 {
   "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/HTML/index.html"
+  "functions": {
+    "api/producto.js": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 10
     },
+    "api/sitemap.js": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
     {
       "source": "/producto/:slug",
       "destination": "/api/producto?slug=:slug"
     },
     {
-      "source": "/categoria/:cat",
-      "destination": "/HTML/index.html?category=:cat"
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
     },
     {
       "source": "/admin",
@@ -22,19 +28,23 @@
       "destination": "/HTML/salesHistory.html"
     },
     {
-      "source": "/sitemap.xml",
-      "destination": "/api/sitemap"
+      "source": "/categoria/:cat",
+      "destination": "/HTML/index.html?category=:cat"
+    },
+    {
+      "source": "/",
+      "destination": "/HTML/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/(.*).(jpg|jpeg|png|webp|mp4|svg|woff2)",
+      "source": "/(.*)\\.(jpg|jpeg|png|webp|mp4|svg|woff2)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     },
     {
-      "source": "/(.*).(js|css)",
+      "source": "/(.*)\\.(js|css)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400, must-revalidate" }
       ]
