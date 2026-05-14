@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /historial
+Disallow: /HTML/controlCenter.html
+Disallow: /HTML/salesHistory.html
+Disallow: /HTML/ordersManagement.html
 
 Sitemap: https://urbanhustler.vercel.app/sitemap.xml

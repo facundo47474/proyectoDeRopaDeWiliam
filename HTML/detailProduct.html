@@ -2,47 +2,117 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle del Producto - UrbanHustler</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Estilos -->
-    <link rel="stylesheet" href="../CSS/index.css">
-    <link rel="stylesheet" href="../CSS/footer.css">
-    <link rel="stylesheet" href="../CSS/productos.css"> <!-- Reutilizamos estilos de cards para sugerencias -->
-    <link rel="stylesheet" href="../CSS/detailProduct.css">
-    <link rel="stylesheet" href="../CSS/filters.css">
-    <link rel="stylesheet" href="../CSS/chatbot.css">
+  <!-- SEO Primary (base — será sobreescrito por api/producto.js vía SSR) -->
+  <title>Producto | UrbanHustler — Ropa Urbana y Streetwear</title>
+  <meta name="description"
+    content="Descubre este producto en UrbanHustler. Ropa urbana y streetwear de calidad premium con envío a todo Argentina.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="author" content="UrbanHustler">
+  <meta name="theme-color" content="#1A1A1A">
+  <link rel="canonical" href="https://urbanhustler.vercel.app/">
 
+  <!-- Open Graph -->
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="UrbanHustler">
+  <meta property="og:title" content="UrbanHustler — Ropa Urbana y Streetwear">
+  <meta property="og:description"
+    content="Descubre lo mejor en ropa urbana, hoodies, remeras oversize y streetwear en UrbanHustler.">
+  <meta property="og:image" content="https://urbanhustler.vercel.app/img.jpeg/logo.jpeg">
+  <meta property="og:url" content="https://urbanhustler.vercel.app/">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UrbanHustler — Ropa Urbana y Streetwear">
+  <meta name="twitter:description"
+    content="Descubre lo mejor en ropa urbana, hoodies y streetwear en UrbanHustler.">
+  <meta name="twitter:image" content="https://urbanhustler.vercel.app/img.jpeg/logo.jpeg">
+
+  <!-- Google Sign-In -->
+  <meta name="google-signin-client_id"
+    content="543305563101-b2bln4jo9vil1b4c1ns5iq1k6m1fm8fc.apps.googleusercontent.com">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="/img.jpeg/logo.jpeg">
+
+  <!-- Preconnects de rendimiento -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://accounts.google.com">
+  <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+  <link rel="dns-prefetch" href="https://www.gstatic.com">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="/CSS/index.css">
+  <link rel="stylesheet" href="/CSS/detailProduct.css">
+  <link rel="stylesheet" href="/CSS/productos.css">
+  <link rel="stylesheet" href="/CSS/footer.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="/CSS/filters.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="/CSS/chatbot.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    media="print" onload="this.media='all'">
+  <noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </noscript>
+
+  <!-- Google Sign-In SDK -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body class="detail-page">
+  <noscript>
+    <p>Activa JavaScript para navegar el catálogo completo de UrbanHustler.</p>
+  </noscript>
 
-    <div id="navbar-container"></div>
+  <!-- Navbar -->
+  <div id="navbar-container"></div>
 
-    <main class="detail-layout">
-        <div style="grid-column: 1 / -1; padding: 100px 5% 0 5%;">
-            <button onclick="window.history.back()" style="background: transparent; border: 1px solid #fff; color: #fff; padding: 8px 16px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: all 0.3s;" onmouseover="this.style.borderColor='#D90429'; this.style.color='#D90429'" onmouseout="this.style.borderColor='#fff'; this.style.color='#fff'">
-                <i class="fa-solid fa-arrow-left"></i> Volver
-            </button>
-        </div>
-        <div id="filters-container"></div>
-        <div id="product-detail-container" class="product-detail-container">
-            <!-- El contenido se inyecta vía JS -->
-        </div>
+  <main class="detail-layout">
 
-        <div id="related-products-container" class="related-products-container"></div>
-        <div id="lore-container"></div>
-    </main>
+    <!-- Botón Volver -->
+    <div style="grid-column: 1 / -1; padding: 100px 5% 0 5%;">
+      <button onclick="window.history.back()"
+        style="background: transparent; border: 1px solid #fff; color: #fff; padding: 8px 16px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: all 0.3s;"
+        onmouseover="this.style.borderColor='#D90429'; this.style.color='#D90429'"
+        onmouseout="this.style.borderColor='#fff'; this.style.color='#fff'">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </button>
+    </div>
 
-    <div id="footer-container"></div>
+    <!-- Breadcrumb (se actualiza dinámicamente con el producto) -->
+    <nav id="breadcrumb-nav" aria-label="Ruta de navegación"
+      style="grid-column:1/-1;padding:0 5%;font-size:0.85rem;color:#888;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <a href="/" style="color:#888;text-decoration:none;">Inicio</a>
+      <span>›</span>
+      <span id="breadcrumb-category" style="color:#888;">Catálogo</span>
+      <span>›</span>
+      <span id="breadcrumb-product" style="color:#fff;">Producto</span>
+    </nav>
 
-    <script src="/JavaScript/data.js" defer></script>
-    <script src="/JavaScript/navbar.js" defer></script>
-    <script src="/JavaScript/cart.js" defer></script> <!-- Ruta correcta -->
-    <script src="/JavaScript/detailProduct.js" defer></script>
-    <script src="/JavaScript/chatbot.js" defer></script>
+    <!-- Filtros -->
+    <div id="filters-container"></div>
+
+    <!-- Contenedor del producto (JS inyecta aquí el detalle) -->
+    <div id="product-detail-container" class="product-detail-container">
+      <!-- El contenido se inyecta vía detailProduct.js -->
+    </div>
+
+    <div id="related-products-container" class="related-products-container"></div>
+    <div id="lore-container"></div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Scripts -->
+  <script src="/JavaScript/data.js" defer></script>
+  <script src="/JavaScript/navbar.js" defer></script>
+  <script src="/JavaScript/cart.js" defer></script>
+  <script src="/JavaScript/detailProduct.js" defer></script>
+  <script src="/JavaScript/chatbot.js" defer></script>
 </body>
 
 </html>

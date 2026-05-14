@@ -124,60 +124,131 @@ async function initDetailProduct() {
 // ============================================
 
 function updateSEOMetadata(product) {
-    // 1. Actualizar Título
+    const baseUrl = 'https://urbanhustler.vercel.app';
+    const productUrl = product.slug
+        ? `${baseUrl}/producto/${product.slug}`
+        : window.location.href;
+    const description = product.description ||
+        `Compra ${product.name} en UrbanHustler. Lo mejor en streetwear y ropa urbana.`;
+    const categoryLabel = (product.category || 'ropa').toUpperCase();
+
+    // 1. Título
     document.title = `${product.name} | UrbanHustler`;
 
-    // 2. Actualizar Meta Description
+    // 2. Meta Description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
         metaDesc = document.createElement('meta');
-        metaDesc.name = "description";
+        metaDesc.name = 'description';
         document.head.appendChild(metaDesc);
     }
-    metaDesc.content = product.description || `Compra ${product.name} en UrbanHustler. Lo mejor en streetwear.`;
+    metaDesc.content = description;
 
-    // 3. Actualizar OpenGraph (Opcional en SPA pero bueno para compartir)
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.content = `${product.name} | UrbanHustler`;
-    
-    const ogDesc = document.querySelector('meta[property="og:description"]');
-    if (ogDesc) ogDesc.content = metaDesc.content;
+    // 3. Canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+        canonical = document.createElement('link');
+        canonical.rel = 'canonical';
+        document.head.appendChild(canonical);
+    }
+    canonical.href = productUrl;
 
-    const ogImg = document.querySelector('meta[property="og:image"]');
-    if (ogImg) ogImg.content = product.image;
+    // 4. Open Graph
+    const ogMeta = {
+        'og:title': `${product.name} | UrbanHustler`,
+        'og:description': description,
+        'og:image': product.image,
+        'og:url': productUrl,
+        'og:type': 'product'
+    };
+    Object.entries(ogMeta).forEach(([prop, content]) => {
+        let tag = document.querySelector(`meta[property="${prop}"]`);
+        if (!tag) {
+            tag = document.createElement('meta');
+            tag.setAttribute('property', prop);
+            document.head.appendChild(tag);
+        }
+        tag.content = content;
+    });
 
-    // 4. Inyectar JSON-LD (Datos Estructurados para Google Shopping)
-    const oldJsonLd = document.getElementById('json-ld-product');
-    if (oldJsonLd) oldJsonLd.remove();
+    // 5. Twitter Cards
+    const twMeta = {
+        'twitter:title': `${product.name} | UrbanHustler`,
+        'twitter:description': description,
+        'twitter:image': product.image
+    };
+    Object.entries(twMeta).forEach(([name, content]) => {
+        let tag = document.querySelector(`meta[name="${name}"]`);
+        if (!tag) {
+            tag = document.createElement('meta');
+            tag.name = name;
+            document.head.appendChild(tag);
+        }
+        tag.content = content;
+    });
+
+    // 6. JSON-LD Producto (Google Shopping)
+    const oldProduct = document.getElementById('json-ld-product');
+    if (oldProduct) oldProduct.remove();
 
     const jsonLd = {
-        "@context": "https://schema.org/",
-        "@type": "Product",
-        "name": product.name,
-        "image": [product.image],
-        "description": metaDesc.content,
-        "sku": String(product.id),
-        "brand": {
-            "@type": "Brand",
-            "name": "UrbanHustler"
-        },
-        "offers": {
-            "@type": "Offer",
-            "url": window.location.href,
-            "priceCurrency": "ARS",
-            "price": product.price,
-            "itemCondition": "https://schema.org/NewCondition",
-            "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+        '@context': 'https://schema.org/',
+        '@type': 'Product',
+        'name': product.name,
+        'image': product.images && product.images.length > 0 ? product.images : [product.image],
+        'description': description,
+        'sku': String(product.id),
+        'brand': { '@type': 'Brand', 'name': 'UrbanHustler' },
+        'offers': {
+            '@type': 'Offer',
+            'url': productUrl,
+            'priceCurrency': 'ARS',
+            'price': product.price,
+            'itemCondition': 'https://schema.org/NewCondition',
+            'availability': product.stock > 0
+                ? 'https://schema.org/InStock'
+                : 'https://schema.org/OutOfStock',
+            'seller': { '@type': 'Organization', 'name': 'UrbanHustler' }
         }
     };
 
-    const script = document.createElement('script');
-    script.id = 'json-ld-product';
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(jsonLd);
-    document.head.appendChild(script);
-    
-    console.log("🛠️ [SEO] Metadatos y JSON-LD inyectados para:", product.name);
+    const scriptProduct = document.createElement('script');
+    scriptProduct.id = 'json-ld-product';
+    scriptProduct.type = 'application/ld+json';
+    scriptProduct.text = JSON.stringify(jsonLd);
+    document.head.appendChild(scriptProduct);
+
+    // 7. JSON-LD Breadcrumb
+    const oldBreadcrumb = document.getElementById('json-ld-breadcrumb');
+    if (oldBreadcrumb) oldBreadcrumb.remove();
+
+    const breadcrumbLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': 'Inicio', 'item': baseUrl + '/' },
+            { '@type': 'ListItem', 'position': 2, 'name': categoryLabel, 'item': `${baseUrl}/categoria/${product.category || 'ropa'}` },
+            { '@type': 'ListItem', 'position': 3, 'name': product.name }
+        ]
+    };
+
+    const scriptBreadcrumb = document.createElement('script');
+    scriptBreadcrumb.id = 'json-ld-breadcrumb';
+    scriptBreadcrumb.type = 'application/ld+json';
+    scriptBreadcrumb.text = JSON.stringify(breadcrumbLd);
+    document.head.appendChild(scriptBreadcrumb);
+
+    // 8. Actualizar breadcrumb visible en el DOM
+    const breadcrumbCat = document.getElementById('breadcrumb-category');
+    const breadcrumbProd = document.getElementById('breadcrumb-product');
+    if (breadcrumbCat) {
+        breadcrumbCat.innerHTML = `<a href="/categoria/${product.category || 'ropa'}" style="color:#888;text-decoration:none;">${categoryLabel}</a>`;
+    }
+    if (breadcrumbProd) {
+        breadcrumbProd.textContent = product.name;
+    }
+
+    console.log('🛠️ [SEO] Metadatos, breadcrumb y JSON-LD actualizados para:', product.name);
 }
 
 // ============================================
@@ -297,7 +368,7 @@ function renderProductDetail(product) {
                      fetchpriority="high" 
                      loading="eager" 
                      decoding="sync"
-                     alt="${product.name}">
+                     alt="${product.name} — UrbanHustler ${(product.category || 'ropa urbana').toUpperCase()}">
             </div>
         </div>
 

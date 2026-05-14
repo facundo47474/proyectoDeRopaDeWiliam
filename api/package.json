@@ -1,0 +1,12 @@
+{
+  "name": "urbanhustler-api",
+  "version": "1.0.0",
+  "description": "Vercel Serverless Functions para SSR de productos y sitemap dinámico",
+  "private": true,
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
