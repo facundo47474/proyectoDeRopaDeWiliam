@@ -1,23 +1,46 @@
 /**
  * api/sitemap.js
  * Vercel Serverless Function — Genera sitemap.xml dinámico.
+ * 
+ * USA: Firestore REST API (sin firebase-admin, sin dependencias)
  */
 
-const admin = require('firebase-admin');
+const FIREBASE_API_KEY = 'AIzaSyAG2an8MiIjLbIxGgJQn36Jf6zpT93fgYY';
+const PROJECT_ID       = 'urbanhustler-15d31';
+const FIRESTORE_BASE   = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 
-function getDb() {
-    if (!admin.apps.length) {
-        admin.initializeApp({
-            credential: admin.credential.cert({
-                projectId: process.env.FIREBASE_PROJECT_ID || 'urbanhustler-15d31',
-                clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-                privateKey: process.env.FIREBASE_PRIVATE_KEY
-                    ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
-                    : undefined,
-            }),
-        });
+// ─── Parsear documento Firestore → objeto JS plano ────────────────────────
+function parseValue(v) {
+    if (!v) return null;
+    if (v.stringValue  !== undefined) return v.stringValue;
+    if (v.integerValue !== undefined) return parseInt(v.integerValue, 10);
+    if (v.doubleValue  !== undefined) return v.doubleValue;
+    if (v.booleanValue !== undefined) return v.booleanValue;
+    if (v.nullValue    !== undefined) return null;
+    if (v.arrayValue)  return (v.arrayValue.values  || []).map(parseValue);
+    if (v.mapValue)    return parseFields(v.mapValue.fields || {});
+    return null;
+}
+
+function parseFields(fields) {
+    const obj = {};
+    for (const [k, v] of Object.entries(fields || {})) {
+        obj[k] = parseValue(v);
     }
-    return admin.firestore();
+    return obj;
+}
+
+// ─── Obtener todos los productos via Firestore REST ───────────────────────
+async function getAllProducts() {
+    const url = `${FIRESTORE_BASE}/products?key=${FIREBASE_API_KEY}&pageSize=1000`;
+    
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Firestore error: ${response.status}`);
+    
+    const data = await response.json();
+    if (!data.documents) return [];
+    
+    return data.documents.map(doc => parseFields(doc.fields));
 }
 
 module.exports = async (req, res) => {
@@ -25,9 +48,7 @@ module.exports = async (req, res) => {
     const today = new Date().toISOString().split('T')[0];
 
     try {
-        const db = getDb();
-        const snapshot = await db.collection('products').get();
-        const products = snapshot.docs.map(doc => doc.data());
+        const products = await getAllProducts();
         const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
 
         let xml = `<?xml version="1.0" encoding="UTF-8"?>
