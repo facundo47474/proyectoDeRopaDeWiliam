@@ -1,13 +1,5 @@
 {
   "cleanUrls": true,
-  "functions": {
-    "api/producto.js": {
-      "maxDuration": 10
-    },
-    "api/sitemap.js": {
-      "maxDuration": 10
-    }
-  },
   "rewrites": [
     {
       "source": "/producto/:slug",
