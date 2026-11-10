@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UrbanHustler | Ropa urbana, sneakers y streetwear</title>
+    <meta name="description"
+        content="Descubre UrbanHustler, una tienda de ropa urbana, sneakers y streetwear con estilo moderno para destacar en la ciudad.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="author" content="UrbanHustler">
+    <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Open Graph -->
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="UrbanHustler">
+    <meta property="og:title" content="UrbanHustler | Ropa urbana, sneakers y streetwear">
+    <meta property="og:description"
+        content="Descubre UrbanHustler, una tienda de ropa urbana, sneakers y streetwear con estilo moderno para destacar en la ciudad.">
+    <meta property="og:image" content="https://urbanhustler.vercel.app/recursos/imagenes/logo.jpeg">
+    <meta property="og:url" content="https://urbanhustler.vercel.app/">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="UrbanHustler | Ropa urbana, sneakers y streetwear">
+    <meta name="twitter:description"
+        content="Descubre UrbanHustler, una tienda de ropa urbana, sneakers y streetwear con estilo moderno para destacar en la ciudad.">
+    <meta name="twitter:image" content="https://urbanhustler.vercel.app/recursos/imagenes/logo.jpeg">
+
+    <meta name="google-signin-client_id"
+        content="543305563101-jdvoskcnplk9tguiqbgt2g68snd7mlk0.apps.googleusercontent.com">
+    <link rel="canonical" href="https://urbanhustler.vercel.app/">
+    <link rel="icon" type="image/jpeg" href="/recursos/imagenes/logo.jpeg">
+
+    <!-- Schema Markup JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "UrbanHustler",
+      "url": "https://urbanhustler.vercel.app/",
+      "image": "https://urbanhustler.vercel.app/recursos/imagenes/logo.jpeg",
+      "description": "Descubre UrbanHustler, una tienda de ropa urbana, sneakers y streetwear con estilo moderno para destacar en la ciudad.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "San Lorenzo 19",
+        "addressLocality": "Apóstoles",
+        "addressRegion": "Misiones",
+        "addressCountry": "AR"
+      }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://accounts.google.com">
+    <link rel="preconnect" href="https://i.postimg.cc" crossorigin>
+
+    <!-- Estilos organizados por sección -->
+    <link rel="stylesheet" href="/estilos/general.css">
+    <link rel="stylesheet" href="/estilos/inicio.css">
+    <link rel="stylesheet" href="/estilos/producto.css">
+    <link rel="stylesheet" href="/estilos/carrito.css">
+    <link rel="stylesheet" href="/estilos/asistente.css" media="print" onload="this.media='all'">
+
+    <!-- Precarga de imagen principal LCP -->
+    <link rel="preload" href="/recursos/imagenes/reemplazoDelCarrusel%201.jpeg" as="image" fetchpriority="high">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body class="home-page">
+    <noscript>
+        <p>Activa JavaScript para navegar el catálogo completo de UrbanHustler.</p>
+    </noscript>
+
+    <!-- Barra de Navegación -->
+    <div id="navbar-container"></div>
+
+    <main id="main-content">
+        <h1 class="sr-only"
+            style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+            UrbanHustler - Tienda de Ropa Urbana y Streetwear</h1>
+
+        <!-- Carrusel Principal -->
+        <div id="carousel-container"></div>
+
+        <!-- Catálogo de Productos -->
+        <section id="productos-container" class="productos-section">
+            <div class="section-header-editorial">
+                <span class="section-eyebrow">NEW IN // TEMPORADA 2026</span>
+                <h2 class="section-title">COLECCIÓN</h2>
+            </div>
+            <div class="products-filter-bar"></div>
+            <div id="home-products-grid" class="products-grid"></div>
+            <div id="catalog-pagination" class="catalog-pagination"></div>
+        </section>
+
+        <!-- Portadas de Video (Lookbook) -->
+        <div id="portadas-container"></div>
+
+        <!-- Redes Sociales -->
+        <div id="social-media-container"></div>
+
+        <!-- Ubicación y Horarios -->
+        <div id="ubicacion-container"></div>
+    </main>
+
+    <!-- Pie de Página -->
+    <div id="footer-container"></div>
+
+    <!-- Módulos JavaScript -->
+    <script src="/js/negocio.js" defer></script>
+    <script src="/js/herramientas.js" defer></script>
+    <script src="/js/base-datos.js" defer></script>
+    <script src="/js/sesion.js" defer></script>
+    <script src="/js/interfaz.js" defer></script>
+    <script src="/js/inicio.js" defer></script>
+    <script src="/js/carrito.js" defer></script>
+    <script src="/js/asistente-respuestas.js" defer></script>
+    <script src="/js/asistente.js" defer></script>
+</body>
+
+</html>
