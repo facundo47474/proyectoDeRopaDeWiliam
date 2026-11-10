@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control | UrbanHustler</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/jpeg" href="/recursos/imagenes/logo.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/estilos/general.css">
+    <link rel="stylesheet" href="/estilos/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="admin-body">
+    <div id="navbar-container"></div>
+
+    <div class="admin-container">
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#resumen" class="admin-nav-link active" data-target="view-metrics" data-route="resumen">
+                        <i class="fa-solid fa-chart-simple"></i> Resumen
+                    </a>
+                </li>
+                <li>
+                    <a href="#productos" class="admin-nav-link" data-target="view-products" data-route="productos">
+                        <i class="fa-solid fa-shirt"></i> Productos
+                    </a>
+                </li>
+                <li>
+                    <a href="#pedidos" class="admin-nav-link" data-target="view-orders" data-route="pedidos">
+                        <i class="fa-solid fa-bag-shopping"></i> Pedidos
+                        <span class="nav-badge" id="sidebar-orders-badge" style="display: none;">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#ventas" class="admin-nav-link" data-target="view-sales" data-route="ventas">
+                        <i class="fa-solid fa-receipt"></i> Ventas
+                    </a>
+                </li>
+                <li>
+                    <a href="#clientes" class="admin-nav-link" data-target="view-users" data-route="clientes">
+                        <i class="fa-solid fa-users"></i> Clientes
+                    </a>
+                </li>
+                <li class="sidebar-divider">
+                    <a href="/index.html" class="admin-nav-link">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Tienda
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <!-- VISTA 1: RESUMEN Y MÉTRICAS -->
+            <section id="view-metrics" class="admin-view">
+                <div class="dashboard-header">
+                    <div>
+                        <span class="admin-eyebrow">PANEL DE CONTROL</span>
+                        <h1>RESUMEN DEL NEGOCIO</h1>
+                    </div>
+                    <button type="button" class="btn-secondary" id="btn-refresh-dashboard">
+                        <i class="fa-solid fa-rotate"></i> Actualizar Datos
+                    </button>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card" id="card-revenue" title="Ver Historial de Ventas">
+                        <div class="metric-info">
+                            <h3>Ingresos Confirmados</h3>
+                            <div class="metric-value" id="metric-revenue">$0</div>
+                            <span class="metric-sub" id="metric-revenue-sub">0 ventas aprobadas</span>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
+
+                    <div class="metric-card" id="card-orders" title="Ver Pedidos Pendientes">
+                        <div class="metric-info">
+                            <h3>Pedidos Pendientes</h3>
+                            <div class="metric-value" id="metric-orders">0</div>
+                            <span class="metric-sub">Esperando confirmación</span>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-clock"></i></div>
+                    </div>
+
+                    <div class="metric-card" id="card-products" title="Ir a Productos">
+                        <div class="metric-info">
+                            <h3>Prendas en Catálogo</h3>
+                            <div class="metric-value" id="metric-products">0</div>
+                            <span class="metric-sub" id="metric-products-sub">0 activas en tienda</span>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-shirt"></i></div>
+                    </div>
+
+                    <div class="metric-card" id="card-low-stock" title="Ver prendas con bajo stock">
+                        <div class="metric-info">
+                            <h3>Stock Bajo / Agotado</h3>
+                            <div class="metric-value" id="metric-low-stock">0</div>
+                            <span class="metric-sub">Con menos de 3 unidades</span>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    </div>
+                </div>
+
+                <div class="admin-panel-card chart-card">
+                    <div class="panel-card-header">
+                        <h3>INGRESOS POR CATEGORÍA</h3>
+                        <select id="chart-filter" class="admin-select-sm" aria-label="Filtrar período del gráfico">
+                            <option value="all">Histórico Completo</option>
+                            <option value="today">Hoy</option>
+                            <option value="7days">Últimos 7 días</option>
+                            <option value="30days">Últimos 30 días</option>
+                        </select>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="admin-panel-card">
+                    <div class="panel-card-header">
+                        <h3>ÚLTIMAS VENTAS CONFIRMADAS</h3>
+                        <button type="button" class="btn-link" data-jump="view-sales">Ver historial completo &rarr;</button>
+                    </div>
+                    <div class="orders-table-container">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Prendas</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="latest-orders-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA 2: PRODUCTOS Y CATEGORÍAS -->
+            <section id="view-products" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <div>
+                        <span class="admin-eyebrow">INVENTARIO</span>
+                        <h1>PRODUCTOS Y CATEGORÍAS</h1>
+                    </div>
+                    <div class="header-actions">
+                        <button type="button" class="btn-secondary" id="btn-manage-categories">
+                            <i class="fa-solid fa-tags"></i> Categorías
+                        </button>
+                        <button type="button" class="btn-primary" id="btn-add-product">
+                            <i class="fa-solid fa-plus"></i> Nueva Prenda
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-toolbar">
+                    <div class="toolbar-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="admin-product-search" placeholder="Buscar prenda por nombre..." aria-label="Buscar prenda">
+                    </div>
+                    <select id="admin-category-filter" class="admin-select-sm" aria-label="Filtrar por categoría">
+                        <option value="all">Todas las categorías</option>
+                    </select>
+                    <select id="admin-stock-filter" class="admin-select-sm" aria-label="Filtrar por estado">
+                        <option value="all">Todos los estados</option>
+                        <option value="low">Stock bajo (&lt; 3 u.)</option>
+                        <option value="out">Agotados (0 u.)</option>
+                        <option value="offer">En Oferta (SALE)</option>
+                        <option value="hidden">Ocultos</option>
+                    </select>
+                </div>
+
+                <div class="admin-panel-card">
+                    <div class="orders-table-container">
+                        <table class="orders-table" id="products-table">
+                            <thead>
+                                <tr>
+                                    <th>Prenda</th>
+                                    <th>Categoría</th>
+                                    <th>Precio</th>
+                                    <th>Talles</th>
+                                    <th>Stock Rápido</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA 3: PEDIDOS Y ENVÍOS -->
+            <section id="view-orders" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <div>
+                        <span class="admin-eyebrow">MERCADO PAGO &bull; WHATSAPP &bull; DESPACHOS</span>
+                        <h1>PEDIDOS Y ENVÍOS</h1>
+                    </div>
+                    <div class="header-actions">
+                        <button type="button" class="btn-secondary" id="btn-toggle-shipping-config">
+                            <i class="fa-solid fa-truck-fast"></i> Tarifas de Envío
+                        </button>
+                        <button type="button" class="btn-secondary" id="btn-refresh-orders">
+                            <i class="fa-solid fa-rotate"></i> Actualizar
+                        </button>
+                    </div>
+                </div>
+                <p class="view-subtitle">Confirma pedidos pendientes de WhatsApp o despacha ventas ya abonadas con Mercado Pago.</p>
+
+                <!-- Configurador de Tarifas de Envío (Colapsable) -->
+                <div id="shipping-config-panel" class="admin-panel-card shipping-config-card" style="display: none;">
+                    <div class="panel-card-header">
+                        <h3><i class="fa-solid fa-sliders"></i> CONFIGURAR TARIFAS DE ENVÍO Y ENVÍO GRATIS</h3>
+                        <button type="button" class="btn-link" id="btn-close-shipping-config">Cerrar &times;</button>
+                    </div>
+                    <form id="shipping-config-form">
+                        <div class="form-toggles-row">
+                            <label class="toggle-card">
+                                <input type="checkbox" id="ship-free-enabled" checked>
+                                <span class="toggle-indicator"></span>
+                                <span><strong>Activar Envío Gratis</strong><small>Bonifica el envío superando el monto mínimo</small></span>
+                            </label>
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label for="ship-free-threshold">Monto Mínimo Envío Gratis ($ ARS)</label>
+                                <input type="number" id="ship-free-threshold" min="0" step="1000" value="120000">
+                            </div>
+                        </div>
+
+                        <div class="shipping-rates-grid">
+                            <div class="form-group">
+                                <label for="ship-local-cp">CP Local (Origen)</label>
+                                <input type="text" id="ship-local-cp" maxlength="8" value="3350" placeholder="3350">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-rate-local">Zona 0: Local Apóstoles ($)</label>
+                                <input type="number" id="ship-rate-local" min="0" step="100" value="2500">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-rate-zone1">Zona 1: Misiones / Ctes ($)</label>
+                                <input type="number" id="ship-rate-zone1" min="0" step="100" value="6500">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-rate-zone2">Zona 2: NEA / Litoral ($)</label>
+                                <input type="number" id="ship-rate-zone2" min="0" step="100" value="8500">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-rate-zone3">Zona 3: Nacional ($)</label>
+                                <input type="number" id="ship-rate-zone3" min="0" step="100" value="10500">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-rate-zone4">Zona 4: Patagonia / Sur ($)</label>
+                                <input type="number" id="ship-rate-zone4" min="0" step="100" value="14500">
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:flex-end; gap:10px;">
+                            <button type="submit" class="btn-primary" id="btn-save-shipping-config">
+                                <i class="fa-solid fa-floppy-disk"></i> Guardar Tarifas
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Filtros de Bandeja de Pedidos -->
+                <div class="admin-toolbar" style="justify-content: space-between;">
+                    <div class="preset-pills" id="orders-filter-pills">
+                        <button type="button" class="sales-preset-btn active" data-orders-tab="pending">Por Confirmar (<span id="count-tab-pending">0</span>)</button>
+                        <button type="button" class="sales-preset-btn" data-orders-tab="dispatch">Por Despachar (<span id="count-tab-dispatch">0</span>)</button>
+                        <button type="button" class="sales-preset-btn" data-orders-tab="all">Todos (<span id="count-tab-all">0</span>)</button>
+                    </div>
+                </div>
+
+                <div id="orders-list" class="orders-grid"></div>
+            </section>
+
+            <!-- VISTA 4: HISTORIAL DE VENTAS -->
+            <section id="view-sales" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <div>
+                        <span class="admin-eyebrow">CAJA Y REPORTES</span>
+                        <h1>HISTORIAL DE VENTAS</h1>
+                    </div>
+                </div>
+
+                <div class="sales-filters-bar">
+                    <div class="preset-pills">
+                        <button type="button" class="sales-preset-btn active" data-preset="all">Todo</button>
+                        <button type="button" class="sales-preset-btn" data-preset="today">Hoy</button>
+                        <button type="button" class="sales-preset-btn" data-preset="7days">7 días</button>
+                        <button type="button" class="sales-preset-btn" data-preset="month">Este mes</button>
+                    </div>
+                    <div class="date-range-inputs">
+                        <div class="date-field">
+                            <label for="date-start">Desde</label>
+                            <input type="date" id="date-start">
+                        </div>
+                        <div class="date-field">
+                            <label for="date-end">Hasta</label>
+                            <input type="date" id="date-end">
+                        </div>
+                        <button type="button" class="btn-primary btn-sm" id="apply-filters">Filtrar</button>
+                        <button type="button" class="btn-secondary btn-sm" id="reset-filters">Limpiar</button>
+                    </div>
+                </div>
+
+                <div class="sales-summary-strip">
+                    <div class="summary-stat">
+                        <span>INGRESOS DEL PERÍODO</span>
+                        <strong id="sales-period-revenue">$0</strong>
+                    </div>
+                    <div class="summary-stat">
+                        <span>VENTAS CONFIRMADAS</span>
+                        <strong id="sales-period-count">0</strong>
+                    </div>
+                    <div class="summary-stat">
+                        <span>TICKET PROMEDIO</span>
+                        <strong id="sales-period-ticket">$0</strong>
+                    </div>
+                </div>
+
+                <div class="admin-panel-card">
+                    <div class="orders-table-container">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>ID / Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Prendas</th>
+                                    <th>Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sales-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA 5: CLIENTES REGISTRADOS -->
+            <section id="view-users" class="admin-view" style="display: none;">
+                <div class="dashboard-header">
+                    <div>
+                        <span class="admin-eyebrow">COMUNIDAD</span>
+                        <h1>CLIENTES REGISTRADOS</h1>
+                    </div>
+                </div>
+
+                <div class="admin-toolbar">
+                    <div class="toolbar-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="admin-user-search" placeholder="Buscar cliente por nombre o correo..." aria-label="Buscar cliente">
+                    </div>
+                </div>
+
+                <div class="admin-panel-card">
+                    <div class="orders-table-container">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Origen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL: CREAR / EDITAR PRODUCTO -->
+    <div class="modal-overlay" id="edit-product-modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2 id="product-modal-title">Nueva Prenda</h2>
+                <button type="button" class="modal-close-x" id="close-edit-x" aria-label="Cerrar">&times;</button>
+            </div>
+            <form id="edit-product-form">
+                <input type="hidden" id="edit-id">
+
+                <div class="form-group">
+                    <label for="edit-name">Nombre de la Prenda</label>
+                    <input type="text" id="edit-name" placeholder="Ej: Hoodie Oversize Heavyweight Wash" required>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="edit-price">Precio ($ ARS)</label>
+                        <input type="number" id="edit-price" min="0" placeholder="45000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-stock">Stock Disponible</label>
+                        <input type="number" id="edit-stock" min="0" value="5" required>
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="edit-category">Categoría</label>
+                        <select id="edit-category"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-gender">Calce / Género</label>
+                        <select id="edit-gender">
+                            <option value="unisex">Unisex</option>
+                            <option value="men">Hombre</option>
+                            <option value="women">Mujer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Talles Disponibles (toca para activar o desactivar)</label>
+                    <div class="size-chips-grid" id="size-chips-container">
+                        <button type="button" class="size-chip" data-size="XS">XS</button>
+                        <button type="button" class="size-chip" data-size="S">S</button>
+                        <button type="button" class="size-chip" data-size="M">M</button>
+                        <button type="button" class="size-chip" data-size="L">L</button>
+                        <button type="button" class="size-chip" data-size="XL">XL</button>
+                        <button type="button" class="size-chip" data-size="XXL">XXL</button>
+                        <button type="button" class="size-chip" data-size="Único">Único</button>
+                        <button type="button" class="size-chip" data-size="38">38</button>
+                        <button type="button" class="size-chip" data-size="40">40</button>
+                        <button type="button" class="size-chip" data-size="42">42</button>
+                        <button type="button" class="size-chip" data-size="44">44</button>
+                        <button type="button" class="size-chip" data-size="46">46</button>
+                    </div>
+                    <input type="text" id="edit-sizes" placeholder="O escribe talles separados por coma (ej: S, M, L)" style="margin-top: 8px;">
+                </div>
+
+                <div class="form-toggles-row">
+                    <label class="toggle-card">
+                        <input type="checkbox" id="edit-is-offer">
+                        <span class="toggle-indicator"></span>
+                        <span><strong>En Oferta (SALE)</strong><small>Muestra la etiqueta SALE y aparece en la pestaña Sale</small></span>
+                    </label>
+                    <label class="toggle-card">
+                        <input type="checkbox" id="edit-is-visible" checked>
+                        <span class="toggle-indicator"></span>
+                        <span><strong>Visible en la tienda</strong><small>Desmarca para pausar sin borrar el producto</small></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                        <label style="margin:0;">Fotos (Foto 1 = Principal, Foto 2 = Hover)</label>
+                        <button type="button" id="btn-add-image-field" class="btn-secondary btn-sm">
+                            <i class="fa-solid fa-plus"></i> Agregar Foto
+                        </button>
+                    </div>
+                    <div id="images-list-container" class="images-compact-grid"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-description">Descripción</label>
+                    <textarea id="edit-description" rows="2" placeholder="Detalles de tela, moldería boxy/oversize, lavado..."></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-edit">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="btn-save-product">Guardar Prenda</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: GESTIÓN DE CATEGORÍAS -->
+    <div class="modal-overlay" id="manage-categories-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Categorías</h2>
+                <button type="button" class="modal-close-x" id="close-categories-x" aria-label="Cerrar">&times;</button>
+            </div>
+
+            <div class="category-add-row">
+                <input type="text" id="new-category-input" placeholder="Ej: Camperas, Gorras, Combos...">
+                <button type="button" class="btn-primary" id="btn-add-category">Agregar</button>
+            </div>
+
+            <ul id="categories-list" class="categories-list-ul"></ul>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="close-categories-modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: DETALLE DE VENTA -->
+    <div class="modal-overlay" id="sale-detail-modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2>Venta #<span id="modal-order-id"></span></h2>
+                <button type="button" class="modal-close-x" id="close-sale-detail-x" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="sale-meta-box">
+                <div><span>Cliente:</span> <strong id="modal-order-customer">-</strong></div>
+                <div><span>Fecha:</span> <strong id="modal-order-date">-</strong></div>
+                <div><span>Pago:</span> <strong id="modal-order-payment">-</strong></div>
+            </div>
+            <div id="modal-order-shipping-box" style="margin-bottom: 1rem;"></div>
+            <div class="sale-items-list" id="modal-items-list"></div>
+            <div class="sale-modal-footer" style="flex-direction:column; align-items:stretch; gap:6px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.82rem; color:#9E9E9E;">
+                    <span>Subtotal Prendas</span>
+                    <span id="modal-subtotal">$0</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.82rem; color:#9E9E9E;">
+                    <span>Costo de Envío</span>
+                    <span id="modal-shipping-cost">$0</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; padding-top:6px; border-top:1px solid rgba(255,255,255,0.08);">
+                    <span>Total Cobrado</span>
+                    <strong id="modal-total">$0</strong>
+                </div>
+            </div>
+            <div class="modal-actions" style="flex-wrap: wrap;">
+                <button type="button" class="btn-secondary" id="btn-modal-copy-label"><i class="fa-solid fa-copy"></i> Copiar Etiqueta</button>
+                <button type="button" class="btn-primary" id="btn-modal-send-tracking"><i class="fa-solid fa-truck-fast"></i> Enviar Seguimiento</button>
+                <button type="button" class="btn-secondary" id="close-sale-detail">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CÓDIGO DE SEGUIMIENTO -->
+    <div class="modal-overlay" id="tracking-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Despacho y Seguimiento</h2>
+                <button type="button" class="modal-close-x" id="close-tracking-x" aria-label="Cerrar">&times;</button>
+            </div>
+            <form id="tracking-form">
+                <input type="hidden" id="tracking-order-id">
+                <p id="tracking-order-summary" style="color:#9E9E9E; font-size:0.84rem; margin-bottom:1rem;"></p>
+                <div class="form-group">
+                    <label for="tracking-carrier">Correo / Transporte</label>
+                    <input type="text" id="tracking-carrier" value="Correo Argentino" placeholder="Correo Argentino, Andreani, Moto...">
+                </div>
+                <div class="form-group">
+                    <label for="tracking-code">Código de Seguimiento</label>
+                    <input type="text" id="tracking-code" placeholder="Ej: CA123456789AR" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-tracking">Cancelar</button>
+                    <button type="submit" class="btn-primary"><i class="fa-brands fa-whatsapp"></i> Guardar y Enviar por WhatsApp</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOASTS DEL PANEL -->
+    <div id="admin-toast-container" class="admin-toast-container"></div>
+
+    <!-- Módulos JavaScript -->
+    <script src="/js/negocio.js" defer></script>
+    <script src="/js/herramientas.js" defer></script>
+    <script src="/js/base-datos.js" defer></script>
+    <script src="/js/sesion.js" defer></script>
+    <script src="/js/interfaz.js" defer></script>
+    <script src="/js/admin/productos.js" defer></script>
+    <script src="/js/admin/pedidos.js" defer></script>
+    <script src="/js/admin/ventas.js" defer></script>
+    <script src="/js/admin/panel.js" defer></script>
+</body>
+
+</html>

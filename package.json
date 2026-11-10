@@ -2,6 +2,10 @@
   "name": "urbanhustler",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "start": "npx live-server --port=5500",
+    "dev": "npx live-server --port=5500"
+  },
   "engines": {
     "node": ">=18.x"
   }

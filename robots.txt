@@ -1,9 +1,10 @@
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /historial
-Disallow: /HTML/controlCenter.html
-Disallow: /HTML/salesHistory.html
-Disallow: /HTML/ordersManagement.html
+
+# Bloquear páginas privadas y administrativas
+Disallow: /admin/
+Disallow: /admin/panel.html
+Disallow: /admin/pedidos.html
+Disallow: /admin/ventas.html
 
 Sitemap: https://urbanhustler.vercel.app/sitemap.xml

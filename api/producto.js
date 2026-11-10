@@ -3,7 +3,6 @@
  * Vercel Serverless Function — SSR para páginas de producto.
  * 
  * USA: Firestore REST API (sin firebase-admin, sin dependencias)
- * La API key ya es pública — está en firebase.js del frontend.
  * Node 18+ tiene fetch() nativo, no se necesita ningún paquete.
  */
 
@@ -82,7 +81,7 @@ function buildHTML(product, slug) {
     const url     = `${BASE}/producto/${slug}`;
     const title   = `${esc(product.name)} | UrbanHustler`;
     const desc    = esc(product.description || `Compra ${product.name} en UrbanHustler. Streetwear y ropa urbana premium.`);
-    const img     = product.image || `${BASE}/img.jpeg/logo.jpeg`;
+    const img     = product.image || `${BASE}/recursos/imagenes/logo.jpeg`;
     const price   = product.price || 0;
     const inStock = product.stock === undefined || product.stock > 0;
     const cat     = (product.category || 'ropa').toUpperCase();
@@ -143,21 +142,22 @@ function buildHTML(product, slug) {
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:description" content="${desc}">
   <meta name="twitter:image" content="${esc(img)}">
-  <meta name="google-signin-client_id" content="543305563101-b2bln4jo9vil1b4c1ns5iq1k6m1fm8fc.apps.googleusercontent.com">
+  <meta name="google-signin-client_id" content="543305563101-jdvoskcnplk9tguiqbgt2g68snd7mlk0.apps.googleusercontent.com">
   <script type="application/ld+json">${jsonLd}</script>
   <script type="application/ld+json">${breadcrumbLd}</script>
-  <link rel="icon" type="image/jpeg" href="/img.jpeg/logo.jpeg">
+  <link rel="icon" type="image/jpeg" href="/recursos/imagenes/logo.jpeg">
   <link rel="preload" as="image" href="${esc(img)}" fetchpriority="high">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="preconnect" href="https://accounts.google.com">
   <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
-  <link rel="stylesheet" href="/CSS/index.css">
-  <link rel="stylesheet" href="/CSS/detailProduct.css">
-  <link rel="stylesheet" href="/CSS/productos.css">
-  <link rel="stylesheet" href="/CSS/footer.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="/CSS/filters.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="/CSS/chatbot.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="/estilos/general.css">
+  <link rel="stylesheet" href="/estilos/producto.css">
+  <link rel="stylesheet" href="/estilos/carrito.css">
+  <link rel="stylesheet" href="/estilos/asistente.css" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -166,22 +166,18 @@ function buildHTML(product, slug) {
   <noscript><p>Activa JavaScript para ver la tienda completa de UrbanHustler.</p></noscript>
   <div id="navbar-container"></div>
   <main class="detail-layout">
-    <div style="grid-column:1/-1;padding:100px 5% 0 5%;">
-      <button onclick="window.history.back()"
-        style="background:transparent;border:1px solid #fff;color:#fff;padding:8px 16px;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:0.9rem;transition:all 0.3s;"
-        onmouseover="this.style.borderColor='#D90429';this.style.color='#D90429'"
-        onmouseout="this.style.borderColor='#fff';this.style.color='#fff'">
-        <i class="fa-solid fa-arrow-left"></i> Volver
+    <div class="detail-top-bar">
+      <button class="btn-back-store" onclick="window.history.back()">
+        <i class="fa-solid fa-arrow-left"></i> VOLVER
       </button>
+      <nav class="detail-breadcrumbs" aria-label="Ruta de navegación">
+        <a href="/index.html">INICIO</a>
+        <span>/</span>
+        <a href="/index.html?category=${esc(product.category || 'ropa')}">${esc(cat)}</a>
+        <span>/</span>
+        <span class="breadcrumb-current">${esc(product.name)}</span>
+      </nav>
     </div>
-    <nav aria-label="Ruta de navegación"
-      style="grid-column:1/-1;padding:0 5%;font-size:0.85rem;color:#888;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <a href="/" style="color:#888;text-decoration:none;">Inicio</a>
-      <span>›</span>
-      <a href="/categoria/${esc(product.category || 'ropa')}" style="color:#888;text-decoration:none;">${esc(cat)}</a>
-      <span>›</span>
-      <span style="color:#fff;">${esc(product.name)}</span>
-    </nav>
     <div id="filters-container"></div>
     <div id="product-detail-container" class="product-detail-container">
       <noscript>
@@ -208,11 +204,15 @@ function buildHTML(product, slug) {
     <div id="lore-container"></div>
   </main>
   <div id="footer-container"></div>
-  <script src="/JavaScript/data.js" defer></script>
-  <script src="/JavaScript/navbar.js" defer></script>
-  <script src="/JavaScript/cart.js" defer></script>
-  <script src="/JavaScript/detailProduct.js" defer></script>
-  <script src="/JavaScript/chatbot.js" defer></script>
+  <script type="module" src="/js/base-datos.js"></script>
+  <script src="/js/negocio.js" defer></script>
+  <script src="/js/herramientas.js" defer></script>
+  <script src="/js/sesion.js" defer></script>
+  <script src="/js/interfaz.js" defer></script>
+  <script src="/js/carrito.js" defer></script>
+  <script src="/js/producto.js" defer></script>
+  <script src="/js/asistente-respuestas.js" defer></script>
+  <script src="/js/asistente.js" defer></script>
 </body>
 </html>`;
 }
@@ -230,7 +230,7 @@ module.exports = async (req, res) => {
             return res.status(404).send(`<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8"><title>Producto no encontrado | UrbanHustler</title>
 <meta name="robots" content="noindex"><meta http-equiv="refresh" content="3;url=/">
-<link rel="stylesheet" href="/CSS/index.css"></head>
+<link rel="stylesheet" href="/estilos/general.css"></head>
 <body style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0D0D0D;color:#fff;font-family:system-ui,sans-serif;text-align:center;">
 <div><h1 style="font-size:2rem;margin-bottom:1rem;">Producto no encontrado</h1>
 <p style="color:#888;">Redirigiendo en 3 segundos...</p>
@@ -244,14 +244,13 @@ module.exports = async (req, res) => {
 
     } catch (error) {
         console.error('[api/producto]', error.message);
-        // Fallback: página funcional, el JS del cliente carga el producto
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.setHeader('Cache-Control', 'no-store');
         return res.status(200).send(`<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UrbanHustler — Producto</title>
-<link rel="stylesheet" href="/CSS/index.css"><link rel="stylesheet" href="/CSS/detailProduct.css">
-<link rel="stylesheet" href="/CSS/productos.css">
+<link rel="stylesheet" href="/estilos/general.css"><link rel="stylesheet" href="/estilos/producto.css">
+<link rel="stylesheet" href="/estilos/carrito.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 <script src="https://accounts.google.com/gsi/client" async defer></script></head>
 <body class="detail-page">
@@ -266,11 +265,15 @@ module.exports = async (req, res) => {
   <div id="lore-container"></div>
 </main>
 <div id="footer-container"></div>
-<script src="/JavaScript/data.js" defer></script>
-<script src="/JavaScript/navbar.js" defer></script>
-<script src="/JavaScript/cart.js" defer></script>
-<script src="/JavaScript/detailProduct.js" defer></script>
-<script src="/JavaScript/chatbot.js" defer></script>
+<script type="module" src="/js/base-datos.js"></script>
+<script src="/js/negocio.js" defer></script>
+<script src="/js/herramientas.js" defer></script>
+<script src="/js/sesion.js" defer></script>
+<script src="/js/interfaz.js" defer></script>
+<script src="/js/carrito.js" defer></script>
+<script src="/js/producto.js" defer></script>
+<script src="/js/asistente-respuestas.js" defer></script>
+<script src="/js/asistente.js" defer></script>
 </body></html>`);
     }
 };
